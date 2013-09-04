@@ -1,0 +1,64 @@
+<?php
+$width   = $this->block->getOption('width');
+$height  = $this->block->getOption('height');
+$field   = $this->block->getOption('field');
+$youtube = $this->content->getMetafield($field);
+
+if ($youtube && $youtube->value): 
+
+$this->headScript()->appendScript("
+    $('document').ready(function(){
+
+        $('.youtube-modal').each(function(){
+            var videoId = '#' + $(this).attr('id');
+            var modalBody = $(this).find('div.modal-body');
+            var videoHtml = modalBody.html();
+            modalBody.html('');
+
+            $(videoId).on('show', function(){
+                modalBody.html(videoHtml);
+            });
+
+            $(videoId).on('hide', function(){
+                modalBody.html('');
+            });
+        });
+    });
+");
+?>
+
+<style type="text/css">
+.block-content-youtube-link a {
+    cursor: pointer;
+    margin-top: 5px;
+}
+.youtube-modal .modal-body {
+    text-align: center;
+}
+</style>
+
+<div class="block block-content-youtube block-content-youtube-dialog <?php echo $this->cssVisibility($this->block); ?>"
+     id="content_<?php echo $field; ?>">
+
+    <a href="#<?php echo $this->escape($youtube->value); ?>" data-toggle="modal">
+        <?php echo $this->youtubeThumb($youtube->value, $width, $height); ?>
+    </a>
+
+    <!-- Modal -->
+    <div id="<?php echo $this->escape($youtube->value); ?>" tabindex="-1"
+         class="youtube-modal modal hide fade" role="dialog" aria-hidden="true"
+         aria-labelledby="youtube_modal_label">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="youtube_modal_label"><?php echo $this->escape($this->content->title); ?></h3>
+        </div>
+        <div class="modal-body">
+            <?php echo $this->youtubeVideo($youtube->value, $width, $height, array('autoplay' => 1)); ?>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Fechar</button>
+        </div>
+    </div>
+
+</div>
+<?php endif; ?>

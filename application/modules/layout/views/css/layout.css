@@ -1,0 +1,254 @@
+i.icon-large {
+    width: 24px;
+    height: 24px;
+    background-image: url(../img/large-icons.png);
+}
+i.icon-large.icon-one-column {
+    background-position: 0 -24px;
+}
+i.icon-large.icon-two-columns {
+    background-position: -96px -24px;
+}
+i.icon-large.icon-two-columns-left {
+    background-position: -24px -24px;
+}
+i.icon-large.icon-two-columns-right {
+    background-position: -48px -24px;
+}
+i.icon-large.icon-three-columns {
+    background-position: -120px -24px;
+}
+i.icon-large.icon-three-columns-main {
+    background-position: -72px -24px;
+}
+
+.modal .radio.inline + .radio.inline,
+.modal .checkbox.inline,
+.modal .checkbox.inline + .checkbox.inline {
+    margin-right: 10px;
+    margin-left: 0;
+}
+
+/* BLOCKS_LIST */
+#shortcuts_btn.btn-group {
+    margin-bottom: 10px;
+}
+#shortcuts_btn.btn-group > a {
+    width: 100%;
+}
+
+#blocks_list .accordion-heading a {
+    text-transform: capitalize;
+    background-color: #eee;
+    text-decoration: none;
+    color: #000;
+}
+#blocks_list .accordion-inner {
+    padding: 0;
+}
+#blocks_list li.block {
+    cursor: move;
+}
+#blocks_list li.block .options,
+#blocks_list li.block .block-name,
+#blocks_list li.block .block-id {
+    display: none;
+}
+#blocks_list li.block.ui-sortable-helper .options,
+#blocks_list li.block.ui-sortable-helper .block-name,
+#blocks_list li.block.ui-sortable-helper .block-id {
+    display: inherit;
+}
+
+#options_areas {
+    padding-bottom: 10px;
+}
+
+/* AREAS_LIST */
+#areas_list {
+    height: 29px;
+    margin-bottom: 10px;
+    padding: 0;
+}
+#areas_list .area {
+    background-color: #EEEEEE;
+    border: 1px solid #E5E5E5;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    float: left;
+    height: 29px;
+    margin-right: 10px;
+    text-align: center;
+    width: 29px;
+}
+#areas_list .area:last-child {
+    margin-right: 0;
+}
+#areas_list .area > .options,
+#areas_list .area > .columns {
+    display: none;
+}
+
+/* LAYOUT_BODY */
+#layout_body {
+     background-color: #eee;
+     padding: 20px 20px 5px 20px;
+}
+
+#layout_body > ul {
+     list-style-type: none;
+     margin: 0;
+     min-height: 207px;
+}
+
+#layout_body > ul > li.area > i,
+#layout_body > ul > li.area > .options,
+li.area.ui-sortable-helper > i,
+li.area.ui-sortable-helper > .options {
+    display: none;
+}
+
+#layout_body > ul > li.area {
+    margin-bottom: 2%;
+    padding: 0 3px 3px 0;
+    border: 1px dotted #EEEEEE;
+}
+#layout_body > ul > li.area:hover {
+    border: 1px dotted #888;
+}
+
+#layout_body > ul > li.area > .columns > .column {
+    padding-top: 20px;
+    margin-bottom: 0;
+}
+#layout_body > ul > li.area > .columns > .column:first-child {
+    margin-left: 0;
+}
+
+#layout_body > ul > li.area > .columns > .column,
+#areas_list li.area.ui-sortable-helper > .columns > .column {
+    background-color: #ddd;
+    box-shadow: 3px 3px #ccc;
+}
+#layout_body > ul > li.area > .columns > .column > ul,
+#areas_list li.area.ui-sortable-helper > .columns > .column > ul {
+    list-style-type: none;
+    margin-left: 0;
+    min-height: 40px;
+    padding: 5px;
+}
+
+#layout_body > ul > li.area > .columns > .column > .options {
+    margin-top: -15px;
+    margin-right: 5px;
+}
+#layout_body > ul > li.area > .columns > .column > .layout-column-class {
+    border: 0;
+    background-color: transparent;
+    box-shadow: none;
+    transition: none;
+    font-size: smaller;
+    width: 40px;
+    color: #888888;
+    margin: -20px 0 0 5px;
+}
+
+#layout_body .area > ul li {
+    overflow: hidden;
+    cursor: move;
+}
+#areas_list li.area.ui-sortable-helper {
+    border: 0;
+    background-color: transparent;
+}
+#areas_list li.area.ui-sortable-helper > .columns {
+    display: block;
+}
+
+#layout_body li.block,
+#blocks_list li.block.ui-sortable-helper {
+    color: #000;
+    background-color: #ccc;
+    margin: 5px;
+    padding: 5px;
+    box-shadow: 2px 2px #aaa;
+}
+#layout_body li.block.ui-sortable-placeholder {
+    background-color: #cecece;
+}
+
+#layout_body .column.disabled,
+#layout_body li.block.disabled {
+    -khtml-opacity: 0.5;
+    -moz-opacity: 0.5;
+    -ms-filter: "alpha(opacity=50)";
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+
+#layout_body li.block .options a {
+    text-decoration: none;
+}
+#layout_body li.block .options i {
+    margin-left: 2px;
+}
+#layout_body li.block .block-name,
+#blocks_list li.block.ui-sortable-helper .block-name {
+    font-weight: bold;
+    cursor: default;
+}
+#layout_body li.block .block-id,
+#blocks_list li.block.ui-sortable-helper .block-id {
+    cursor: default;
+}
+#layout_body li.block .block-description,
+#blocks_list li.block.ui-sortable-helper .block-description {
+    display: none;
+}
+
+#layout_body > ul > li.area > .columns > .column > .resizer {
+    display: none;
+    margin-left: -10px;
+    opacity: 0.5;
+}
+#layout_body > ul > li.area:hover > .columns > .column > .resizer {
+    display: block;
+    position: absolute;
+}
+#layout_body > ul > li.area > .columns > .column > .resizer > i {
+    cursor: pointer;
+    display: block;
+    width: 7px;
+}
+#layout_body > ul > li.area > .columns > .column > .resizer > i.icon-arrow-right {
+    background-position: -271px -96px;
+    margin-left: 1px;
+}
+#layout_body > ul > li.area > .columns > .column > .splitter {
+    display: none;
+    float: left;
+    font-size: 9px;
+    margin-bottom: -6px;
+    margin-top: -15px;
+    text-align: center;
+    width: 100%;
+    opacity: 0.5;
+}
+#layout_body > ul > li.area > .columns > .column > .splitter > span {
+    cursor: e-resize;
+}
+#layout_body > ul > li.area > .columns > .column:hover > .splitter {
+    display: block;
+}
+#layout_body > ul > li.area > .columns > .column.span1:hover > .splitter,
+li.area.ui-sortable-helper .splitter {
+    display: none;
+}
+
+#layout_body > ul > li.area > .columns > .column.span1 > .layout-column-class,
+#layout_body > ul > li.area > .columns > .column.span1 > .options > .remove,
+#layout_body > ul > li.area > .columns > .column.span1 .block .options .data,
+#layout_body > ul > li.area > .columns > .column.span1 .block .options .remove {
+    display: none;
+}

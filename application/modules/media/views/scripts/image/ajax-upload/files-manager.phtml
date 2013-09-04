@@ -1,0 +1,33 @@
+<?php echo $this->formHidden("file_{$this->file->id}_filepath",
+                             $this->baseUrl($this->file->filepath)); ?>
+<div class="file">
+    <a href="<?php echo $this->adminBaseUrl('media/image/edit/id/'
+                            . "{$this->file->id}}/target/{$this->target}"); ?>"
+        title="<?php echo $this->file->info; ?>">
+        <img src="<?php echo $this->thumb($this->file->filepath, 150, 113); ?>"
+             alt="<?php echo $this->file->filename; ?>"
+             id="img_<?php echo $this->file->id; ?>" />
+    </a>
+    <div class="filename" title="<?php echo $this->file->filename; ?>">
+        <!--
+        <?php echo $this->file->original_name; ?><br />
+        (<?php echo $this->file->width . 'x' . $this->file->height; ?>)<br />
+        -->
+
+        <?php if($this->target): ?> <a href="javascript:void(0);"
+           onclick="selectFile('<?php echo $this->target; ?>','<?php echo $this->file->id; ?>');"
+           >selecionar</a> | <?php endif; ?>
+
+        <?php /* if($this->target): ?><a href="javascript:void(0);"
+            onclick="choose('<?php echo $this->target; ?>', '<?php echo $this->file->id; ?>');"
+           >selecionar</a> | <? endif */ ?>
+
+        <a href="<?php echo $this->adminBaseUrl('media/image/edit/id/'
+                            . "{$this->file->id}}/target/{$this->target}"); ?>"
+                            >editar</a>
+    </div>
+</div>
+<?php if($this->file->contents == 0): ?>
+    <a class="delete" id="delete_<?php echo $this->file->id; ?>"
+       href="javascript:void(0)" title="Remover">x</a>
+<?php endif; ?>

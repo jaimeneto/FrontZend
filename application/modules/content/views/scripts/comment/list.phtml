@@ -1,0 +1,90 @@
+<?php 
+$status = array(
+    'A' => 'Ativo',
+    'I' => 'Inativo',
+    'D' => 'Excluído',
+);
+$statusIcon = array(
+    'A' => 'icon-eye-open',
+    'I' => 'icon-eye-close',
+    'D' => 'icon-remove-circle',
+);
+$rowClass = array(
+    'A' => '',
+    'I' => ' class="warning"',
+    'D' => ' class="error"',
+);
+?>
+
+<div class="span9">
+
+    <fieldset>
+        <legend>Comentários</legend>
+
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th class="hidden-phone hidden-tablet">Id</th>
+                    <th>Nome</th>
+                    <th class="hidden-phone hidden-tablet">Tipo</th>
+                    <th class="hidden-phone hidden-tablet">Conteúdo</th>
+                    <th>Comentários</th>
+                    <th style="display:none">Status</th>
+                    <th class="span1">Alteração</th>
+                    <th width="50"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <? foreach ($this->paginator as $comment): ?>
+                    <tr<?php echo $rowClass[$comment->status]; ?>>
+                        <td title="<?php echo $comment->id; ?>" class="hidden-phone hidden-tablet">
+                            <?php echo $comment->id; ?>
+                        </td>
+                        <td title="<?php echo $this->escape($comment->name); ?>">
+                            <?php echo $this->escape($comment->name); ?>
+                        </td>
+                        <td title="<?php echo $this->escape($comment->getContent()->getType()->type); ?>" class="hidden-phone hidden-tablet">
+                            <?php echo $this->escape($comment->getContent()->getType()->type); ?>
+                        </td>
+                        <td style="max-width: 200px" title="<?php echo $this->escape($comment->getContent()->title); ?>" class="hidden-phone hidden-tablet">
+                            <?php echo $this->escape($comment->getContent()->title); ?>
+                        </td>
+                        <td title="<?php echo $this->escape($comment->comments); ?>">
+                            <?php echo $this->escape($comment->comments); ?>
+                        </td>
+                        <td title="<?php echo $status[$comment->status]; ?>" style="display:none">
+                            <?php echo $status[$comment->status]; ?>
+                        </td>
+                        <td title="<?php echo $comment->getDateUpdated()->get('dd/MM/yyyy HH:mm:ss'); ?>">
+                            <span class="visible-desktop"><?php echo $comment->getDateUpdated()->get('dd/MM/yy HH:mm') ?></span>
+                            <span class="hidden-desktop"><?php echo $comment->getDateUpdated()->get('dd/MM/yy') ?></span>
+                        </td>
+                        <td class="actions">
+                            <a href="#" title="<?php echo $status[$comment->status] ?>"
+                               rel="tooltip"><i class="<?php echo $statusIcon[$comment->status] ?>"></i></a>
+
+                            <a href="mailto:<?php echo $this->escape($comment->email); ?>"
+                               title="<?php echo $this->escape($comment->email); ?>"
+                               target="_blank" rel="tooltip"><i class="icon-envelope"></i></a>
+                            
+                            <a href="<?php echo $this->adminBaseUrl('content/comment/remove'); ?>"
+                               title="Enviar para a lixeira" rel="tooltip"><i class="icon-trash"></i></a>
+                        </td>
+                    </tr>
+                <? endforeach; ?>
+            </tbody>
+        </table>
+        
+        <?php echo $this->paginator; ?>
+        
+    </fieldset>
+
+</div>
+<div class="span3">
+
+    <fieldset>
+        <legend>Filtros</legend>
+        <?php echo $this->form; ?>
+    </fieldset>
+    
+</div>

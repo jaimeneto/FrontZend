@@ -1,0 +1,96 @@
+<?php
+$order = $this->form->getElement('order')->getValue();
+$orderDesc = strpos($order, ' desc') > 0;
+$order = str_replace(' desc', '', $order);
+?>
+<div class="span9">
+
+    <fieldset>
+        <legend>
+            Tipos de conteúdo
+            <a class="btn pull-right" href="<?php echo $this->adminBaseUrl('content/content-type/add'); ?>">
+                <i class="icon-plus"></i> Cadastrar
+            </a>
+        </legend>
+
+        <?php echo $this->alerts(); ?>
+
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th<?php echo $order=='id_content_type' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list?filter[order]=id_content_type' . ($order=='id_content_type' && !$orderDesc ? '+desc' : '')); ?>">
+                            Id
+                            <?php echo $order == 'id_content_type' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='type' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list?filter[order]=type' . ($order=='type' && !$orderDesc ? '+desc' : '')); ?>">
+                            Tipo
+                            <?php echo $order == 'type' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='plural' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list?filter[order]=plural' . ($order=='plural' && !$orderDesc ? '+desc' : '')); ?>">
+                            Plural
+                            <?php echo $order == 'plural' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='id_parent' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list?filter[order]=id_parent' . ($order=='id_parent' && !$orderDesc ? '+desc' : '')); ?>">
+                            Tipo pai
+                            <?php echo $order == 'id_parent' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th width="50"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <? foreach ($this->paginator as $contentType):
+                    $parent = $contentType->getParent(); ?>
+                    <tr>
+                        <td title="<?php echo $contentType->id; ?>">
+                            <?php echo $contentType->id; ?>
+                        </td>
+                        <td title="<?php echo $this->escape($contentType->type); ?>">
+                            <?php echo $this->escape($contentType->type); ?>
+                        </td>
+                        <td title="<?php echo $this->escape($contentType->plural); ?>">
+                            <?php echo $this->escape($contentType->plural); ?>
+                        </td>
+                        <td<?php echo $parent ? ' title="' . $this->escape($parent->type) . '"' : ''; ?>>
+                            <?php echo $parent ? $this->escape($parent->type) : ''; ?>
+                        </td>
+                        <td class="actions">
+                             <a href="<?php echo $this->adminBaseUrl("content/content-type/config-page/id/{$contentType->id}"); ?>"
+                               title="<?php echo $contentType->getLayoutPage() ? 'Configurar página' : 'Criar página'; ?>"
+                               rel="tooltip"><i class="icon-wrench"></i></a>
+
+                            <a href="<?php echo $this->adminBaseUrl("content/content-type/edit/id/{$contentType->id}"); ?>"
+                               title="Editar" rel="tooltip"><i class="icon-edit"></i></a>
+                            
+                            <? if($parent): ?>
+                            <a href="<?php echo $this->adminBaseUrl('content/content-type/remove'); ?>"
+                               title="Enviar para a lixeira" rel="tooltip"><i class="icon-trash"></i></a>
+                            <? else: ?>
+                                <i class="icon-trash icon-white"></i>
+                            <? endif; ?>
+                        </td>
+                    </tr>
+                <? endforeach; ?>
+            </tbody>
+        </table>
+        
+        <?php echo $this->paginator; ?>
+        
+    </fieldset>
+
+</div>
+<div class="span3">
+
+    <fieldset>
+        <legend>Filtros</legend>
+        <?php echo $this->form; ?>
+    </fieldset>
+    
+</div>

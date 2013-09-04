@@ -1,0 +1,15 @@
+<input type="hidden"  value="<?php echo $this->file->id; ?>"
+       id="meta-<?php echo "{$this->target}-{$this->file->id}"; ?>"
+       name="meta[<?php echo $this->target; ?>][]" />
+
+<a title="Remover" class="pull-right file-remove"
+   href="#files_meta-<?php echo "{$this->target}-{$this->file->id}"; ?>"
+   id="remove_meta-<?php echo "{$this->target}-{$this->file->id}"; ?>"
+   ><i class="icon-remove"></i></a>
+
+<div width="210" type="images" class="thumbnail file-preview"
+     id="meta-<?php echo "{$this->target}-{$this->file->id}"; ?>_preview">
+    <img alt="<?php echo $this->escape($this->file->original_name); ?>"
+         src="<?php echo $this->baseUrl($this->file->getPath());
+                    //$this->thumb($this->file, 150, 150, true); ?>" />
+</div>

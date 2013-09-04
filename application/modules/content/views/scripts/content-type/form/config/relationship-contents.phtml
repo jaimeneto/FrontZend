@@ -1,0 +1,39 @@
+<?php
+$multiOptions = FrontZend_Container::get('ContentType')->fetchPairs('plural');
+?>
+
+<div class="control-group">
+    <label for="meta-relationship-<?php echo $this->metafield->fieldname; ?>-related"
+           class="control-label">Relacionado com</label>
+    <div class="controls">
+        <?php
+            echo $this->formSelect("meta[relationship][{$this->metafield->fieldname}][related]",
+            $this->metafield->getOption('related'),
+            null, $multiOptions);
+        ?>
+    </div>
+</div>
+
+<div class="control-group">
+    <label for="meta-relationship-<?php echo $this->metafield->fieldname; ?>-display"
+           class="control-label">Exibição</label>
+    <div class="controls">
+        <?php
+            echo $this->formSelect("meta[relationship][{$this->metafield->fieldname}][display]",
+                $this->metafield->getOption('display'),
+                null, array('list' => 'Exibir a lista de opções',
+                        'search' => 'Exibir um campo de busca'));
+        ?>
+    </div>
+
+    <div class="controls">
+        <label for="meta-relationship-<?php echo $this->metafield->fieldname; ?>-multiple" class="checkbox">
+            <?php
+                echo $this->formCheckbox("meta[relationship][{$this->metafield->fieldname}][multiple]", null,
+                    $this->metafield->getOption('multiple')
+                    ? array('checked' => 'checked') : '');
+            ?>
+            Permitir selecionar várias opções
+        </label>
+    </div>
+</div>

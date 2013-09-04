@@ -1,0 +1,5 @@
+<div class="block block-layout-title <?php echo $this->cssVisibility($this->block); ?>">
+    <?php echo $this->block->getOption('title')
+        ? '<h3>' . $this->escape($this->block->getOption('title')) . '</h3>'
+        : ''; ?>
+</div>

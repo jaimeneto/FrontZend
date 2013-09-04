@@ -1,0 +1,71 @@
+<?php
+/* AVAILABLE OPTIONS:
+ *
+ * title
+ * types
+ * limit
+ * form_filter
+ * search_result
+ * template
+ */
+
+if($this->contents): ?>
+
+<style type="text/css">
+.block-content-contents-excerpt ul li a {
+    padding-bottom: 20px;
+    color: #333;
+}
+.block-content-contents-excerpt ul li a .pull-left {
+    padding: 11px 10px 11px 0;
+}
+.block-content-contents-excerpt ul li a .pull-left .label {
+    text-transform: capitalize;
+}
+.block-content-contents-excerpt ul li a .text {
+    text-align: justify;
+}
+</style>
+
+    <div class="block block-content-contents block-content-contents-excerpt <?php echo $this->cssVisibility($this->block); ?>">
+        <?php if($this->block->getOption('form_filter')): ?>
+        <fieldset>
+            <legend>Busca avançada</legend>
+            <?php echo $this->formFilter; ?>
+        </fieldset>
+        <?php endif; ?>
+
+        <ul class="nav nav-pills nav-stacked">
+            <?php foreach($this->contents as $content): ?>
+            <li>
+                <a href="<?php echo $this->baseUrl($content->slug); ?>">
+
+                    <div class="pull-left">
+                        <span class="label">
+                            <?php echo $content->getDatePublished()->get('EEEE, dd / MM / yyyy'); ?>
+                        </span>
+
+                        <span class="label label-info">
+                            <?php echo $this->escape($content->getType()->type); ?>
+                        </span>
+                    </div>
+
+                    <h4><?php echo $this->escape($content->title); ?></h4>
+
+                    <div class="text">
+                        <?php echo $content->excerpt
+                            ? $content->excerpt
+                            : $this->stringLength(strip_tags($content->text, '<p><br>'), 800) ?>
+                    </div>
+                    
+                </a>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+<?php elseif($this->options->search_result): ?>
+
+    <p class="info">Nenhum resultado encontrado.</p>
+
+<?php endif; ?>

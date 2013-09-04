@@ -1,0 +1,19 @@
+<li<?php echo $this->nav->visible ? '' : ' class="not-visible"'; ?>
+    id="layout_nav_<?php echo $this->nav->id; ?>">
+    <span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
+    <span class="nav-label"><?php echo $this->nav->label; ?></span>
+    <div class="actions pull-right">
+
+        <a class="toggle" href="#<?php echo $this->nav->id; ?>"
+           title="Exibir / Ocultar" rel="tooltip">
+            <i class="icon-eye-<?php echo $this->nav->visible ? 'open' : 'close'; ?>"></i>
+        </a>
+
+        <a class="edit" href="#<?php echo $this->nav->id; ?>"
+           title="Editar" rel="tooltip"><i class="icon-edit"></i></a>
+
+        <a class="remove" href="#<?php echo $this->nav->id; ?>"
+           title="Excluir" rel="tooltip"><i class="icon-remove"></i></a>
+    </div>
+    <ul class="nav-container"></ul>
+</li>

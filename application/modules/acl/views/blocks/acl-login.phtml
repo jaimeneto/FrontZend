@@ -1,0 +1,29 @@
+<style type="text/css">
+#acl_form_login {
+    margin: 30px auto 100px; 
+    width: 500px;
+}
+#acl_form_login label,
+#acl_form_login #username,
+#acl_form_login #password {
+    padding: 10px 5px;
+    font-size: 17.5px;
+}
+</style>
+
+<fieldset class="block block-acl-login <?php echo $this->cssVisibility($this->block); ?>">
+
+    <?php if(Zend_Auth::getInstance()->hasIdentity()): ?>
+    
+        <div><a href="<?php echo $this->baseUrl('logout'); ?>" 
+            class="navbar-link">Sair</a></div>
+    
+    <?php else: ?>
+        <legend>Login</legend>
+        
+        <?php echo $this->alerts(); ?>
+        
+        <?php echo $this->loginForm; ?>
+    <?php endif; ?>
+
+</fieldset>

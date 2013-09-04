@@ -1,0 +1,13 @@
+<?php foreach($this->page->getBlocks(true) as $area):
+$columns = $area->getBlocks(true); ?>
+<div class="row-fluid">
+    <?php foreach($columns as $column): ?>
+    <div class="<?php echo $column->getOption('class') . ' '
+        . $this->cssVisibility($column); ?>">
+        <?php foreach($column->getBlocks(true) as $block):
+            echo $this->showBlock($block, $this->content, $this->user);
+        endforeach; ?>
+    </div>
+    <?php endforeach; ?>
+</div>
+<?php endforeach; ?>

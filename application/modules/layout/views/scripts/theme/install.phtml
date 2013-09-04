@@ -1,0 +1,21 @@
+<div>
+
+    <fieldset>
+        <legend>Instalar tema</legend>
+
+        <?php echo $this->alerts(); ?>
+
+        <div class="thumbnail pull-left">
+            <img alt="" width="200" height="150"
+                 src="<?php echo $this->baseUrl("cache/layouts/{$this->layout->env}/{$this->layout->theme}/img/preview.jpg"); ?>" alt="" />
+        </div>
+        <p>
+            <strong><?php echo $this->escape($this->layout->name); ?></strong><br />
+            <small>Versão <?php echo $this->escape($this->layout->version); ?></small>
+        </p>
+
+        <?php echo $this->form; ?>
+        
+    </fieldset>
+
+</div>

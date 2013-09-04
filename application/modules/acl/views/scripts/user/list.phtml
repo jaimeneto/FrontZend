@@ -1,0 +1,156 @@
+<?php
+$order = $this->form->getElement('order')->getValue();
+$orderDesc = strpos($order, ' desc') > 0;
+$order = str_replace(' desc', '', $order);
+
+$status = array(
+    'A' => 'Ativo',
+    'I' => 'Inativo',
+    'B' => 'Bloqueado',
+    'D' => 'Excluído',
+);
+$statusIcon = array(
+    'A' => 'icon-check',
+    'I' => 'icon-check icon-white',
+    'B' => 'icon-ban-circle',
+    'D' => 'icon-trash',
+);
+$rowClass = array(
+    'A' => '',
+    'I' => ' class="info"',
+    'B' => ' class="warning"',
+    'D' => ' class="error"'
+);
+?>
+<div class="span9">
+
+    <fieldset>
+        <legend>
+            Usuários
+            <a class="btn pull-right" href="<?php echo $this->adminBaseUrl('acl/user/add'); ?>">
+                <i class="icon-plus"></i> Cadastrar
+            </a>
+        </legend>
+
+        <?php echo $this->alerts(); ?>
+
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th<?php echo $order=='id_user' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('acl/user/list?filter[order]=id_user' . ($order=='id_user' && !$orderDesc ? '+desc' : '')); ?>">
+                            Id
+                            <?php echo $order == 'id_user' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th  class="hidden-tablet hidden-mobile<?php echo $order=='username' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('acl/user/list?filter[order]=username' . ($order=='username' && !$orderDesc ? '+desc' : '')); ?>">
+                            Nome de usuário
+                            <?php echo $order == 'username' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='display_name' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('acl/user/list?filter[order]=display_name' . ($order=='display_name' && !$orderDesc ? '+desc' : '')); ?>">
+                            Nome de exibição
+                            <?php echo $order == 'display_name' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th class="hidden-tablet hidden-phone<?php echo $order=='name' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('acl/user/list?filter[order]=name' . ($order=='name' && !$orderDesc ? '+desc' : '')); ?>">
+                            Nome
+                            <?php echo $order == 'name' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='id_role' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('acl/user/list?filter[order]=id_role' . ($order=='id_role' && !$orderDesc ? '+desc' : '')); ?>">
+                            Função
+                            <?php echo $order == 'id_role' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th class="span1<?php echo $order=='dt_registered' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('acl/user/list?filter[order]=dt_registered' . ($order=='dt_registered' && !$orderDesc ? '+desc' : '')); ?>">
+                            Cadastro
+                            <?php echo $order == 'dt_registered' ? '<b class="caret"></b>' : '' ?>
+                        </a>
+                    </th>
+                    <th class="span1<?php echo $order=='dt_lastaccess' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('acl/user/list?filter[order]=dt_lastaccess' . ($order=='dt_lastaccess' && !$orderDesc ? '+desc' : '')); ?>">
+                            <span class="visible-desktop">Último acesso</span>
+                            <span class="hidden-desktop">Acesso</span>
+                            <?php echo $order == 'dt_lastaccess' ? '<b class="caret"></b>' : '' ?>
+                        </a>
+                    </th>
+                    <th width="50"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($this->paginator as $user): ?>
+                    <tr<?php echo $rowClass[$user->status]; ?>>
+                        <td title="<?php echo $user->id; ?>">
+                            <?php echo $user->id; ?>
+                        </td>
+                        <td title="<?php echo $user->username; ?>" class="hidden-tablet hidden-mobile">
+                            <?php echo $this->escape($user->username); ?>
+                        </td>
+                        <td title="<?php echo $user->display_name; ?>">
+                            <?php echo $this->escape($user->display_name); ?>
+                        </td>
+                        <td title="<?php echo $user->name; ?>" class="hidden-tablet hidden-phone">
+                            <?php echo $this->escape($user->name); ?>
+                        </td>
+                        <td title="<?php echo $user->getRole()->role; ?>">
+                            <?php echo $this->escape($user->getRole()->role); ?>
+                        </td>
+                        <td title="<?php echo $user->getDateRegistered()->get('dd/MM/yyyy HH:mm:ss'); ?>">
+                            <span class="visible-desktop"><?php echo $user->getDateRegistered()->get('dd/MM/yyyy HH:mm:ss'); ?></span>
+                            <span class="hidden-desktop"><?php echo $user->getDateRegistered()->get('dd/MM/yyyy'); ?></span>
+                        </td>
+                        <?php $lastAccess = $user->dt_lastaccess
+                            ? $user->getLastAccess()->get('dd/MM/yyyy HH:mm:ss')
+                            : 'nunca'; ?>
+                        <td title="<?php echo $lastAccess; ?>">
+                            <span class="visible-desktop"><?php echo $lastAccess; ?></span>
+                            <span class="hidden-desktop"><?php echo substr($lastAccess, 0, 10); ?></span>
+                        </td>
+                        <td class="actions">
+                            <a href="#" title="<?php echo $status[$user->status]; ?>" rel="tooltip"
+                               ><i class="<?php echo $statusIcon[$user->status]; ?>"></i></a>
+
+                            <?php if($user->id == Zend_Auth::getInstance()->getIdentity()->id_user ||
+                                $this->isAllowed('acl_user_edit')): ?>
+                            <a href="<?php echo $this->adminBaseUrl("acl/user/edit/id/{$user->id}"); ?>"
+                               title="Editar" rel="tooltip"><i class="icon-edit"></i></a>
+                            <?php else: ?>
+                                <i class="icon-edit icon-white" title="Editar" rel="tooltip"></i>
+                            <?php endif; ?>
+
+                            <?php if($user->id != Zend_Auth::getInstance()->getIdentity()->id_user &&
+                                $this->isAllowed('acl_user_remove')): ?>
+                            <a href="<?php echo $this->adminBaseUrl("acl/user/remove/id/{$user->id}"); ?>"
+                               title="<?php echo $user->status == 'D' ? 'Excluir' : 'Enviar para a lixeira'; 
+                               ?>" rel="tooltip"><i class="icon-<?php echo $user->status == 'D' ? 'remove'
+                               : 'trash'; ?>"></i></a>
+                            <?php else: ?>
+                                <i class="icon-<?php echo $user->status == 'D' ? 'remove' : 'trash';
+                                    ?> icon-white" title="<?php echo $user->status == 'D' ? 'Excluir'
+                                        : 'Enviar para a lixeira'; ?>" rel="tooltip"></i>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+        <?php echo $this->paginator; ?>
+        
+    </fieldset>
+
+</div>
+<div class="span3">
+
+    <fieldset>
+        <legend>Filtros</legend>
+        <?php echo $this->form; ?>
+    </fieldset>
+    
+</div>

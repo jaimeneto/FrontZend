@@ -1,0 +1,38 @@
+<style type="text/css">
+.block-content-rating {
+    margin: 10px 0;
+}
+.block-content-rating .label {
+    cursor: default;
+}
+</style>
+
+<div class="block block-content-rating <?php echo $this->cssVisibility($this->block); ?>">
+    <div class="rating">
+        <span class="label">
+            <?php foreach($this->multiOptions as $rating => $ratingDescription): ?>
+                <i class="<?php echo ($rating <= $this->contentRating) ? 'icon-star': 'icon-star-empty'; ?>"
+                     ><?php //echo $rating; ?></i>
+            <?php endforeach; ?>
+        </span>
+
+        <span class="label label-inverse" title="<?php echo $this->multiOptions[$this->contentRating]; ?>"
+              ><?php echo isset($this->multiOptions[$this->contentRating])
+                  ? $this->multiOptions[$this->contentRating] : '';
+        ?></span>
+    </div>
+
+    <?php /*if($this->userRating): ?>
+    <div class="your-rating" title="<?php echo $this->multiOptions[$this->userRating->description] ?>">
+        <div class="your-rating-label">Sua avaliação: </div>
+        <?php foreach($this->multiOptions as $rating => $ratingDescription): ?>
+            <a class="<?php echo ($rating <= $this->userRating->description)
+                ? 'star-full': 'star-empty' ?>"><?php echo $rating ?></a>
+        <?php endforeach ?>
+        <span class="rating-description" title="<?php echo $this->multiOptions[$this->userRating->description] ?>"
+              ><?php echo isset($this->multiOptions[$this->userRating->description])
+                    ? $this->multiOptions[$this->contentRating] : '' ?></span>
+        <br class="clear" />
+    </div>
+    <?php endif; */ ?>
+</div>

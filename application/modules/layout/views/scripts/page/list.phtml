@@ -1,0 +1,101 @@
+<?php
+$order = $this->form->getElement('order')->getValue();
+$orderDesc = strpos($order, ' desc') > 0;
+$order = str_replace(' desc', '', $order);
+?>
+
+<div class="span9">
+
+    <fieldset>
+        <legend>
+            Páginas do layout
+            <a class="btn pull-right" href="<?php echo $this->adminBaseUrl('layout/page/add'); ?>">
+                <i class="icon-plus"></i> Cadastrar
+            </a>
+        </legend>
+
+        <?php echo $this->alerts(); ?>
+
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th class="hidden-phone hidden-tablet<?php echo $order=='id_content' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('layout/page/list?filter[order]=id_layout_page' . ($order=='id_layout_page' && !$orderDesc ? '+desc' : '')); ?>">
+                            Id
+                            <?php echo $order == 'id_layout_page' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='page' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('layout/page/list?filter[order]=page' . ($order=='page' && !$orderDesc ? '+desc' : '')); ?>">
+                            Página
+                            <?php echo $order == 'page' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='id_content_type' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('layout/page/list?filter[order]=id_content_type' . ($order=='id_content_type' && !$orderDesc ? '+desc' : '')); ?>">
+                            Tipo
+                            <?php echo $order == 'id_content_type' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th class="hidden-phone hidden-tablet<?php echo $order=='id_content' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('layout/page/list?filter[order]=id_content' . ($order=='id_content' && !$orderDesc ? '+desc' : '')); ?>">
+                            Conteúdo
+                            <?php echo $order == 'id_content' ? '<b class="caret"></b>' : '' ?>
+                        </a>
+                    </th>
+                    <th width="70"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($this->paginator as $page): ?>
+                    <tr>
+                        <td title="<?php echo $page->id; ?>" class="hidden-phone hidden-tablet">
+                            <?php echo $page->id; ?>
+                        </td>
+                        <td title="<?php echo $this->escape($page->page); ?>">
+                            <span class="label"><?php echo $this->escape((string) $page->getTheme()); ?></span>
+                            <?php echo $this->escape($page->page); ?>
+                        </td>
+                        <?php if($page->getContentType()): ?>
+                        <td title="<?php echo $this->escape($page->getContentType()->type); ?>">
+                            <?php echo $this->escape($page->getContentType()->type); ?>
+                        </td>
+                        <?php else: echo '<td></td>'; endif; ?>
+                        <?php if($page->getContent()): ?>
+                        <td title="<?php echo $this->escape($page->getContent()->title); ?>">
+                            <?php echo $this->escape($page->getContent()->title); ?>
+                        </td>
+                        <?php else: echo '<td></td>'; endif; ?>
+                        <td class="actions">
+                            <?php if($page->getContent()): ?>
+                            <a href="<?php echo $this->baseUrl($page->getContent()->slug); ?>"
+                               title="Visualizar" rel="tooltip" target="_blank"><i class="icon-globe"></i></a>
+                            <?php endif; ?>
+
+                            <a href="<?php echo $this->adminBaseUrl("layout/page/config/id/{$page->id}"); ?>"
+                               title="Configurar" rel="tooltip"><i class="icon-wrench"></i></a>
+
+                            <a href="<?php echo $this->adminBaseUrl("layout/page/edit/id/{$page->id}"); ?>"
+                               title="Editar" rel="tooltip"><i class="icon-edit"></i></a>
+
+                            <a href="<?php echo $this->adminBaseUrl("layout/page/remove/id/{$page->id}"); ?>"
+                               title="Excluir" rel="tooltip" class="remove"><i class="icon-remove"></i></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+        <?php echo $this->paginator; ?>
+        
+    </fieldset>
+
+</div>
+<div class="span3">
+
+    <fieldset>
+        <legend>Filtros</legend>
+        <?php echo $this->form; ?>
+    </fieldset>
+    
+</div>

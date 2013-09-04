@@ -1,0 +1,54 @@
+#layouts {
+    margin-left: 0;
+    padding: 8px;
+}
+
+#layouts ul.nav-list {
+    min-height: 550px;
+}
+#layouts > .treeview {
+    overflow: auto;
+}
+#layouts .treeview ul {
+    background-color: transparent;
+}
+#layouts .treeview > li {
+    white-space: nowrap;
+    width: 270px;
+}
+#layouts .treeview > li > a {
+    line-height: 14px;
+    padding: 0 0 0 18px;
+}
+#layouts .treeview > li.active > a {
+    background-color: transparent;
+    color: #0088CC;
+    text-shadow: none;
+    width: 280px;
+}
+#layouts .treeview > li ul > li > a {
+    padding-left: 3px;
+}
+#layouts .treeview > li > ul > li > .hitarea {
+    margin-top: 4px;
+}
+#layouts .treeview > li > ul > li.expandable,
+#layouts .treeview > li > ul > li.collapsable {
+    background-position: 0 -172px;
+}
+#layouts .treeview > li > ul > li > ul > li {
+    padding-top: 0;
+}
+#layouts .treeview > li > ul > li > ul > li.last {
+    background-position: 0 -1765px;
+}
+#layouts .treeview > li > ul > li.lastExpandable,
+#layouts .treeview > li > ul > li.lastCollapsable {
+    background-position: -32px -67px;
+}
+
+#layouts .treeview > li > a:hover,
+#layouts .treeview > li > a:focus {
+    background-color: transparent;
+    text-decoration: underline;
+}

@@ -1,0 +1,53 @@
+<fieldset>
+    <legend>
+        Configurar tipo de conteúdo: <?php echo $this->escape($this->contentType->type); ?>
+        <div class="pull-right">
+            <a href="<?php echo $this->adminBaseUrl("content/content-type/"
+                . "config-page/id/{$this->form->getValue('id_content_type')}");
+                ?>" class="btn">
+                <i class="icon-wrench"></i> Configurar página
+            </a>
+        </div>
+    </legend>
+
+    <?php echo $this->alerts(); ?>
+
+    <form method="<?php echo $this->form->getMethod(); ?>" action="<?php echo $this->form->getAction(); ?>">
+        <div class="tab-content">
+
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#meta_fields" data-toggle="tab">Campos Extra</a>
+                </li>
+                <li>
+                    <a href="#meta_relationships" data-toggle="tab">Relacionamentos</a>
+                </li>
+                <li>
+                    <a href="#meta_files" data-toggle="tab">Arquivos</a>
+                </li>
+                <li>
+                    <a href="#contenttype" data-toggle="tab">Tipo de conteúdo</a>
+                </li>
+            </ul>
+
+            <div class="tab-pane unstyled active meta-elements" id="meta_fields">
+                <?php echo $this->render('content-type/form/metafields.phtml'); ?>
+            </div>
+            <div class="tab-pane unstyled meta-elements" id="meta_relationships">
+                <?php echo $this->render('content-type/form/relationships.phtml'); ?>
+            </div>
+            <div class="tab-pane unstyled meta-elements" id="meta_files">
+                <?php echo $this->render('content-type/form/files.phtml'); ?>
+            </div>
+            <div class="tab-pane unstyled form-horizontal" id="contenttype">
+                <?php echo $this->render('content-type/form/contenttype.phtml'); ?>
+            </div>
+
+            <?php echo $this->form->getDisplayGroup('form_actions'); ?>
+
+        </div>
+
+    </form>
+
+
+</fieldset>

@@ -1,0 +1,32 @@
+<fieldset>
+    <legend>Editor de layout</legend>
+
+    <?php echo $this->alerts(); ?>
+
+    <div class="span3 well sidebar-nav" id="layouts">
+        <?php echo $this->navigation($this->tree)->menu()->setUlClass('nav nav-list treeview'); /*?>
+        <div class="accordion" id="layouts">
+            <?php foreach($this->tree as $layout => $files): ?>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle<?php echo $layout == $this->layout ? ' active' : ''; ?>" data-toggle="collapse" data-parent="#layouts" href="#layout_<?php echo $this->escape($layout); ?>">
+                        <?php echo $this->escape($layout); ?>
+                    </a>
+                </div>
+                <div id="layout_<?php echo $this->escape($layout); ?>" class="accordion-body collapse<?php echo $layout == $this->layout ? ' in' : ''; ?>">
+                    <div class="accordion-inner sidebar-nav">
+                        <?php echo $this->navigation($files)->menu()->setUlClass('nav nav-list treeview'); ?>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div> */ ?>
+    </div><!--/span-->
+
+    <div class="span9" id="files">
+
+        <?php echo $this->form; ?>
+
+    </div>
+
+</fieldset>

@@ -1,0 +1,29 @@
+<fieldset>
+    <legend>Editar usuário</legend>
+
+    <?php echo $this->alerts() ?>
+
+    <?php
+        $displayGroups = $this->form->getDisplayGroups();
+        if($displayGroups):
+    ?>
+    <ul class="nav nav-tabs">
+        <?php foreach($displayGroups as $displayGroup): ?>
+        <?php if($displayGroup->getLegend()): ?>
+        <li<?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : '' ?>>
+            <a href="#<?php echo $displayGroup->getName() ?>" data-toggle="tab">
+                <?php echo $displayGroup->getLegend() ?>
+            </a>
+        </li>
+        <?php endif; ?>
+        <?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+
+    <div id="avatar_preview" class="thumbnail">
+    <?php echo $this->gravatar($this->form->getElement('email')->getValue()); ?>
+    </div>
+
+    <?php echo $this->form; ?>
+    
+</fieldset>

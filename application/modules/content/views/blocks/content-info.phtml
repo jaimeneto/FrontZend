@@ -1,0 +1,98 @@
+<?php 
+if ($this->maindata || $this->metadata):
+$infoLabels = array(
+    'title'        => 'Título',
+    'slug'         => 'Slug',
+    'content_type' => 'Tipo',
+    'dt_published' => 'Publicação',
+    'dt_created'   => 'Criação',
+    'dt_updated'   => 'Última atualização',
+    'user'         => 'Cadastrado por',
+    'keywords'     => 'Palavras-chave'
+);
+?>
+<style type="text/css">
+.block-content-info table td {
+    white-space: inherit;
+}
+</style>
+<div class="block block-content-info <?php echo $this->cssVisibility($this->block); ?>">
+    <table class="table table-condensed">
+        <tbody>
+            <?php foreach($this->maindata as $field):
+                if (isset($this->content->$field) && $this->content->$field): ?>
+                <tr>
+                    <td><?php echo $this->escape($infoLabels[$field]); ?></td>
+                    <td><?php 
+                        if (substr($field, 0, 3) == 'dt_'):
+                            $method = 'getDate' . substr($field, 3);
+                            echo $this->content->$method()->get('dd/MM/yyyy HH:mm');
+                        elseif ($field == 'content_type'):
+                            echo $this->escape($this->content->getType()->type);
+                        elseif ($field == 'user'):
+                            $contentUser = $this->content->getUser();
+                            echo '<a href="' . $this->baseUrl("u/{$contentUser->username}") . '">' . 
+                                $this->escape($contentUser->display_name) .
+                                '</a>';
+                        else:
+                            echo $this->escape($this->content->$field);
+                        endif; ?>
+                    </td>
+                </tr>
+                <?php endif;
+            endforeach; ?>
+
+            <?php foreach($this->metadata as $data):
+                if ($data->value): 
+                    $metafield = $data->getMetafield();
+                ?>
+                <tr>
+                    <td><?php echo $this->escape($metafield->getOption('label')); ?></td>
+                    <td>
+                        <?php if($metafield->getOption('type') == 'youtube'): ?>
+                            <a href="http://www.youtube.com/watch?v=<?php echo $this->escape($data->value); ?>" target="_blank">Ver no Youtube</a>
+                        <?php else:
+                            echo $this->escape($data->value);
+                        endif; ?>
+                    </td>
+                </tr>
+                <?php endif;
+            endforeach; ?>
+
+            <?php foreach($this->relationships as $field => $contentRelationships):
+                $relatedContentsList = array();
+                foreach($contentRelationships as $contentRelationship):
+                    $relatedContent = $contentRelationship->getRelatedContent($this->content->id);
+                    $relatedContentsList[] = '<a href="'
+                        . $this->baseUrl($relatedContent->slug) . '">'
+                        . $this->escape($relatedContent->title) . '</a>';
+                endforeach; 
+            ?>
+            <tr>
+                <td><?php echo $this->escape($field); ?></td>
+                <td><?php echo implode(', ', $relatedContentsList); ?></td>
+            </tr>
+            <?php endforeach; ?>
+
+            <?php /*if(isset($this->content->relatedContents['genres']) && $this->content->relatedContents['genres']): ?>
+            <tr>
+                <td>Gênero</td>
+                <td>
+                    <?php $genres = array(); foreach($this->content->relatedContents['genres'] as $genre)
+                       $genres[] = '<a href="' . $this->baseUrl($genre->slug) . '">'
+                                     . $this->escape($genre->title) . '</a>'; ?>
+                    <?php echo implode(', ', $genres) ?>
+                </td>
+            </tr>
+            <?php endif; ?>
+
+            <?php if($this->content->keywords): ?>
+            <tr>
+                <td>Palavras-chave</td>
+                <td><?php echo $this->escape($this->content->keywords) ?></td>
+            </tr>
+            <?php endif; */ ?>
+        </tbody>
+    </table>
+</div>
+<?php endif; ?>

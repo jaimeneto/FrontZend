@@ -1,0 +1,85 @@
+<?php
+$order = $this->form->getElement('order')->getValue();
+$orderDesc = strpos($order, ' desc') > 0;
+$order = str_replace(' desc', '', $order);
+
+if ($this->form instanceof Core_Form_FilterAbstract && $this->form->getElement('order')) {
+    $attributes = $this->form->getElement('order')->getMultiOptions();
+    $attributes = array_keys($attributes['Ascendente']);
+} else {
+    $attributes = array_keys(current($this->paginator->getCurrentItems())->toArray());
+}
+
+?>
+<div class="span9">
+
+    <fieldset>
+        <legend>
+            <?php echo ucfirst($this->controllerName); ?>
+            <a class="btn pull-right" href="<?php echo $this->adminBaseUrl("{$this->moduleName}/{$this->controllerName}/add"); ?>">
+                <i class="icon-plus"></i> Cadastrar
+            </a>
+        </legend>
+
+        <?php echo $this->alerts(); ?>
+
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <?php foreach($attributes as $k => $attribute): ?>
+                    <th class="<?php
+                        echo 'id_' . $this->controllerName == $attribute || $k > 3 ? 'hidden-phone hidden-tablet' : '';
+                        echo $order==$attribute ? ($orderDesc ? ' dropup' : ' dropdown') : '';
+                        ?>">
+                        <a href="<?php echo $this->adminBaseUrl("{$this->moduleName}/{$this->controllerName}/list?filter[order]={$attribute}" . ($order==$attribute && !$orderDesc ? '+desc' : '')); ?>">
+                            <?php echo 'id_' . $this->controllerName == $attribute ? 'Id' : ucfirst($attribute); ?>
+                            <?php echo $order == $attribute ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <? endforeach; ?>
+                    <th width="70"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($this->paginator as $model): ?>
+                    <tr>
+                        <?php foreach($attributes as $k => $attribute): ?>
+                        <?php if('id_' . $this->controllerName == $attribute): ?>
+                        <td title="<?php echo $model->id ?>" class="hidden-phone hidden-tablet">
+                            <?php echo $model->id ?>
+                        </td>
+                        <?php else: ?>
+                        <td title="<?php echo $this->escape($model->$attribute); ?>"<?php
+                            echo $k > 3 ? ' class="hidden-phone hidden-tablet"' : '';?>>
+                            <?php echo $this->escape($model->$attribute); ?>
+                        </td>
+                        <?php endif; ?>
+                        <?php endforeach; ?>
+                        <td class="actions">
+                            <a href="<?php echo $this->adminBaseUrl("{$this->moduleName}/{$this->controllerName}/view/id/{$model->id}"); ?>"
+                               title="Visualizar" rel="tooltip"><i class="icon-globe"></i></a>
+
+                            <a href="<?php echo $this->adminBaseUrl("{$this->moduleName}/{$this->controllerName}/edit/id/{$model->id}"); ?>"
+                               title="Editar" rel="tooltip"><i class="icon-edit"></i></a>
+
+                            <a href="<?php echo $this->adminBaseUrl("{$this->moduleName}/{$this->controllerName}/remove/id/{$model->id}"); ?>"
+                               title="Excluir" rel="tooltip"><i class="icon-remove"></i></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <?php echo $this->paginator; ?>
+
+    </fieldset>
+
+</div>
+<div class="span3">
+
+    <fieldset>
+        <legend>Filtros</legend>
+        <?php echo $this->form; ?>
+    </fieldset>
+
+</div>

@@ -1,0 +1,60 @@
+<div class="row-fluid">
+
+    <div class="span9">
+        <ul class="sortable accordion unstyled" id="accordion_files">
+            <?php
+            $metafields = $this->contentType->getMetafields()->file;
+
+            if($metafields):
+                foreach($metafields as $metafield):
+            ?>
+            <li class="accordion-group">
+
+                <?php
+                    echo $this->partial("content-type/form/config/file.phtml", array(
+                        'metafield'  => $metafield,
+                        'collapsed'  => true
+                    ));
+                ?>
+
+            </li>
+            <?php
+                endforeach;
+            endif;
+            ?>
+        </ul>
+    </div>
+
+    <div class="span3">
+
+        <fieldset>
+            <legend>Adicionar novo arquivo</legend>
+
+            <div>
+                <label for="add_meta_file_name">Identificação</label>
+                <?php echo $this->formText('add_meta_file_name', '', array(
+                    'placeholder' => 'Id do campo',
+                    'class' => 'input-block-level'));
+                ?>
+            </div>
+
+            <div>
+                <label for="add_meta_file_type">Tipo de arquivo</label>
+                <?php echo $this->formRadio('add_meta_file_type', '',
+                    array('label_class' => 'radio'),
+                    Content_Model_Metafield::getFieldtypes('file'), ''); ?>
+
+                <div style="margin-top:20px;" class="btn-group">
+                    <?php echo $this->formButton('add_meta_file_btn',
+                        'Adicionar',
+                        array('class' => 'btn btn-large btn-warning')); ?>
+                    <?php echo $this->formReset('reset_meta_file_btn', 
+                        'Limpar', array('class' => 'btn btn-large')); ?>
+                </div>
+            </div>
+
+        </fieldset>
+
+    </div>
+
+</div>

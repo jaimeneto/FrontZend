@@ -1,0 +1,133 @@
+#relationship_elements .radio.inline + .radio.inline,
+.row-fluid #relationship_elements [class*="span"]:first-child,
+#relationship_elements .checkbox.inline + .checkbox.inline {
+    margin-right: 10px;
+    margin-left: 0;
+}
+
+#relationship_elements .input-prepend,
+#relationship_elements .input-append {
+    display: block;
+}
+
+#meta_elements .thumbnails {
+    margin-top:10px;
+}
+#meta_elements .thumbnails li,
+#file_elements .thumbnails li {
+    margin-left: 0;
+    margin-right: 10px;
+}
+#file_elements .thumbnails li {
+    position: relative;
+    width: 180px;
+    height: 160px;
+    text-align: center;
+}
+#meta_elements .thumbnails li .file-remove,
+#file_elements .thumbnails li .file-remove {
+    margin-left: 5px;
+    position: relative;
+}
+#file_elements .thumbnails li .icon-move {
+    cursor: move;
+    position: absolute;
+    right: 0;
+    top: 20px;
+}
+#file_elements .thumbnails li.ui-state-highlight {
+    border: 0;
+    background: #eee;
+    border-radius: 5px;
+}
+#file_elements .thumbnails {
+    position: relative;
+    border: 1px solid #DDDDDD;
+    margin-top: 15px;
+    padding: 20px;
+}
+#file_elements .thumbnails .thumbnail {
+    display: inline-block;
+    background-color: #fff;
+}
+#file_elements .thumbnails .thumbnail img {
+    max-width: 150px;
+    max-height: 150px;
+}
+
+
+.radio.inline.rating,
+.radio.inline.rating + .radio.inline.rating {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+}
+.rating-description {
+    display: inline-block;
+    vertical-align: text-bottom;
+    height: 14px;
+    margin-left: 10px;
+    margin-top: 6px;
+    color: #888;
+}
+
+.control-group.rating > .control-label {
+    line-height: 30px;
+}
+
+.icon-large {
+    background-image: url("../img/large-icons.png");
+    width: 24px;
+    height: 24px;
+}
+.icon-large.icon-star {
+    background-position: -48px 0;
+}
+.icon-large.icon-star-empty {
+    background-position: -96px 0;
+}
+
+label.half1 .icon-star, label.half2 .icon-star,
+label.half1 .icon-star-empty, label.half2 .icon-star-empty {
+    width: 8px;
+}
+label.half2 .icon-star {
+    background-position: -128px 0;
+}
+label.half2 .icon-star-empty {
+    background-position: -152px 0;
+}
+
+label.half1 .icon-large.icon-star, label.half2 .icon-large.icon-star,
+label.half1 .icon-large.icon-star-empty, label.half2 .icon-large.icon-star-empty {
+    width: 12px;
+}
+label.half2 .icon-large.icon-star {
+    background-position: -60px 0;
+}
+label.half2 .icon-large.icon-star-empty {
+    background-position: -108px 0;
+}
+
+#file_elements .thumbnails li.image-uploader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: transparent;
+    border: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#file_elements .thumbnails .qq-uploader {
+    height: 100%;
+}
+#file_elements .thumbnails .qq-upload-list {
+    border: 0 none;
+    height: 100%;
+}
+#file_elements .thumbnails .qq-upload-button {
+    display: none;
+}

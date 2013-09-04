@@ -1,0 +1,15 @@
+<? /*
+<div class="control-group">
+    <label for="meta-field-<?php echo $this->metafield->fieldname ?>-source"
+        class="control-label">Fonte do vídeo</label>
+    <div class="controls">
+        <?php echo $this->formSelect("meta[field][{$this->metafield->fieldname}][source]",
+            $this->metafield->getOption('source')
+                ? $this->metafield->getOption('source') : null,
+            array('class' => 'xlarge', 'multiple' => true), array(
+                'youtube' => 'Youtube',
+                'vimeo'   => 'Vimeo'
+                )) ?>
+    </div>
+</div>
+*/ ?>

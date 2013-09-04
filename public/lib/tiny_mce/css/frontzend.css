@@ -1,0 +1,17 @@
+/* 
+    Document   : frontzend.css
+    Created on : 06/08/2013, 18:00:00
+    Author     : Jaime Neto
+    Description: Estilos para serem adicionados ao tinyMCE.
+*/
+
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #333333;
+}
+
+p { 
+    text-align: justify;
+}

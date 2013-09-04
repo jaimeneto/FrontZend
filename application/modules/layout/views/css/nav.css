@@ -1,0 +1,47 @@
+ul.nav-container {
+    min-height: 15px;
+    margin: 5px;
+}
+fieldset > ul.nav-container {
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 5px;
+    min-height: 200px;
+}
+ul.nav-container li, .new-nav-item, .ui-draggable-dragging {
+    list-style: none;
+    padding: 0 5px;
+    margin: 5px 0;
+    border: 1px solid #333;
+    background-color: rgba(0,0,0,0.1);
+    cursor: move;
+    border-radius: 5px;
+}
+.new-nav-item {
+    padding: 5px 10px;
+    margin: 0 5px;
+}
+ul.nav-container li.not-visible {
+    background-color: rgba(255,0,0,0.3);
+}
+ul.nav-container li:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+ul.nav-container li.not-visible:hover {
+    background-color: rgba(255,0,0,0.4);
+}
+ul.nav-container li .nav-label {
+    color: #000;
+    text-shadow: -2px -1px 2px #FFFFFF, 2px 1px 2px #FFFFFF;
+}
+ul.nav-container li .actions i {
+    margin-left: 3px;
+}
+ul.nav-container li span.ui-icon {
+    float: left;
+    margin: 2px;
+}
+
+#layouts.accordion .accordion-heading .accordion-toggle.active {
+    background-color: #eee;
+}

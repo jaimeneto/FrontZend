@@ -1,0 +1,31 @@
+<div id="form_nav_item" class="modal hide fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3>Adicionar novo item de menu</h3>
+    </div>
+    <div class="modal-body">
+
+        <?php
+            $displayGroups = $this->form->getDisplayGroups();
+            if($displayGroups):
+        ?>
+        <ul class="nav nav-tabs" id="modal_form">
+            <?php foreach($displayGroups as $displayGroup): ?>
+            <?php if($displayGroup->getLegend()): ?>
+            <li<?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : ''; ?>>
+                <a href="#<?php echo $displayGroup->getName(); ?>" data-toggle="tab">
+                    <?php echo $displayGroup->getLegend(); ?>
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
+        <?php endif; ?>
+
+        <?php echo $this->form; ?>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" aria-hidden="true" id="save">Salvar</button>
+        <button id="cancel_form_nav_item" class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+    </div>
+</div>

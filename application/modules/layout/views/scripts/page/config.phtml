@@ -1,0 +1,257 @@
+<div class="span2">
+    <div class="well sidebar-nav">
+        <?php echo $this->navigation($this->pagesNav)->menu()->setUlClass('nav nav-list'); ?>
+    </div><!--/.well -->
+</div><!--/span-->
+
+<div class="span8">
+
+    <form id="layout_form_config" action="<?php echo $this->adminBaseUrl('layout/page/update') ?>" method="post">
+        <input type="hidden" name="id_layout_page" value="<?php echo $this->page->id; ?>" />
+        <input type="hidden" name="remove_blocks" id="remove_blocks" />
+        <fieldset>
+            <legend>
+                Configurações layout :: <?php echo $this->escape($this->page->page); ?>
+                <div class="pull-right">
+                    <input type="submit" value="Salvar Layout" class="btn btn-primary" id="save_layout" />
+                </div>
+            </legend>
+
+            <?php echo $this->alerts(); ?>
+
+            <ul id="areas_list" class="nav nav-list">
+
+                <li class="area">
+                    <i class="icon-large icon-one-column"></i>
+                    <div class="pull-right options">
+                        <a href="#remove" rel="tooltip" title="Remover"
+                        class="remove"><i class="icon-remove"></i></a>
+                    </div>
+                    <div class="columns">
+                        <div class="column span12">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                    </div>
+                    <span class="clearfix"></span>
+                </li>
+
+                <li class="area">
+                    <i class="icon-large icon-two-columns"></i>
+                    <div class="pull-right options">
+                        <a href="#remove" rel="tooltip" title="Remover"
+                        class="remove"><i class="icon-remove"></i></a>
+                    </div>
+                    <div class="columns">
+                        <div class="column span6">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                        <div class="column span6">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                    </div>
+                    <span class="clearfix"></span>
+                </li>
+
+                <li class="area">
+                    <i class="icon-large icon-two-columns-left"></i>
+                    <div class="pull-right options">
+                        <a href="#remove" rel="tooltip" title="Remover"
+                        class="remove"><i class="icon-remove"></i></a>
+                    </div>
+                    <div class="columns">
+                        <div class="column span4">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                        <div class="column span8">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                    </div>
+                    <span class="clearfix"></span>
+                </li>
+
+                <li class="area">
+                    <i class="icon-large icon-two-columns-right"></i>
+                    <div class="pull-right options">
+                        <a href="#remove" rel="tooltip" title="Remover"
+                        class="remove"><i class="icon-remove"></i></a>
+                    </div>
+                    <div class="columns">
+                        <div class="column span8">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                        <div class="column span4">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                    </div>
+                    <span class="clearfix"></span>
+                </li>
+
+                <li class="area">
+                    <i class="icon-large icon-three-columns"></i>
+                    <div class="pull-right options">
+                        <a href="#remove" rel="tooltip" title="Remover"
+                        class="remove"><i class="icon-remove"></i></a>
+                    </div>
+                    <div class="columns">
+                        <div class="column span4">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                        <div class="column span4">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                        <div class="column span4">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                    </div>
+                    <span class="clearfix"></span>
+                </li>
+
+                <li class="area">
+                    <i class="icon-large icon-three-columns-main"></i>
+                    <div class="pull-right options">
+                        <a href="#remove" rel="tooltip" title="Remover"
+                        class="remove"><i class="icon-remove"></i></a>
+                    </div>
+                    <div class="columns">
+                        <div class="column span3">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                        <div class="column span6">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                        <div class="column span3">
+                            <ul></ul>
+                            <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                        </div>
+                    </div>
+                    <span class="clearfix"></span>
+                </li>
+
+            </ul>
+
+            <div id="layout_body">
+                <ul>
+                    <?php
+                    $areas = $this->page->getBlocks();
+                    if ($areas) foreach($areas as $area):
+                        $columns = $area->getBlocks();
+                    ?>
+                    <li id="block_<?php echo $area->id; ?>" class="area">
+                        <input type="hidden" value="<?php echo $area->id; ?>" name="areas[<?php echo $area->id; ?>][id]" class="layout-area-id" />
+                        <div class="columns">
+                            <?php if ($columns) foreach($columns as $column):
+                                $columnOptions = $column->getOptions();?>
+                            <div id="block_<?php echo $column->id; ?>" class="column <?php echo $column->getOption('class'); ?>">
+                                <input type="hidden" class="layout-column-id" name="areas[<?php echo $area->id; ?>][columns][<?php echo $column->id; ?>][id]" value="<?php echo $column->id; ?>" />
+                                <input type="text" readonly="readonly" class="layout-column-class pull-left" name="areas[<?php echo $area->id; ?>][columns][<?php echo $column->id; ?>][class]" value="<?php echo $column->getOption('class'); ?>" />
+                                <div class="pull-right options">
+                                    <a href="#toggle" rel="tooltip"  class="toggle" title="Exibir/ocultar coluna"><i class="icon-eye-<?php echo $column->isVisible() ? 'open' : 'close'; ?>"></i></a>
+                                    <a rel="tooltip" title="Configurar coluna" href="#setup" class="setup"><i class="icon-wrench"></i></a>
+                                    <a href="#remove" rel="tooltip" title="Remover coluna" class="remove"><i class="icon-remove"></i></a>
+                                </div>
+                                <ul>
+                                    <?php
+                                    $blocks = $column->getBlocks();
+                                    if ($blocks) foreach($blocks as $block):
+                                        $blockOptions = $block->getOptions(); ?>
+                                    <li id="block_<?php echo $block->id; ?>" class="block<?php echo $block->isVisible() ? '' : ' disabled'; ?>">
+                                        <input type="hidden" value="<?php echo $block->id; ?>" name="areas[<?php echo $area->id; ?>][columns][<?php echo $column->id; ?>][blocks][]" />
+                                        <div class="pull-right options">
+                                            <a href="#toggle" rel="tooltip"  class="toggle" title="Exibir/ocultar bloco"><i class="icon-eye-<?php echo $block->isVisible() ? 'open' : 'close'; ?>"></i></a>
+                                            <a rel="tooltip" title="Configurar bloco" href="#setup" class="setup"><i class="icon-wrench"></i></a>
+                                            <a href="#remove" rel="tooltip" title="Remover bloco" class="remove"><i class="icon-remove"></i></a>
+                                        </div>
+                                        <span class="block-name label label-inverse"><?php echo $block->hasOption('title') && $block->getOption('title') ? $this->escape($block->getOption('title')) : ''; ?></span>
+                                        <span class="block-id label"><?php echo $this->escape($block->block); ?></span>
+                                    </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <div class="splitter" title="Dividir coluna"><span>|</span></div>
+                            </div>
+                            <?php endforeach; ?>
+                            <span class="clearfix"></span>
+                        </div>
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
+                <span class="clearfix"></span>
+            </div><!-- #layout_body -->
+
+        </fieldset>
+    </form>
+
+</div><!--/span-->
+
+<div class="span2">
+
+    <div class="btn-group" id="shortcuts_btn">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="icon-edit"></i> Editar este layout
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="<?php echo $this->adminBaseUrl("layout/page/edit"
+                    . "/id/{$this->page->id}"); ?>">Editar este layout</a>
+            </li>
+            <?php if($this->page->id_content): ?>
+            <li>
+                <a href="<?php echo $this->adminBaseUrl("content/content/"
+                    . "edit/id/{$this->page->id_content}");
+                    ?>">Editar conteúdo</a>
+            </li>
+            <?php elseif($this->page->id_content_type): ?>
+            <li>
+                <a href="<?php echo $this->adminBaseUrl("content/content-type/"
+                    . "edit/id/{$this->page->id_content_type}");
+                    ?>">Editar tipo de conteúdo</a>
+            </li>
+            <?php endif; ?>
+        </ul>
+    </div>
+
+    <div class="accordion" id="blocks_list">
+        <?php foreach($this->blocks as $moduleName => $blocks): ?>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#blocks_list" href="#module_<?php echo $moduleName; ?>">
+                    <?php echo $moduleName; ?>
+                </a>
+            </div>
+            <div id="module_<?php echo $moduleName; ?>" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    <ul class="nav nav-list">
+                        <?php foreach($blocks as $blockId => $blockName):
+                            if ($blockId != 'layout-column'): ?>
+                        <li class="block">
+                            <input type="hidden" value="<?php echo $blockId; ?>"
+                                   name="areas[][columns][][blocks][]" />
+                            <a href="#" class="block-description"><?php echo $blockName; ?></a>
+                            <div class="pull-right options">
+                                <a href="#remove" rel="tooltip" title="Remover"
+                                class="remove"><i class="icon-remove"></i></a>
+                            </div>
+                            <span class="block-id label"><?php echo $blockId; ?></span>
+                        </li>
+                        <?php endif;
+                        endforeach; ?>
+                    </ul>
+                </div><!--/accordion-inner-->
+            </div><!--/accordion-body-->
+        </div><!--/accordion-group-->
+        <?php endforeach; ?>
+    </div><!--/accordion-->
+
+</div><!--/span-->

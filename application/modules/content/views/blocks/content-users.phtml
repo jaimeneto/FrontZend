@@ -1,0 +1,15 @@
+<?php
+$contentUsers = $this->content->getUsers();
+if($contentUsers):
+?>
+<div class="block block-content-users <?php echo $this->cssVisibility($this->block); ?>">
+    <?php 
+    foreach($contentUsers as $contentUser):
+        $user = $contentUser->getUser(); ?>
+        <a href="<?php echo $this->baseUrl('u/' . $user->username); ?>"
+           class="label label-important">
+            <?php echo $this->escape($user->display_name); ?>
+        </a>
+    <?php endforeach; ?>
+</div>
+<?php endif; ?>

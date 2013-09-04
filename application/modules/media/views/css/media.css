@@ -1,0 +1,106 @@
+#files ul.thumbnails li {
+    margin-left: 0;
+    margin-right: 20px;
+}
+
+#dirs ul.nav-list,
+#files ul.thumbnails {
+    min-height: 350px;
+}
+
+ul.youtube.thumbnails li {
+    height: 170px;
+    overflow: hidden;
+}
+
+ul.youtube.thumbnails li p.title {
+    text-align: center;
+}
+
+.modal .thumbnails {
+    margin-left: -15px;
+}
+
+#image_preview {
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 20px;
+}
+#image_preview img {
+    border: 1px solid #E5E5E5;
+}
+#image_preview .size {
+    font-size: smaller;
+    font-weight: bold;
+}
+
+#image_adjustments .control-group:first-child {
+    margin-left: 2.5641%;
+}
+
+.filter-colorize .ui-slider {
+    margin-bottom: 15px;
+}
+#slider-colorize-red .ui-widget-header {
+    background: red;
+}
+#slider-colorize-green .ui-widget-header {
+    background: green;
+}
+#slider-colorize-blue .ui-widget-header {
+    background: blue;
+}
+
+#revert_original {
+    margin-bottom: 20px;
+}
+
+#dirs {
+    padding: 8px;
+    margin-left: 0;
+}
+#dirs > .treeview {
+    overflow: auto;
+}
+#dirs .treeview ul {
+    background-color: transparent;
+}
+#dirs .treeview > li {
+    white-space: nowrap;
+}
+#dirs .treeview > li > a {
+    line-height: 14px;
+    padding: 0 0 0 18px;
+}
+#dirs .treeview > li.active > a {
+    background-color: transparent;
+    color: #0088CC;
+    text-shadow: none;
+    width: 280px;
+}
+#dirs .treeview > li ul > li > a {
+    padding-left: 3px;
+}
+#dirs .treeview > li > ul > li > .hitarea {
+    margin-top: 4px;
+}
+#dirs .treeview > li > ul > li.expandable, 
+#dirs .treeview > li > ul > li.collapsable {
+    background-position: 0 -172px;
+}
+#dirs .treeview > li > ul > li > ul > li {
+    padding-top: 0;
+}
+#dirs .treeview > li > ul > li > ul > li.last {
+    background-position: 0 -1765px;
+}
+#dirs .treeview > li > ul > li.lastExpandable,
+#dirs .treeview > li > ul > li.lastCollapsable {
+    background-position: -32px -67px;
+}
+
+#dirs .treeview > li > a:hover,
+#dirs .treeview > li > a:focus {
+    background-color: transparent;
+    text-decoration: underline;
+}

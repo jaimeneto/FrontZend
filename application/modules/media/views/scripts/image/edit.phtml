@@ -1,0 +1,266 @@
+<fieldset>
+    <legend>Editar imagem</legend>
+
+    <?php echo $this->alerts(); ?>
+
+    <?php
+        $displayGroups = $this->form->getDisplayGroups();
+        if($displayGroups):
+    ?>
+    <ul class="nav nav-tabs">
+        <?php foreach($displayGroups as $displayGroup): ?>
+        <?php if($displayGroup->getLegend()): ?>
+        <li<?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : ''; ?>>
+            <a href="#<?php echo $displayGroup->getName(); ?>" data-toggle="tab">
+                <?php echo $displayGroup->getLegend(); ?>
+            </a>
+        </li>
+        <?php endif; ?>
+        <?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+
+    <form id="<?php echo $this->form->getAttrib('id'); ?>"
+          action="<?php echo $this->form->getAction(); ?>"
+          method="<?php echo $this->form->getMethod(); ?>"
+          class="<?php echo $this->form->getAttrib('class'); ?>"
+          enctype="<?php echo $this->form->getAttrib('enctype'); ?>">
+        
+        <?php foreach($this->form->getDisplayGroups() as $displayGroup): ?>
+        <div id="<?php echo $displayGroup->getName(); ?>" class="tab-pane
+            <?php echo $displayGroup->getName() == 'main_elements' ? ' active' : 'form-horizontal'; ?>">
+
+            <?php if ($displayGroup->getName() == 'main_elements' &&
+                      $this->form->getElement('id_file')->getValue()): ?>
+            <div class="span3">
+                <div class="accordion" id="accordion">
+                
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#image_data">
+                                Dados da imagem
+                            </a>
+                        </div>
+                        <div id="image_data" class="accordion-body collapse in">
+                            <div class="accordion-inner">
+                                <?php foreach($displayGroup->getElements() as $element):
+                                    echo $element;
+                                endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#image_filters">
+                                Filtros
+                            </a>
+                        </div>
+                        <div id="image_filters" class="accordion-body collapse">
+                            <div class="accordion-inner control-group">
+                                <label for="modify-flip-v" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[flip][v]'); ?>
+                                    Inverter na vertical
+                                </label>
+
+                                <label for="modify-flip-h" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[flip][h]'); ?>
+                                    Inverter na horizontal
+                                </label>
+
+                                <label for="modify-effect-drawing" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[effect][drawing]'); ?>
+                                    Desenho
+                                </label>
+
+                                <label for="modify-effect-sepia" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[effect][sepia]'); ?>
+                                    Sépia
+                                </label>
+
+                                <label for="modify-filter-negate" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[filter][negate]'); ?>
+                                    Negativo
+                                </label>
+
+                                <label for="modify-filter-grayscale" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[filter][grayscale]'); ?>
+                                    Escala de cinza
+                                </label>
+
+                                <label for="modify-filter-smooth" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[filter][smooth]'); ?>
+                                    Suavizar
+                                </label>
+
+                                <label for="modify-filter-emboss" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[filter][emboss]'); ?>
+                                    Realçar
+                                </label>
+
+                                <label for="modify-filter-edgedetect" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[filter][edgedetect]'); ?>
+                                    Destacar bordas
+                                </label>
+
+                                <label for="modify-write" class="checkbox">
+                                    <?php echo $this->formCheckbox('modify[write]'); ?>
+                                    Marca d'água
+                                </label>
+                            </div>
+                        </div>
+                    </div>    
+                        
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#image_adjustments">
+                                Ajustes
+                            </a>
+                        </div>
+                        <div id="image_adjustments" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                                <div class="control-group">
+                                    <label class="control-label" for="modify-filter-brightness">Iluminação</label>
+                                    <div class="controls">
+                                        <?php $multiOptions = array();
+                                        for($i = -255; $i <= 255; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][brightness]', 0,
+                                            array('class' => 'input-small'), $multiOptions); ?>
+                                    </div>
+                                </div>                   
+
+                                <div class="control-group">
+                                    <label class="control-label" for="modify-filter-contrast">Contraste</label>
+                                    <div class="controls">
+                                        <?php $multiOptions = array();
+                                        for($i = -100; $i <= 100; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][contrast]', 0,
+                                            array('class' => 'input-small'), $multiOptions); ?>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="modify-filter-gaussian-blur">Borrar</label>
+                                    <div class="controls">
+                                        <?php $multiOptions = array();
+                                        for($i = 0; $i <= 100; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][gaussian-blur]', 0,
+                                            array('class' => 'input-small'), $multiOptions); ?>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="modify-filter-selective-blur">Desfocar</label>
+                                    <div class="controls">
+                                        <?php $multiOptions = array();
+                                        for($i = 0; $i <= 100; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][selective-blur]', 0,
+                                            array('class' => 'input-small'), $multiOptions); ?>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="modify-filter-mean-removal">Esboço</label>
+                                    <div class="controls">
+                                        <?php $multiOptions = array();
+                                        for($i = 0; $i <= 10; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][mean-removal]', 0,
+                                        array('class' => 'input-small'), $multiOptions); ?>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="modify-filter-pixelate">Pontilhar</label>
+                                    <div class="controls">
+                                        <?php $multiOptions = array();
+                                        for($i = 0; $i <= 10; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][pixelate]', 0,
+                                            array('class' => 'input-small'), $multiOptions); ?>
+                                    </div>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="modify-filter-colorize">Ajuste de cores (RGBA)</label>
+                                    <div class="controls filter-colorize">
+                                        <?php $multiOptions = array();
+                                        for($i = -255; $i <= 255; $i++) $multiOptions[$i] = $i; ?>
+
+                                        <?php echo $this->formSelect('modify[filter][colorize][red]', 0,
+                                            array('class' => 'input-mini'), $multiOptions) . ' ';
+
+                                        echo $this->formSelect('modify[filter][colorize][green]', 0,
+                                            array('class' => 'input-mini'), $multiOptions) . ' ';
+
+                                        echo $this->formSelect('modify[filter][colorize][blue]', 0,
+                                            array('class' => 'input-mini'), $multiOptions) . ' ';
+
+                                        $multiOptions = array();
+                                        for($i = 0; $i <= 127; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][colorize][alpha]', 0,
+                                            array('class' => 'input-mini'), $multiOptions);
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- #image_filters -->
+                    </div><!-- .accordion-group -->
+                    
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#image_resize">
+                                Redimensionar
+                            </a>
+                        </div>
+                        <div id="image_resize" class="accordion-body collapse">
+                            <div class="accordion-inner control-group">
+                                <div class="controls">
+                                    <div style="text-align:center;">
+                                        <?php echo $this->formText('modify[resize][width]', 
+                                            null, array('class' => 'span3')); ?>
+                                        x 
+                                        <?php echo $this->formText('modify[resize][height]', 
+                                            null, array('class' => 'span3')); ?>
+                                    </div>
+                                    
+                                    <label for="modify-resize-avatar" class="checkbox">
+                                        <?php echo $this->formRadio('modify[resize][option]', 'auto', null, array(
+                                            'auto'    => 'Manter proporções',
+                                            'distort' => 'Preencher espaços (distorcer)',
+                                            'avatar'  => 'Preencher espaços (cortar)',
+                                            'fill'    => 'Preencher espaços com branco'
+                                        )); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- .accordion-group -->
+                    
+                </div> <!-- .accordion -->
+                
+                <?php echo $this->formReset('revert_original', 
+                'Reverter alterações',
+                array('class' => 'btn btn-warning span12')); ?>
+                
+            </div> <!-- .span3 -->
+        
+            <div class="span9" id="image_preview">
+                <img src="<?php echo $this->baseUrl($this->file->getPath()); ?>"
+                 alt="<?php echo $this->escape($this->file->original_name) ?>" />
+                <div class="size">Dimensões: 
+                    <span class="width"><?php echo $this->file->getImageSize()->width; ?></span>
+                    x <span class="height"><?php echo $this->file->getImageSize()->height; ?></span>
+                </div>
+            </div>
+            <?php else:
+                foreach($displayGroup->getElements() as $element):
+                    echo $element;
+                endforeach;
+            endif; ?>
+        </div><!-- .tab-pane -->
+        <?php endforeach; ?>
+
+        <?php echo $this->form->getDisplayGroup('form_actions'); ?>
+
+    </form>
+
+</fieldset>

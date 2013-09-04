@@ -1,0 +1,45 @@
+<fieldset>
+    <legend>Excluir conteúdo</legend>
+
+    <?php echo $this->alerts(); ?>
+
+    <div class="well">
+        <a href="<?php echo $this->baseUrl($this->content->slug); ?>" target="_blank" class="btn pull-right">
+            <i class="icon-globe"></i>
+            <small><?php echo $this->escape(SITE_URL . '/' . $this->content->slug); ?></small>
+        </a>
+        <h3>
+            <?php $status = array(
+                'A' => array('title' => 'Ativo', 'icon'  => 'icon-eye-open'),
+                'I' => array('title' => 'Inativo', 'icon'  => 'icon-eye-close'),
+                'D' => array('title' => 'Excluído', 'icon'  => 'icon-remove-circle'),
+                'L' => array('title' => 'Trancado', 'icon'  => 'icon-lock')); ?>
+            <?php echo $this->escape($this->content->title); ?>
+            <i class="<?php echo $status[$this->content->status]['icon']; ?>"
+               title="<?php echo $status[$this->content->status]['title']; ?>"></i>
+        </h3>
+        <span class="label label-info"><?php echo $this->escape($this->content->getContentType()->type); ?></span>
+        <span class="label"><?php echo ucfirst($this->content->getDatePublished()->get("EEEE, dd 'de' MM 'de' yyyy 'às' HH:mm")); ?></span>
+        <span class="label label-important">Cadastrado por <?php echo $this->escape($this->content->getUser()->display_name); ?></span>
+        <p><?php echo $this->content->excerpt
+            ? $this->content->excerpt
+            : $this->stringLength(strip_tags($this->content->text, '<p><br>'), 800) ?>
+        </p>
+    </div>
+
+    <p><strong>Confirma a exclusão deste conteúdo?</strong></p>
+
+    <form action="<?php echo $this->url(array('action' => 'remove')); ?>" 
+          class="form-actions" method="post">
+        <input type="hidden" name="id" value="<?php echo $this->content->id; ?>" />
+        <?php if($this->content->status != 'D'): ?>
+        <input type="submit" name="trash" value="Enviar para a lixeira" class="btn btn-warning btn-large" />
+        <?php endif; ?>
+        <?php if($this->content->status == 'D'): ?>
+        <input type="submit" name="restore" value="Restaurar" class="btn btn-primary btn-large" />
+        <input type="submit" name="delete" value="Excluir definitivamente" class="btn btn-danger btn-large" />
+        <?php endif; ?>
+        <input type="submit" name="cancel" value="Cancelar" class="btn btn-large" />
+    </form>
+
+</fieldset>

@@ -1,0 +1,101 @@
+<?php
+$order = $this->form->getElement('order')->getValue();
+$orderDesc = strpos($order, ' desc') > 0;
+$order = str_replace(' desc', '', $order);
+?>
+
+<div class="span9">
+
+    <fieldset>
+        <legend>
+            Menus de navegação
+            <a class="btn pull-right" href="<?php echo $this->adminBaseUrl('layout/nav/add'); ?>">
+                <i class="icon-plus"></i> Cadastrar
+            </a>
+        </legend>
+
+        <?php echo $this->alerts(); ?>
+
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th class="hidden-phone hidden-tablet<?php echo $order=='id_content' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('layout/nav/list?filter[order]=id_layout_nav' . ($order=='id_layout_nav' && !$orderDesc ? '+desc' : '')); ?>">
+                            Id
+                            <?php echo $order == 'id_layout_nav' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='label' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('layout/nav/list?filter[order]=label' . ($order=='label' && !$orderDesc ? '+desc' : '')); ?>">
+                            Nome
+                            <?php echo $order == 'label' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='uri' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('layout/nav/list?filter[order]=uri' . ($order=='uri' && !$orderDesc ? '+desc' : '')); ?>">
+                            Url
+                            <?php echo $order == 'uri' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='resource' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('layout/nav/list?filter[order]=resource' . ($order=='resource' && !$orderDesc ? '+desc' : '')); ?>">
+                            Recurso
+                            <?php echo $order == 'resource' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th<?php echo $order=='id_parent' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
+                        <a href="<?php echo $this->adminBaseUrl('layout/nav/list?filter[order]=id_parent' . ($order=='resource' && !$orderDesc ? '+desc' : '')); ?>">
+                            Item pai
+                            <?php echo $order == 'id_parent' ? '<b class="caret"></b>' : ''; ?>
+                        </a>
+                    </th>
+                    <th width="70"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($this->paginator as $nav): ?>
+                    <tr>
+                        <td title="<?php echo $nav->id; ?>" class="hidden-phone hidden-tablet">
+                            <?php echo $nav->id; ?>
+                        </td>
+                        <td title="<?php echo $this->escape($nav->label); ?>">
+                            <?php echo $this->escape($nav->label); ?>
+                        </td>
+                        <td title="<?php echo $this->escape($nav->uri); ?>">
+                            <?php echo $this->escape($nav->uri); ?>
+                        </td>
+                        <td title="<?php echo $this->escape($nav->resource); ?>">
+                            <?php echo $this->escape($nav->resource); ?>
+                        </td>
+                        <?php $parent = $nav->getParent(); ?>
+                        <td title="<?php echo $parent ? $this->escape($parent->label) : ''; ?>">
+                            <?php echo $parent ? $this->escape($parent->label) : ''; ?>
+                        </td>
+                        <td class="actions">
+                            <i class="icon-eye-<?php echo $nav->visible ? 'open' : 'close'; ?>" 
+                               title="<?php echo $nav->visible ? 'Ativo' : 'Inativo'; ?>" rel="tooltip"></i>
+
+                            <a href="<?php echo $this->adminBaseUrl("layout/nav/edit/id/{$nav->id}"); ?>"
+                               title="Editar" rel="tooltip"><i class="icon-edit"></i></a>
+
+                            <a href="<?php echo $this->adminBaseUrl("layout/nav/remove/id/{$nav->id}"); ?>"
+                               title="Excluir" rel="tooltip" class="remove"><i class="icon-remove"></i></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+        <?php echo $this->paginator; ?>
+        
+    </fieldset>
+
+</div>
+<div class="span3">
+
+    <fieldset>
+        <legend>Filtros</legend>
+        <?php echo $this->form; ?>
+    </fieldset>
+    
+</div>

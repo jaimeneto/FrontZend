@@ -1,0 +1,59 @@
+<fieldset>
+    <legend>Excluir usuário</legend>
+
+    <?php echo $this->alerts(); ?>
+
+    <div class="well">
+        <div id="avatar_preview" class="thumbnail" style="margin-right: 20px;">
+            <?php echo $this->gravatar($this->user->email); ?>
+        </div>
+        <h3>
+            <?php $status = array(
+                'A' => array('title' => 'Ativo', 'icon'  => 'icon-check'),
+                'I' => array('title' => 'Inativo', 'icon'  => 'icon-check icon-white'),
+                'B' => array('title' => 'Bloqueado', 'icon'  => 'icon-ban-circle'),
+                'D' => array('title' => 'Excluído', 'icon'  => 'icon-trash')
+            ); ?>
+            <?php echo $this->escape($this->user->name); ?>
+            <i class="<?php echo $status[$this->user->status]['icon']; ?>"
+               title="<?php echo $status[$this->user->status]['title']; ?>"></i>
+        </h3>
+        <span class="label label-info"><?php echo $this->escape($this->user->getRole()->role); ?></span>
+        <p>
+            <i class="icon-user"></i> <?php echo $this->escape($this->user->username); ?><br />
+            <i class="icon-envelope"></i> <?php echo $this->escape($this->user->email); ?><br />
+            <i class="icon-glass"></i> Conhecido como: <?php echo $this->escape($this->user->display_name); ?><br />
+            <i class="icon-calendar"></i> Nascido em: <?php echo $this->user->getBirthdate()->get("EEEE, dd 'de' MMMM 'de' yyyy"); ?>.<br />
+            <i class="icon-info-sign"></i> Gênero: <?php $generos = array('M' => 'Masculino', 'F' => 'Feminino'); echo $generos[$this->user->gender]; ?>
+        </p><p>
+            <i class="icon-calendar"></i> Cadastrado em: <?php echo $this->user->getDateRegistered()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm"); ?>.<br />
+            <i class="icon-calendar"></i> Última alteração cadastral feita: <?php echo $this->user->getdateUpdated()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm"); ?>.<br />
+            <i class="icon-calendar"></i> <?php echo $this->user->getLastAccess()
+            ? 'Acessou pela última vez em ' . $this->user->getLastAccess()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm")
+            : 'Nunca acessou a conta' ; ?>.<br />
+            <i class="icon-calendar"></i> <?php echo $this->user->getDateActivated()
+                ? 'Conta ativada em: ' . $this->user->getDateActivated()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm")
+                : 'Nunca ativou a conta'; ?>.
+        </p><p>
+            <i class="icon-pencil"></i> Conteúdos cadastrados: <?php echo $this->user->countContents(); ?><br />
+            <i class="icon-comment"></i> Comentários: <?php echo $this->user->countComments(); ?><br />
+            <i class="icon-file"></i> Arquivos enviados: <?php echo $this->user->countFiles(); ?><br />
+        </p>
+    </div>
+
+    <p><strong>Confirma a exclusão deste usuário?</strong></p>
+
+    <form action="<?php echo $this->url(array('action' => 'remove')); ?>" 
+          class="form-actions" method="post">
+        <input type="hidden" name="id" value="<?php echo $this->user->id; ?>" />
+        <?php if($this->user->status != 'D'): ?>
+        <input type="submit" name="trash" value="Enviar para a lixeira" class="btn btn-warning btn-large" />
+        <?php endif; ?>
+        <?php if($this->user->status == 'D'): ?>
+        <input type="submit" name="restore" value="Restaurar" class="btn btn-primary btn-large" />
+        <input type="submit" name="delete" value="Excluir definitivamente" class="btn btn-danger btn-large" />
+        <?php endif; ?>
+        <input type="submit" name="cancel" value="Cancelar" class="btn btn-large" />
+    </form>
+
+</fieldset>

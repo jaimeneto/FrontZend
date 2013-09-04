@@ -1,0 +1,16 @@
+<?php if($this->images): ?>
+<div class="block block-content-images block-content-images-thumbnails
+     <?php echo $this->cssVisibility($this->block); ?>">
+
+    <ul class="thumbnails">
+        <?php foreach($this->images as $image): ?>
+        <li class="span4">
+            <a href="<?php echo $image; ?>" class="thumbnail" target="_blank">
+                <img src="<?php echo $image; ?>" width="100%" alt="" />
+            </a>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+
+</div>
+<? endif; ?>

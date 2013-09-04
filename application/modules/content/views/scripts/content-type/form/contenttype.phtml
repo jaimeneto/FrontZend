@@ -1,0 +1,11 @@
+<div id="content_type" class="meta-elements">
+    <? if($this->contentType->id_parent): ?>
+        <?php echo $this->form->getElement('parent')->render(); ?>
+    <? endif ?>
+
+    <?php echo $this->form->getElement('id_content_type')->render(); ?>
+
+    <?php echo $this->form->getElement('type')->render(); ?>
+
+    <?php echo $this->form->getElement('plural')->render(); ?>
+</div>

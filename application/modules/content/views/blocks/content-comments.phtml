@@ -1,0 +1,31 @@
+<div class="block block-content-comments">
+    <ul class="unstyled">
+        <?php if($this->block->getOption('allow_guest') || $this->auth): ?>
+        <li class="form-comments">
+            <div class="user-comments">
+                <?php echo $this->form; ?>
+            </div>
+        </li>
+        <?php else: ?>
+        <li class="login-to-comment">
+            <p>Para inserir um comentário, efetue login...</p>
+        </li>
+        <?php endif; ?>
+
+        <?php if($this->comments) foreach($this->comments as $comment):
+            $user = $comment->getUser(); ?>
+        <li id="comment_<?php echo $comment->id; ?>">
+            <div class="user-comments">
+                <a class="label label-info" href="<?php echo $this->url(array('username' => $user->username)/*, 'profile'*/); ?>">
+                    <?php echo $this->escape($user->display_name); ?>
+                </a>
+                <span class="label"><?php echo ucfirst($comment->getDateCreated()->get(Zend_Date::DATE_FULL . " 'às' " . Zend_Date::TIMES)); ?></span>
+                <blockquote><?php echo $this->bbcode($comment->comments); ?></blockquote>
+            </div>
+        </li>
+        <?php endforeach; ?>
+    </ul>
+
+    <?php echo $this->comments ? $this->comments : ''; ?>
+
+</div>

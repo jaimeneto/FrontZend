@@ -1,0 +1,69 @@
+<?php
+
+function printPages($pages, $baseUrl) {
+    if ($pages) {
+        echo '<ul class="nav-container">';
+        foreach ($pages as $nav) {
+            echo '<li' . ($nav->visible ? '' : ' class="not-visible"') . 
+                ' id="layout_nav_' . $nav->id. '">' .
+                '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>' .
+
+                '<span class="nav-label">' . $nav->label . '</span>' .
+                ' <span class="label" title="Id">'/* . 'layout_nav_'*/ . $nav->id . '</span>' .
+
+                '<div class="actions pull-right">' .
+
+                    '<a class="toggle" href="#' . $nav->id . '" title="Exibir / Ocultar" rel="tooltip">' .
+                    '<i class="icon-eye-' . ($nav->visible ? 'open' : 'close')  . '"></i></a>' .
+
+                    '<a class="edit" href="#' . $nav->id . '" ' .
+                       'title="Editar" rel="tooltip"><i class="icon-edit"></i></a>' .
+
+                    '<a class="remove" href="#' . $nav->id . '" ' .
+                       'title="Excluir" rel="tooltip" class="remove"><i class="icon-remove"></i></a>' .
+
+                '</div>';
+
+                if(isset($nav->pages) && $nav->pages) {
+                    printPages($nav->pages, $baseUrl);
+                } else {
+                    echo '<ul class="nav-container"></ul>';
+                }
+            echo '</li>';
+        }
+        echo '</ul>';
+    }
+}
+
+?>
+
+<div class="span12">
+
+    <fieldset>
+        <legend>
+            Menus de navegação
+            <a class="btn pull-right"
+               href="<?php echo $this->adminBaseUrl('layout/nav') ?>">
+                <i class="icon-refresh"></i> Recarregar
+            </a>
+        </legend>
+
+        <?php echo $this->alerts(); ?>
+
+        <ul class="unstyled">
+            <li class="new-nav-item">
+                <i class="icon-plus"></i>
+                Adicionar novo item de menu
+            </li>
+        </ul>
+
+        <?php if($this->navConfigs):
+            printPages($this->navConfigs, $this->baseUrl());
+        else: ?>
+        <ul class="nav-container ui-sortable"></ul>
+        <?php endif; ?>
+        
+        
+    </fieldset>
+
+</div>

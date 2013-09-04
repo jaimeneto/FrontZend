@@ -1,0 +1,82 @@
+<fieldset>
+    <legend>Controle de Acesso de Usuários</legend>
+
+    <?php echo $this->alerts(); ?>
+
+    <form id="acl_permission_form" action="<?php echo $this->url(array('action' => 'save')); ?>" method="post">
+    <table class="table table-hover table-striped table-condensed treetable">
+        <thead>
+            <tr>
+                <th>Recursos/Privilégios</th>
+                <?php foreach($this->roles as $role): ?>
+                <th style="text-align:center;<?php echo Acl_Model_Auth::is($role->id) ? ' text-decoration:underline' : ''; ?>"><?php echo $role->role; ?></th>
+                <?php endforeach; ?>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($this->resources as $module): ?>
+            <tr data-tt-id="<?php echo $module['id']; ?>">
+                <td><?php echo $module['name']; ?></td>
+                <?php foreach($this->roles as $role): ?>
+                <th style="text-align:center">
+                    <?php 
+                    $attribs = array(
+                        'checked'   => $this->acl->isAllowed($role->id, $module['id']),
+                        'data-role' => $role->id
+                    );
+                    if (!$role->inheritsFrom(Acl_Model_Auth::getRole())) $attribs['disabled'] = 'disabled';
+                    echo $this->formCheckbox("permissions[$role->id][{$module['id']}]", null, $attribs); ?>
+                </th>
+                <?php endforeach; ?>
+            </tr>
+
+            <?php if (isset($module['resources']))
+                foreach($module['resources'] as $resource): ?>
+            <tr data-tt-id="<?php echo $resource['id']; ?>" data-tt-parent-id="<?php echo $module['id']; ?>">
+                <td><?php echo $resource['name']; ?></td>
+                <?php foreach($this->roles as $role): ?>
+                <th style="text-align:center">
+                    <?php 
+                    $attribs = array(
+                        'checked'     => $this->acl->isAllowed($role->id, $resource['id']),
+                        'data-parent' => $module['id'],
+                        'data-role'   => $role->id
+                    );
+                    if (!$role->inheritsFrom(Acl_Model_Auth::getRole())) $attribs['disabled'] = 'disabled';
+                    echo $this->formCheckbox("permissions[$role->id][{$resource['id']}]", null, $attribs); ?>
+                </th>
+                <?php endforeach; ?>
+            </tr>
+
+            <?php if (isset($resource['privileges'])) 
+                foreach($resource['privileges'] as $privilege): ?>
+            <tr data-tt-id="<?php echo $privilege['id']; ?>" data-tt-parent-id="<?php echo $resource['id']; ?>">
+                <td><?php echo $privilege['name']; ?></td>
+                <?php foreach($this->roles as $role): ?>
+                <th style="text-align:center">
+                    <?php
+                    $attribs = array(
+                        'checked'     => $this->acl->isAllowed($role->id, $privilege['id']),
+                        'data-parent' => $resource['id'],
+                        'data-role'   => $role->id
+                    );
+                    if (!$role->inheritsFrom(Acl_Model_Auth::getRole())) $attribs['disabled'] = 'disabled';
+                    echo $this->formCheckbox("permissions[$role->id][{$privilege['id']}]", null, $attribs); ?>
+                </th>
+                <?php endforeach; ?>
+            </tr>
+            <?php endforeach; ?>
+            <?php endforeach; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+        <div class="form-actions">
+            <?php echo $this->formSubmit(
+                    'btn_update', 
+                    'Atualizar permissões', 
+                    array('class' => 'btn btn-primary btn-large')); 
+            ?>
+        </div>
+    </form>
+
+</fieldset>
