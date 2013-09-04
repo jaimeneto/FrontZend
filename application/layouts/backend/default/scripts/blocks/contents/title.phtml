@@ -1,0 +1,17 @@
+<? if($this->contents): ?>
+<div class="block box contents">
+    <? if(isset($this->options->title) && $this->options->title): ?>
+        <h4><?php echo $this->escape($this->options->title) ?></h4>
+    <? endif ?>
+    <ul class="contents-title" id="content_list">
+    <? foreach($this->contents as $content): ?>
+        <li class="content-item">
+            <a href="<?php echo $this->baseUrl($content->slug) ?>" class="link-content">
+                <span class="title"><?php echo $this->escape($this->normalize($content->title)) ?></span>
+            </a>
+        </li>
+    <? endforeach ?>
+    </ul>
+    <br class="clear" />
+</div>
+<? endif ?>

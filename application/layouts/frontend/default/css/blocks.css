@@ -1,0 +1,63 @@
+/* content-contents ***********************************************************/
+
+/* default.phtml */
+.block-content-contents-default ul li a {
+    padding: 5px;
+    color: #333;
+}
+.block-content-contents-default ul li a .label {
+    text-transform: capitalize;
+}
+.block-content-contents-default ul li a .title {
+    padding-top: 5px;
+    font-weight: bold;
+}
+
+/* cover.phtml */
+.block-content-contents-cover .thumbnails {
+    margin: 20px 0;
+}
+.block-content-contents-cover .thumbnails li {
+    margin-left: 0;
+    margin-right: 1.7% /*2.564102564102564%*/;
+}
+.block-content-contents-cover .thumbnail {
+    height: 270px;
+    text-align: center;
+}
+.block-content-contents-cover .thumbnail .image,
+.block-content-contents-cover .thumbnail .image .cover {
+    height: 160px;
+    overflow: hidden;
+}
+.block-content-contents-cover .thumbnail .image .cover img {
+    width: 114px;
+}
+
+/* excerpt.phtml */
+.block-content-contents-excerpt ul li a {
+    padding-bottom: 20px;
+    color: #333;
+}
+.block-content-contents-excerpt ul li a .pull-left {
+    padding: 11px 10px 11px 0;
+}
+.block-content-contents-excerpt ul li a .image {
+    padding: 0 10px 10px 0;
+}
+.block-content-contents-excerpt ul li a .image.pull-right {
+    padding: 0 0 10px 10px;
+}
+.block-content-contents-excerpt ul li a .pull-left .label {
+    text-transform: capitalize;
+}
+.block-content-contents-excerpt ul li a .text {
+    text-align: justify;
+    line-height: 20px;
+}
+
+/* labels.phtml */
+
+.block-content-contents-labels .inline > li {
+    margin-bottom: 5px;
+}

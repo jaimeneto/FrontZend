@@ -1,0 +1,53 @@
+<?php
+/* AVAILABLE OPTIONS:
+ *
+ * types
+ * limit
+ * form_filter
+ * search_result
+ * load_related
+ * template
+ */
+
+if($this->contents):
+   $animeTypes = FrontZend_Container::get('ContentType')->fetchPairs('type');
+
+    if($this->block->getOption('form_filter')): ?>
+        <fieldset>
+            <legend>Busca avançada</legend>
+            <?php echo $this->formFilter; ?>
+        </fieldset>
+    <?php endif; ?>
+
+    <div class="block block-content-contents block-content-contents-cover <?php
+            echo $this->cssVisibility($this->block); ?>">
+        <ul class="thumbnails" id="content_list">
+
+            <?php foreach($this->contents as $content): ?>
+            <li class="content-item span2">
+                <a href="<?php echo $this->baseUrl($content->slug); ?>" class="thumbnail">
+                    
+                    <div class="dt_published label">
+                        <?php echo $content->getDatePublished()->get('dd / MM / yyyy'); ?>
+                    </div>
+
+                    <div class="comments label label-info" 
+                         title="<?php echo $content->countComments(); ?>
+                         comentário<?php echo $content->countComments() == 1
+                         ? '' : 's'; ?>"><?php echo $content->countComments();
+                         ?></div>
+
+                    <div class="image">
+                        <?php echo $this->contentImage($content, 'poster', 114, 160); ?>
+                    </div>
+
+                    <div class="title">
+                        <strong><?php echo $this->escape($content->title); ?></strong>
+                    </div>
+                </a>
+            </li>
+            <?php endforeach; ?>
+            
+        </ul>
+    </div>
+<?php endif; ?>

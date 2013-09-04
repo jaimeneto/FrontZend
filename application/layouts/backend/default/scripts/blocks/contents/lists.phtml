@@ -1,0 +1,26 @@
+<? if($this->contents): ?>
+<div class="box block user-lists">
+
+    <h4>
+        <i class="icon-<?php echo $this->options->user_relationship ?>"></i>
+        <?php echo (isset($this->options->title) && $this->options->title)
+                ? $this->escape($this->options->title)
+                : '' ?> (<?php echo $this->totalCount ?>)
+    </h4>
+
+    <ul>
+        <? foreach($this->contents as $content): ?>
+        <li>
+            <a href="<?php echo $this->baseUrl($content->slug) ?>" class="link-content"
+               title="<?php echo $this->escape($this->normalize($content->title)) ?>">
+                <?php echo $this->contentImage($content, 'cover', 80, 150) ?>
+                <?php echo $this->escape($this->normalize($content->title)) ?>
+            </a>
+        </li>
+        <? endforeach ?>
+    </ul>
+
+    <br class="clear" />
+
+</div>
+<? endif ?>

@@ -1,0 +1,48 @@
+<?php
+/* AVAILABLE OPTIONS:
+ *
+ * types
+ * limit
+ * form_filter
+ * search_result
+ * load_related
+ * template
+ */
+
+if($this->contents): ?>
+
+    <div class="block block-content-contents-default <?php echo $this->cssVisibility($this->block); ?>">
+        <?php if($this->block->getOption('form_filter')): ?>
+        <fieldset>
+            <legend>Busca avançada</legend>
+            <?php echo $this->formFilter; ?>
+        </fieldset>
+        <?php endif; ?>
+
+        <ul class="nav nav-pills nav-stacked">
+            <?php foreach($this->contents as $content): ?>
+            <li>
+                <a href="<?php echo $this->baseUrl($content->slug); ?>">
+
+                    <span class="label">
+                        <?php echo $content->getDatePublished()->get('EEE, dd / MM / yyyy'); ?>
+                    </span>
+
+                    <span class="label label-info">
+                        <?php echo $this->escape($content->getType()->type); ?>
+                    </span>
+
+                    <div class="title">
+                        <?php echo $this->escape($content->title); ?>
+                    </div>
+                </a>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+<?php elseif($this->block->getOption('search_result')): ?>
+
+    <p class="info">Nenhum resultado encontrado.</p>
+
+<?php endif; ?>

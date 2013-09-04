@@ -1,0 +1,133 @@
+body {
+    padding-top: 60px;
+}
+@media (max-width: 980px) {
+    body {
+      padding-top: 0;
+    }
+}
+
+.navbar-inverse .brand {
+    color: #FFFFFF;
+}
+
+body.backend .brand {
+    background: url("../img/frontzend-white.png") no-repeat center center transparent;
+    width: 105px;
+    height: 30px;
+    padding: 5px 20px;
+}
+
+td, th {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 150px;
+    cursor: default;
+}
+
+table.xdebug-error th {
+    white-space: normal;
+}
+
+th a, th a:hover {
+    color: #333;
+    text-decoration: none;
+}
+
+.dropup .caret {
+    margin-top: 8px;
+}
+
+table .actions {
+    text-align: right;
+}
+
+fieldset .btn {
+    margin-top: 5px;
+}
+
+.form-horizontal .control-group {
+    margin-bottom: 10px;
+}
+
+.icon-custom {
+    background-image: url("../img/glyphicons-halflings-custom.png");
+}
+.icon-custom.icon-star-half {
+    background-position: 0 0;
+}
+.icon-loading {
+    background-image: url("../img/icon-loading.png");
+    background-position: center center;
+}
+
+.sortable li {
+    background-color: #FFF;
+}
+.sortable li.sortable-placeholder {
+    background-color: #EEE;
+}
+.accordion-heading a .fieldtype {
+    color: #ccc;
+}
+
+.modal {
+    width: 650px;
+    margin-left: -325px;
+}
+.modal form {
+    margin-bottom: 0;
+}
+
+table.treetable tr span.indenter a {
+    background-image: url("../../../../../lib/bootstrap/img/glyphicons-halflings.png");
+    background-position: -456px -72px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    margin-top: 1px;
+    margin-right: 3px;
+    vertical-align: text-top;
+    width: 14px;
+}
+table.treetable tr.collapsed span.indenter a {
+    background-position: -456px -72px;
+}
+table.treetable tr.expanded span.indenter a {
+    background-position: -313px -119px;
+}
+
+fieldset form fieldset {
+    border: 1px solid #E5E5E5;
+    padding: 20px;
+}
+
+fieldset form fieldset legend {
+    margin-bottom: 0;
+    border: 0;
+    width: auto;
+    padding: 0 10px;
+    font-size: 16px;
+}
+fieldset form fieldset legend + .control-group {
+    margin-top: 0;
+}
+
+
+.modal-body .tab-pane {
+    display: none;
+}
+.modal-body .tab-pane.active {
+    display: block;
+}
+
+.radio, .checkbox {
+    padding-right: 20px;
+}
+
+.controls.richtext {
+    border:1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}

@@ -1,0 +1,43 @@
+<? if($this->contents): ?>
+    <? if(!isset($this->options->onlyContents) || !$this->options->onlyContents): ?>
+        <div class="block box contents">
+            <? if(isset($this->options->title) && $this->options->title): ?>
+                <h4><?php echo $this->escape($this->options->title) ?></h4>
+            <? endif ?>
+            <ul class="contents-excerpt" id="content_list">
+    <? endif ?>
+            <? foreach($this->contents as $content): ?>
+                <li class="content-item <?php echo $this->cycle(array('odd', 'even'))->next() ?>" id="content-excerpt-<?php echo $content->id_content ?>">
+                    <a href="<?php echo $this->baseUrl($content->slug) ?>" class="link-content">
+                        <span class="dt_published">
+                            <span class="day"><?php echo $this->dateFormat('dd', $content->dt_published) ?></span>
+                            <span class="month"><?php echo $this->dateFormat('MMM', $content->dt_published) ?></span>
+                            <br />
+                            <span class="year"><?php echo $this->dateFormat('yyyy', $content->dt_published) ?></span>
+                        </span>
+                        <span class="type"><?php echo $this->escape($content->Type_type) ?></span>
+                        <br />
+                        <span class="title"><?php echo $this->escape($this->normalize($content->title)) ?></span>
+                        <?php echo $this->contentImage($content, 'cover', 114, 160, false) ?>
+                        <? if(isset($content->relationships->anime_types)): ?>
+                            <span class="info">(<?php echo $this->escape($this->getContent($content->relationships->anime_types[0])->title) ?>)</span>
+                        <? endif ?>
+                        <br />
+                        <div class="text">
+                            <?php echo $content->excerpt ? $content->excerpt : $this->stringLength(strip_tags($content->text, '<p><br>'), 800) ?>
+                        </div>
+                    </a>
+                </li>
+            <? endforeach ?>
+    <? if(!isset($this->options->onlyContents) || !$this->options->onlyContents): ?>
+            </ul>
+
+            <? if(isset($this->options->pages) && $this->options->pages > 1): ?>
+                <span class="options" style="display:none"><?php echo Zend_Json::encode($this->options) ?></span>
+                <input type="button" class="load-more-contents" value="Exibir mais conteúdo" />
+            <? endif ?>
+
+            <br class="clear" />
+        </div>
+    <? endif ?>
+<? endif ?>

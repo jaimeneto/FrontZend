@@ -1,0 +1,43 @@
+<? if($this->contents): ?>
+<div class="block box contents">
+    <? if(isset($this->options->title) && $this->options->title): ?>
+        <h4><?php echo $this->escape($this->options->title) ?></h4>
+    <? endif ?>
+    <ul class="contents-tabs tabs" id="contents_list">
+    <? foreach($this->contents as $content): ?>
+        <li<?php echo isset($tabActive) ? '' : ' class="active"' ?>>
+            <a href="#<?php echo $content->slug ?>"><?php echo $this->escape($this->normalize($content->title)) ?></a>
+        </li>
+        <? $tabActive = true ?>
+    <? endforeach ?>
+    </ul>
+
+    <div class="tab-content" id="my-tab-content">
+    <? foreach($this->contents as $content): ?>
+        <div id="<?php echo $content->slug ?>"<?php echo isset($contentActive) ? '' : ' class="active"' ?>>
+
+            <ul class="contents-title">
+            <? $categType = isset($content->relationships->link_types) ? 'link_types'
+                    : (isset($content->relationships->faq_categ) ? 'faq_categ' : '') ?>
+
+            <? if($categType): ?>
+                <? foreach($content->relationships->$categType as $idRelContent): ?>
+                    <? if(isset($this->relatedContents[$idRelContent])): ?>
+                    <li class="content-item">
+                        <a href="<?php echo $this->baseUrl($this->relatedContents[$idRelContent]->slug) ?>" class="link-content">
+                            <span class="title"><?php echo $this->escape($this->relatedContents[$idRelContent]->title) ?></span>
+                        </a>
+                    </li>
+                    <? endif ?>
+                <? endforeach ?>
+            <? endif ?>
+            </ul>
+            
+        </div>
+        <? $contentActive = true ?>
+    <? endforeach ?>
+    </div>
+
+    <br class="clear" />
+</div>
+<? endif ?>

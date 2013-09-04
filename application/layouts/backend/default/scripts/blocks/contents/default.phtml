@@ -1,0 +1,45 @@
+<? if($this->contents): ?>
+<div class="block box contents">
+    <? if(isset($this->options->title) && $this->options->title): ?>
+        <h4><?php echo $this->escape($this->options->title) ?></h4>
+    <? endif ?>
+    <ul class="contents-default" id="content_list">
+    <? foreach($this->contents as $content): ?>
+        <li class="content-item">
+            <a href="<?php echo $this->baseUrl($content->slug) ?>" class="link-content">
+                <span class="image"><?php echo $this->contentImage($content, 'cover', 80, 150) ?></span>
+                <span class="title"><?php echo $this->escape($this->normalize($content->title)) ?></span>
+
+                <? if(isset($content->relationships->anime_types) || $content->year): ?>
+                <br />
+                <span class="info"><?
+                    if (isset($content->relationships->anime_types))
+                        echo $this->escape($this->getContent($content->relationships->anime_types[0])->title);
+                    if (isset($content->relationships->anime_types) && $content->year)
+                        echo ' - ';
+                    if ($content->year)
+                        echo $this->escape($content->year);
+                    ?></span>
+                <? endif ?>
+
+                <? if(isset($content->users->author)):
+                    $count = count($content->users->author);
+                    if ($count > 0) {
+                        $authors = '';
+                        for($i=0; $i < $count; $i++) {
+                            if ($i > 0) {
+                                $authors .= ($i == $count) ? ' e ' : ', ';
+                            }
+                            $authors .= $this->getUser($content->users->author[$i])->display_name;
+                        }
+                    }
+                ?>
+                <span class="credits">por <?php echo $authors ?></span>
+                <? endif ?>
+            </a>
+        </li>
+    <? endforeach ?>
+    </ul>
+    <br class="clear" />
+</div>
+<? endif ?>

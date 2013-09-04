@@ -1,0 +1,12 @@
+<style type="text/css">
+.block-layout-script {
+    background-color: #eee;
+    height: 60px;
+    margin: 5px;
+    padding: 5px;
+}
+</style>
+
+<div class="block block-layout-script <?php echo $this->cssVisibility($this->block); ?>">
+    <?php echo $this->block->getOption('script'); ?>
+</div>

@@ -1,0 +1,114 @@
+<?php echo $this->doctype(Zend_View_Helper_Doctype::HTML5); ?>
+<html lang="en">
+<head>
+<?php
+    $this->syncLayoutFiles('img', 'default', 'backend');
+    $this->headTitle()->setSeparator(' - ')->append('FrontZend');
+    echo $this->headTitle() . PHP_EOL;
+
+    $this->headMeta()->setCharset('UTF-8')
+        ->appendName('author', 'jaimeneto.com')
+        ->appendName('description', 'PHP Content Management Framework powered by Zend Framework')
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0');
+    echo $this->headMeta() . PHP_EOL;
+
+    $cssFiles = array(
+        'lib/bootstrap/css/bootstrap.min.css',
+        'lib/jquery/themes/smoothness/jquery-ui-1.9.2.custom.min.css',
+        'lib/jquery/plugins/jquery-treetable/stylesheets/jquery.treetable.css',
+        'lib/jquery/plugins/treeview/jquery.treeview.css',
+        'lib/bootstrap/css/bootstrap-responsive.min.css',
+        'lib/valums-file-uploader/client/fileuploader.css',
+    );
+    $modulesDir = new DirectoryIterator(APPLICATION_PATH . '/modules');
+    foreach($modulesDir as $moduleDir) {
+        if (!$moduleDir->isDot() && 
+                is_dir($moduleDir->getPathname() . '/views/css'))
+        {
+            $cssDir = new DirectoryIterator($moduleDir->getPathname() . '/views/css');
+            foreach($cssDir as $cssFile) if ($cssFile->isFile()) {
+                $cssFiles[] = $cssFile->getPathname();
+            }
+        }
+    }
+
+    $cssFiles[] = APPLICATION_PATH . '/layouts/backend/default/css/style.css';
+    echo $this->cssHeadLinks($cssFiles, 'default', 'backend', false);
+?>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="shortcut icon" href="<?php echo $this->baseUrl('cache/layouts/backend/default/img/favicon.png'); ?>" />
+</head>
+
+<body class="backend">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="<?php echo $this->adminBaseUrl(); ?>"></a>
+                <div class="nav-collapse collapse">
+                    <?php if(Acl_Model_Auth::isLoggedIn()): ?>
+                    <ul class="nav pull-right">
+                        <li><a href="#" class="navbar-link"><strong><?php echo $this->escape(Zend_Auth::getInstance()->getIdentity()->display_name); ?></strong></a></li>
+                        <li><a href="<?php echo $this->baseUrl(); ?>" target="_blank" class="navbar-link">Acessar o site</a></li>
+                        <li><a href="<?php echo $this->baseUrl('logout'); ?>" class="navbar-link">Sair</a></li>
+                    </ul>
+                    <?php endif; ?>
+                    <?php echo $this->navAdmin(); ?>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <div class="row-fluid">
+            <?php echo $this->layout()->content; ?>
+        </div>
+
+        <hr />
+
+        <footer>
+            <p><a href="http://www.jaimeneto.com" target="_blank">&copy; JAIMENETO.COM 2013</a></p>
+        </footer>
+
+    </div> <!-- /container -->
+
+    <?php
+    $jsFiles = array(
+        'lib/jquery/jquery-1.8.3.min.js',
+        'lib/jquery/jquery-ui-1.9.2.custom.min.js',
+        'lib/jquery/plugins/jquery-mask-v0.7.4/jquery.mask.min.js',
+        'lib/tiny_mce/jquery.tinymce.js',
+        'lib/valums-file-uploader/client/fileuploader.js',
+        'lib/bootstrap/js/bootstrap.min.js',
+        'lib/jquery/plugins/jquery-treetable/javascripts/src/jquery.treetable.js',
+        'lib/jquery/plugins/treeview/jquery.treeview.min.js',
+        'lib/edit_area/edit_area_full.js',
+        APPLICATION_PATH . '/layouts/backend/default/js/functions.js',
+        APPLICATION_PATH . '/layouts/backend/default/js/twitter-bootstrap.js',
+    );
+    $modulesDir = new DirectoryIterator(APPLICATION_PATH . '/modules');
+    foreach($modulesDir as $moduleDir) {
+        if (!$moduleDir->isDot() &&
+                is_dir($moduleDir->getPathname() . '/views/js'))
+        {
+            $jsDir = new DirectoryIterator($moduleDir->getPathname() . '/views/js');
+            foreach($jsDir as $jsFile) if ($jsFile->isFile()) {
+                $jsFiles[] = $jsFile->getPathname();
+            }
+        }
+    }
+    $jsFiles[] = APPLICATION_PATH . '/layouts/backend/default/js/scripts.js';
+    echo $this->jsHeadScripts($jsFiles, 'default', 'backend');
+    ?>
+</body>
+</html>

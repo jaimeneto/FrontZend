@@ -1,0 +1,16 @@
+body {
+    padding-top: 60px;
+}
+@media (max-width: 980px) {
+    body {
+      padding-top: 0;
+    }
+}
+
+a.thumbnail {
+    text-decoration: none;
+}
+
+.clear {
+    clear: both;
+}
