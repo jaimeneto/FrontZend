@@ -1,14 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 3.3.9
--- http://www.phpmyadmin.net
---
--- Servidor: localhost
--- Tempo de Geração: Mai 31, 2013 as 12:21 PM
--- Versão do Servidor: 5.5.8
--- Versão do PHP: 5.3.5
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-
 --
 -- Banco de Dados: `frontzend`
 --
@@ -16,29 +5,24 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `acl_permission`
+-- Estrutura da tabela `fz_acl_permission`
 --
 
-CREATE TABLE IF NOT EXISTS `acl_permission` (
+CREATE TABLE IF NOT EXISTS `fz_acl_permission` (
   `id_permission` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_role` varchar(15) NOT NULL,
   `resource` varchar(100) NOT NULL,
   PRIMARY KEY (`id_permission`),
   UNIQUE KEY `id_role` (`id_role`,`resource`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Extraindo dados da tabela `acl_permission`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=71 ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `acl_role`
+-- Estrutura da tabela `fz_acl_role`
 --
 
-CREATE TABLE IF NOT EXISTS `acl_role` (
+CREATE TABLE IF NOT EXISTS `fz_acl_role` (
   `id_role` varchar(15) NOT NULL,
   `role` varchar(30) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -50,23 +34,23 @@ CREATE TABLE IF NOT EXISTS `acl_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `acl_role`
+-- Extraindo dados da tabela `fz_acl_role`
 --
 
-INSERT INTO `acl_role` (`id_role`, `role`, `description`, `id_parent`, `order`) VALUES
-('admin', 'Administrador', NULL, 'user', 3),
+INSERT INTO `fz_acl_role` (`id_role`, `role`, `description`, `id_parent`, `order`) VALUES
 ('guest', 'Visitante', NULL, NULL, 1),
-('master', 'Master', 'Usuário com acesso total', NULL, 5),
+('user', 'Usuário registrado', NULL, 'guest', 2),
+('admin', 'Administrador', NULL, 'user', 3),
 ('super', 'Super administrador', NULL, 'admin', 4),
-('user', 'Usuário registrado', NULL, 'guest', 2);
+('master', 'Master', 'Usuário com acesso total', NULL, 5);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `acl_user`
+-- Estrutura da tabela `fz_acl_user`
 --
 
-CREATE TABLE IF NOT EXISTS `acl_user` (
+CREATE TABLE IF NOT EXISTS `fz_acl_user` (
   `id_user` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id_role` varchar(15) NOT NULL,
   `username` varchar(30) NOT NULL,
@@ -82,27 +66,27 @@ CREATE TABLE IF NOT EXISTS `acl_user` (
   `dt_lastaccess` datetime DEFAULT NULL,
   `dt_activated` datetime DEFAULT NULL,
   `activation_key` char(13) NOT NULL,
-  `status` enum('A','I','B') NOT NULL DEFAULT 'I',
+  `status` enum('A','I','B','D') NOT NULL DEFAULT 'I',
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `un_username` (`username`),
   UNIQUE KEY `un_email` (`email`),
   KEY `ix_acl_role` (`id_role`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Extraindo dados da tabela `acl_user`
+-- Extraindo dados da tabela `fz_acl_user`
 --
 
-INSERT INTO `acl_user` (`id_user`, `id_role`, `username`, `password`, `email`, `name`, `display_name`, `gender`, `birthdate`, `avatar`, `dt_registered`, `dt_updated`, `dt_lastaccess`, `dt_activated`, `activation_key`, `status`) VALUES
-(1, 'master', 'jaime', '3e173a92a4fd8c2a91b52cfc10c19792', 'animebook@jaimeneto.com', 'Jaime Neto', 'Jaime Neto', NULL, NULL, '', '0000-00-00 00:00:00', '2013-04-30 11:56:30', NULL, NULL, '', 'A');
+INSERT INTO `fz_acl_user` (`id_user`, `id_role`, `username`, `password`, `email`, `name`, `display_name`, `gender`, `birthdate`, `avatar`, `dt_registered`, `dt_updated`, `dt_lastaccess`, `dt_activated`, `activation_key`, `status`) VALUES
+(1, 'master', 'admin', MD5('123456'), 'admin@email.com', 'Administrador', 'Administrador', NULL, NULL, '', NOW(), NOW(), NULL, NOW(), '', 'A');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `comment`
+-- Estrutura da tabela `fz_comment`
 --
 
-CREATE TABLE IF NOT EXISTS `comment` (
+CREATE TABLE IF NOT EXISTS `fz_comment` (
   `id_comment` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id_user` bigint(20) unsigned DEFAULT NULL,
   `id_content` bigint(20) unsigned NOT NULL,
@@ -122,18 +106,13 @@ CREATE TABLE IF NOT EXISTS `comment` (
   KEY `ix_comment` (`answer_to`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Extraindo dados da tabela `comment`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `content`
+-- Estrutura da tabela `fz_content`
 --
 
-CREATE TABLE IF NOT EXISTS `content` (
+CREATE TABLE IF NOT EXISTS `fz_content` (
   `id_content` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id_content_type` varchar(15) NOT NULL,
   `id_user` bigint(20) unsigned NOT NULL,
@@ -154,42 +133,33 @@ CREATE TABLE IF NOT EXISTS `content` (
   KEY `ix_user` (`id_user`),
   KEY `ix_type` (`id_content_type`),
   KEY `id_group` (`id_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Extraindo dados da tabela `content`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `content_file`
+-- Estrutura da tabela `fz_content_file`
 --
 
-CREATE TABLE IF NOT EXISTS `content_file` (
+CREATE TABLE IF NOT EXISTS `fz_content_file` (
   `id_content_file` bigint(20) NOT NULL AUTO_INCREMENT,
   `id_content` bigint(20) unsigned NOT NULL,
   `id_file` bigint(20) unsigned NOT NULL,
   `description` varchar(30) NOT NULL,
   `legend` varchar(255) DEFAULT NULL,
+  `order` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id_content_file`),
   UNIQUE KEY `UNIQUE` (`id_file`,`description`),
   UNIQUE KEY `UN_CONTENT` (`id_content`,`id_file`,`description`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Extraindo dados da tabela `content_file`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `content_metafield`
+-- Estrutura da tabela `fz_content_metafield`
 --
 
-CREATE TABLE IF NOT EXISTS `content_metafield` (
+CREATE TABLE IF NOT EXISTS `fz_content_metafield` (
   `id_content_metafield` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id_metafield` int(10) unsigned NOT NULL,
   `id_content` bigint(20) unsigned NOT NULL,
@@ -198,20 +168,15 @@ CREATE TABLE IF NOT EXISTS `content_metafield` (
   UNIQUE KEY `UNIQUE` (`id_metafield`,`id_content`),
   KEY `ix_metafield` (`id_metafield`),
   KEY `ix_content` (`id_content`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Extraindo dados da tabela `content_metafield`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `content_relationship`
+-- Estrutura da tabela `fz_content_relationship`
 --
 
-CREATE TABLE IF NOT EXISTS `content_relationship` (
+CREATE TABLE IF NOT EXISTS `fz_content_relationship` (
   `id_content_relationship` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id_content_a` bigint(20) unsigned NOT NULL,
   `id_content_b` bigint(20) unsigned NOT NULL,
@@ -220,20 +185,15 @@ CREATE TABLE IF NOT EXISTS `content_relationship` (
   UNIQUE KEY `UNIQUE` (`id_content_a`,`id_content_b`,`rel_type`),
   KEY `ix_content_a` (`id_content_a`),
   KEY `ix_content_b` (`id_content_b`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Extraindo dados da tabela `content_relationship`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `content_type`
+-- Estrutura da tabela `fz_content_type`
 --
 
-CREATE TABLE IF NOT EXISTS `content_type` (
+CREATE TABLE IF NOT EXISTS `fz_content_type` (
   `id_content_type` varchar(15) NOT NULL,
   `type` varchar(30) NOT NULL,
   `plural` varchar(30) NOT NULL,
@@ -244,10 +204,10 @@ CREATE TABLE IF NOT EXISTS `content_type` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Extraindo dados da tabela `content_type`
+-- Extraindo dados da tabela `fz_content_type`
 --
 
-INSERT INTO `content_type` (`id_content_type`, `type`, `plural`, `id_parent`) VALUES
+INSERT INTO `fz_content_type` (`id_content_type`, `type`, `plural`, `id_parent`) VALUES
 ('category', 'Categoria', 'Categorias', NULL),
 ('content', 'Conteúdo', 'Conteúdos', NULL),
 ('section', 'Seção', 'Seções', NULL);
@@ -255,10 +215,10 @@ INSERT INTO `content_type` (`id_content_type`, `type`, `plural`, `id_parent`) VA
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `content_user`
+-- Estrutura da tabela `fz_content_user`
 --
 
-CREATE TABLE IF NOT EXISTS `content_user` (
+CREATE TABLE IF NOT EXISTS `fz_content_user` (
   `id_content_user` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id_content` bigint(20) unsigned NOT NULL,
   `id_user` bigint(20) unsigned NOT NULL,
@@ -269,21 +229,16 @@ CREATE TABLE IF NOT EXISTS `content_user` (
   KEY `ix_user` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Extraindo dados da tabela `content_user`
---
-
-
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `file`
+-- Estrutura da tabela `fz_file`
 --
 
-CREATE TABLE IF NOT EXISTS `file` (
+CREATE TABLE IF NOT EXISTS `fz_file` (
   `id_file` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `path` varchar(255) NOT NULL,
-  `type` char(3) NOT NULL,
+  `type` char(3) NOT NULL COMMENT 'img, vid, doc',
   `credits` varchar(255) DEFAULT NULL,
   `info` text,
   `keywords` varchar(255) DEFAULT NULL,
@@ -294,48 +249,66 @@ CREATE TABLE IF NOT EXISTS `file` (
   PRIMARY KEY (`id_file`),
   UNIQUE KEY `UNIQUE` (`path`),
   KEY `ix_user` (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Extraindo dados da tabela `file`
---
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `layout_block`
+-- Estrutura da tabela `fz_layout_block`
 --
 
-CREATE TABLE IF NOT EXISTS `layout_block` (
+CREATE TABLE IF NOT EXISTS `fz_layout_block` (
   `id_layout_block` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `id_layout_page` int(10) unsigned NOT NULL,
   `id_wrapper` bigint(20) unsigned DEFAULT NULL,
   `id_parent` bigint(20) unsigned DEFAULT NULL,
-  `module` varchar(30) NOT NULL,
+  `module` varchar(30) DEFAULT NULL,
   `block` varchar(50) NOT NULL,
-  `order` int(11) NOT NULL,
+  `order` int(10) unsigned NOT NULL,
   `visible` tinyint(1) NOT NULL DEFAULT '0',
   `options` text,
   PRIMARY KEY (`id_layout_block`),
-  UNIQUE KEY `UNIQUE` (`id_layout_page`,`id_wrapper`,`order`),
   KEY `id_parent` (`id_parent`),
   KEY `id_layout_page` (`id_layout_page`),
   KEY `id_wrapper` (`id_wrapper`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Extraindo dados da tabela `layout_block`
---
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `layout_page`
+-- Estrutura da tabela `fz_layout_nav`
 --
 
-CREATE TABLE IF NOT EXISTS `layout_page` (
+CREATE TABLE IF NOT EXISTS `fz_layout_nav` (
+  `id_layout_nav` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `label` varchar(30) NOT NULL,
+  `id_parent` int(10) unsigned DEFAULT NULL,
+  `uri` varchar(255) NOT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
+  `resource` varchar(50) DEFAULT NULL,
+  `attribs` text COMMENT 'json',
+  `order` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id_layout_nav`),
+  UNIQUE KEY `name` (`label`,`id_parent`),
+  KEY `id_parent` (`id_parent`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Extraindo dados da tabela `fz_layout_nav`
+--
+
+INSERT INTO `fz_layout_nav` (`id_layout_nav`, `label`, `id_parent`, `uri`, `visible`, `resource`, `attribs`, `order`) VALUES
+(1, 'Principal', NULL, '', 1, '', '{"target":"_self"}', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `fz_layout_page`
+--
+
+CREATE TABLE IF NOT EXISTS `fz_layout_page` (
   `id_layout_page` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_layout_theme` int(10) unsigned NOT NULL,
   `page` varchar(30) NOT NULL,
   `id_content` bigint(20) unsigned DEFAULT NULL,
   `id_content_type` varchar(15) DEFAULT NULL,
@@ -343,30 +316,47 @@ CREATE TABLE IF NOT EXISTS `layout_page` (
   PRIMARY KEY (`id_layout_page`),
   UNIQUE KEY `un_page` (`page`),
   UNIQUE KEY `UNIQUE` (`id_content`,`id_content_type`),
-  KEY `ix_content_type` (`id_content_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=28 ;
+  KEY `ix_content_type` (`id_content_type`),
+  KEY `id_layout_theme` (`id_layout_theme`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
--- Extraindo dados da tabela `layout_page`
+-- Extraindo dados da tabela `fz_layout_page`
 --
 
-INSERT INTO `layout_page` (`id_layout_page`, `page`, `id_content`, `id_content_type`, `special`) VALUES
-(1, 'Principal', NULL, NULL, 'home'),
-(2, 'Busca', NULL, NULL, 'search'),
-(3, 'Contato', NULL, NULL, 'contact'),
-(4, 'Usuário / Cadastro', NULL, NULL, 'user-signin'),
-(5, 'Usuário / Perfil', NULL, NULL, 'user-profile'),
-(6, 'Usuário / Amigos', NULL, NULL, 'user-friends'),
-(7, 'Usuário / Mensagens', NULL, NULL, 'user-messages'),
-(8, 'Usuário / Lista', NULL, NULL, 'user-list');
+INSERT INTO `fz_layout_page` (`id_layout_page`, `id_layout_theme`, `page`, `id_content`, `id_content_type`, `special`) VALUES
+(1, 2, 'Principal', NULL, NULL, 'home');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `metafield`
+-- Estrutura da tabela `fz_layout_theme`
 --
 
-CREATE TABLE IF NOT EXISTS `metafield` (
+CREATE TABLE IF NOT EXISTS `fz_layout_theme` (
+  `id_layout_theme` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `theme` varchar(20) NOT NULL,
+  `env` varchar(15) NOT NULL COMMENT 'frontend, backend',
+  `active` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id_layout_theme`),
+  UNIQUE KEY `UNIQUE` (`theme`,`env`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Extraindo dados da tabela `fz_layout_theme`
+--
+
+INSERT INTO `fz_layout_theme` (`id_layout_theme`, `theme`, `env`, `active`) VALUES
+(1, 'default', 'backend', 1),
+(2, 'default', 'frontend', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `fz_metafield`
+--
+
+CREATE TABLE IF NOT EXISTS `fz_metafield` (
   `id_metafield` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_content_type` varchar(15) NOT NULL,
   `datatype` varchar(15) NOT NULL,
@@ -375,51 +365,48 @@ CREATE TABLE IF NOT EXISTS `metafield` (
   `order` int(11) NOT NULL,
   PRIMARY KEY (`id_metafield`),
   UNIQUE KEY `UNIQUE` (`id_content_type`,`fieldname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
---
--- Extraindo dados da tabela `metafield`
---
-
-
--- --------------------------------------------------------
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Restrições para as tabelas dumpadas
 --
 
 --
--- Restrições para a tabela `acl_permission`
+-- Restrições para a tabela `fz_acl_permission`
 --
-ALTER TABLE `acl_permission`
-  ADD CONSTRAINT `acl_permission_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `acl_role` (`id_role`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `fz_acl_permission`
+  ADD CONSTRAINT `fz_acl_permission_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `fz_acl_role` (`id_role`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Restrições para a tabela `acl_role`
+-- Restrições para a tabela `fz_acl_role`
 --
-ALTER TABLE `acl_role`
-  ADD CONSTRAINT `acl_role_ibfk_1` FOREIGN KEY (`id_parent`) REFERENCES `acl_role` (`id_role`) ON UPDATE CASCADE;
+ALTER TABLE `fz_acl_role`
+  ADD CONSTRAINT `fz_acl_role_ibfk_1` FOREIGN KEY (`id_parent`) REFERENCES `fz_acl_role` (`id_role`) ON UPDATE CASCADE;
 
 --
--- Restrições para a tabela `comment`
+-- Restrições para a tabela `fz_comment`
 --
-ALTER TABLE `comment`
-  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`id_content`) REFERENCES `comment` (`id_comment`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `acl_user` (`id_user`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_comment_comment` FOREIGN KEY (`answer_to`) REFERENCES `comment` (`id_comment`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `fz_comment`
+  ADD CONSTRAINT `fk_comment_comment` FOREIGN KEY (`answer_to`) REFERENCES `fz_comment` (`id_comment`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_comment_content` FOREIGN KEY (`id_content`) REFERENCES `fz_content` (`id_content`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_comment_user` FOREIGN KEY (`id_user`) REFERENCES `fz_acl_user` (`id_user`) ON UPDATE CASCADE;
 
 --
--- Restrições para a tabela `content`
+-- Restrições para a tabela `fz_layout_block`
 --
-ALTER TABLE `content`
-  ADD CONSTRAINT `content_ibfk_2` FOREIGN KEY (`id_user`) REFERENCES `acl_user` (`id_user`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `content_ibfk_1` FOREIGN KEY (`id_content_type`) REFERENCES `content_type` (`id_content_type`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `fz_layout_block`
+  ADD CONSTRAINT `fz_layout_block_ibfk_1` FOREIGN KEY (`id_layout_page`) REFERENCES `fz_layout_page` (`id_layout_page`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fz_layout_block_ibfk_2` FOREIGN KEY (`id_parent`) REFERENCES `fz_layout_block` (`id_layout_block`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fz_layout_block_ibfk_3` FOREIGN KEY (`id_wrapper`) REFERENCES `fz_layout_block` (`id_layout_block`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Restrições para a tabela `layout_block`
+-- Restrições para a tabela `fz_layout_nav`
 --
-ALTER TABLE `layout_block`
-  ADD CONSTRAINT `layout_block_ibfk_1` FOREIGN KEY (`id_layout_page`) REFERENCES `layout_page` (`id_layout_page`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `layout_block_ibfk_2` FOREIGN KEY (`id_parent`) REFERENCES `layout_block` (`id_layout_block`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `layout_block_ibfk_3` FOREIGN KEY (`id_wrapper`) REFERENCES `layout_block` (`id_layout_block`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `fz_layout_nav`
+  ADD CONSTRAINT `fz_layout_nav_ibfk_2` FOREIGN KEY (`id_parent`) REFERENCES `fz_layout_nav` (`id_layout_nav`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Restrições para a tabela `fz_layout_page`
+--
+ALTER TABLE `fz_layout_page`
+  ADD CONSTRAINT `fz_layout_page_ibfk_1` FOREIGN KEY (`id_layout_theme`) REFERENCES `fz_layout_theme` (`id_layout_theme`) ON DELETE CASCADE ON UPDATE CASCADE;

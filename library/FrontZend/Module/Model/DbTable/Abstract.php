@@ -56,6 +56,11 @@ abstract class FrontZend_Module_Model_DbTable_Abstract
         }
     }
 
+    public function getTableName()
+    {
+        return $this->_name;
+    }
+
     public function getPrimaryKey()
     {
         return $this->_primary;
@@ -214,7 +219,8 @@ abstract class FrontZend_Module_Model_DbTable_Abstract
         $primaryKey = $this->getPrimaryKey();
         
         if (is_array($primaryKey)) {
-            throw new FrontZend_Exception('can not fetchPairs with array as $_primary');
+            throw new FrontZend_Exception(
+                'can not fetchPairs with array as $_primary');
         }
         
         $select = $this->select()
