@@ -3,7 +3,11 @@ $columns = $area->getBlocks(true); ?>
 <div class="row-fluid">
     <?php foreach($columns as $column): ?>
     <div class="<?php echo $column->getOption('class') . ' '
-        . $this->cssVisibility($column); ?>">
+        . ($column->getOption('css_class') ? $column->getOption('css_class')
+        . ' ' : '')
+        . $this->cssVisibility($column); ?>"<?php
+            echo $column->hasOption('css_id')
+            ? 'id="' . $column->getOption('css_id') . '"' : ''; ?>>
         <?php foreach($column->getBlocks(true) as $block):
             echo $this->showBlock($block, $this->content, $this->user);
         endforeach; ?>

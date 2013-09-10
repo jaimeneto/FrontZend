@@ -61,7 +61,7 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
                             ->addSuccess('Conteúdo alterado com sucesso');
                         if ($data['apply']) {
                             $this->getHelper('Redirector')->gotoUrlAndExit(
-                                    "admin/content/content/edit/id/{$id}");
+                                ADMIN_ROUTE . "/content/content/edit/id/{$id}");
                         } else {
                             $this->getHelper('Redirector')->gotoUrlAndExit(
                                     ADMIN_ROUTE . '/content/content/list' .
@@ -116,7 +116,7 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
         } else {
             $this->getHelper('alerts')->addAlert('Ainda não foi foi criada'
                 . ' uma página para esse conteúdo');
-            $url = "admin/layout/page/add/content/{$id}";
+            $url = ADMIN_ROUTE . "/layout/page/add/content/{$id}";
         }
 
         $this->getHelper('Redirector')->gotoUrlAndExit($url);

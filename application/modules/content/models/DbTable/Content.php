@@ -11,10 +11,10 @@ class Content_Model_DbTable_Content
     protected $_dependentTables = array(
         'Content_Model_DbTable_ContentFile',
         'Content_Model_DbTable_ContentRelationship',
-        'Content_Model_DbTable_LayoutPage',
         'Content_Model_DbTable_ContentUser',
         'Content_Model_DbTable_ContentMetafield',
         'Content_Model_DbTable_Comment',
+        'Layout_Model_DbTable_Page',
     );
 
     protected $_referenceMap = array(

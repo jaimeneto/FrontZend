@@ -109,7 +109,7 @@ class Content_ContentTypeController extends FrontZend_Module_Controller_Abstract
         } else {
             $this->getHelper('alerts')->addAlert('Ainda não foi foi criada'
                 . ' uma página para esse tipo de conteúdo');
-            $url = "admin/layout/page/add/content-type/{$id}";
+            $url = ADMIN_ROUTE . "/layout/page/add/content-type/{$id}";
         }
 
         $this->getHelper('Redirector')->gotoUrlAndExit($url);
