@@ -14,7 +14,7 @@
  */
 require_once 'Zend/View/Helper/Abstract.php';
 
-class Content_View_Helper_BlockLayoutNav extends Zend_View_Helper_Abstract
+class Layout_View_Helper_BlockLayoutNav extends Zend_View_Helper_Abstract
 {
     public function blockLayoutNav($block,
         Content_Model_Content $content = null, $user = null)

@@ -48,7 +48,6 @@ class Layout_View_Helper_CssHeadLinks extends Zend_View_Helper_Abstract
 
         foreach ($files as $i => $file) {
             if (!file_exists($file)) {
-                pr($files,1);
                 throw new Exception("O arquivo de estilo não existe: $file");
             }
 
