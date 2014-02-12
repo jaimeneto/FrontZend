@@ -59,5 +59,5 @@ abstract class FrontZend_Module_Model_Abstract
             : null;
     }
 
-    public function getInputFilter();
+    abstract public function getInputFilter();
 }
