@@ -66,8 +66,8 @@ Abstract class FrontZend_Module_Form_Abstract
 
     public function init()
     {
-        $modelClass = $this->_modelClass;
-        $if = $modelClass::getInputFilter();
+        $model = new $this->_modelClass;
+        $if = $model::getInputFilter();
         foreach ($if as $name => $options) {
             $element = $this->getElement($name);
             if ($element) {

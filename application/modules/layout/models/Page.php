@@ -70,7 +70,7 @@ class Layout_Model_Page extends FrontZend_Module_Model_Abstract
         return $blocks;
     }
 
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(            
             'id_layout_page' => array(

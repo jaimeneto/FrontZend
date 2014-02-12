@@ -46,7 +46,7 @@ class Content_Model_ContentRelationship extends FrontZend_Module_Model_Abstract
             : $this->getContentA();
     }
 
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(            
             'id_content_relationship' => array(

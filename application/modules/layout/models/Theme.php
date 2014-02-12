@@ -56,7 +56,7 @@ class Layout_Model_Theme extends FrontZend_Module_Model_Abstract
         return "{$this->name} v{$this->version}";
     }
 
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(            
             'id_layout_theme' => array(

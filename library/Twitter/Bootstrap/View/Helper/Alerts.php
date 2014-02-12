@@ -4,14 +4,6 @@ require_once 'Zend/View/Helper/Abstract.php';
 
 class Twitter_Bootstrap_View_Helper_Alerts extends Zend_View_Helper_Abstract
 {
-    private static $_types = array(
-        'ALERT'     => 'alert',
-        'SUCCESS'   => 'alert alert-success',
-        'INFO'      => 'alert alert-info',
-        'ERROR'     => 'alert alert-error',
-        'DANGER'    => 'alert alert-danger'
-    );
-
     public function alerts($closeButton=true, $uniqueMessages=true,
         $id='alerts')
     {
@@ -39,17 +31,8 @@ class Twitter_Bootstrap_View_Helper_Alerts extends Zend_View_Helper_Abstract
         $xhtml .= '>';
 
         foreach($messages as $message) {
-            $class = self::$_types[$message['type']];
-            $text  = $message['escape']
-                ? $this->view->escape($this->view->translate($message['text']))
-                : $this->view->translate($message['text']);
-            $xhtml .= '<li class="' . $class . '">';
-
-            if ($closeButton) {
-                $xhtml .= '<a class="close" data-dismiss="alert" href="#">&times;</a>';
-            }
-
-            $xhtml .= $text . '</li>' . PHP_EOL;
+            $xhtml .= $this->view->alert($message['text'], $message['type'], 
+                                $closeButton, $message['escape'], $tag='li');
         }
         $xhtml .= '</ul>';
         return $xhtml;

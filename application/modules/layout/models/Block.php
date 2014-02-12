@@ -135,7 +135,7 @@ class Layout_Model_Block extends FrontZend_Module_Model_Abstract
         return $this;
     }
 
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(            
             'id_layout_block' => array(

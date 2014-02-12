@@ -23,9 +23,8 @@ class Layout_View_Helper_BlockLayoutNav extends Zend_View_Helper_Abstract
             return;
         }
 
-        // TODO Implementar o uso de cache para o navigation
-        $navPages = FrontZend_Container::get('LayoutNav')->fetchAll(null,
-                        array('id_parent', 'order ASC'));
+        $navPages = FrontZend_Container::get('LayoutNav')->findAll(array(
+            'order' => array('id_parent', 'order ASC')));
 
         $navConfigs = $this->_getNavTree($navPages);
         $navigation = new Zend_Navigation($navConfigs);

@@ -326,7 +326,7 @@ class Content_Model_Content extends FrontZend_Module_Model_Abstract
         return $contentArray;
     }
 
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(
             'id_content' => array(

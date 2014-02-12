@@ -101,7 +101,8 @@ class Content_Form_ContentType extends Twitter_Bootstrap_Form_Horizontal
 
     public function init()
     {
-        $if = Content_Model_ContentType::getInputFilter();
+        $model = new Content_Model_ContentType();
+        $if = $model->getInputFilter();
         foreach ($if as $name => $options) {
             $element = $this->getElement($name);
             if ($element) {

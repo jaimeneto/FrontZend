@@ -156,7 +156,7 @@ class Media_Model_File extends FrontZend_Module_Model_Abstract
         return str_replace('/', DIRECTORY_SEPARATOR, self::getFullThumbsPath($path));
     }
 
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(            
             'id_file' => array(

@@ -44,7 +44,7 @@ class Layout_Model_Nav extends FrontZend_Module_Model_Abstract
         return $children;
     }
 
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(            
             'id_layout_nav' => array(

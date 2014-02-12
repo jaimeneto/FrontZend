@@ -23,8 +23,8 @@
             <i class="icon-user"></i> <?php echo $this->escape($this->user->username); ?><br />
             <i class="icon-envelope"></i> <?php echo $this->escape($this->user->email); ?><br />
             <i class="icon-glass"></i> Conhecido como: <?php echo $this->escape($this->user->display_name); ?><br />
-            <i class="icon-calendar"></i> Nascido em: <?php echo $this->user->getBirthdate()->get("EEEE, dd 'de' MMMM 'de' yyyy"); ?>.<br />
-            <i class="icon-info-sign"></i> Gênero: <?php $generos = array('M' => 'Masculino', 'F' => 'Feminino'); echo $generos[$this->user->gender]; ?>
+            <i class="icon-calendar"></i> Nascido em: <?php echo $this->birthdate ? $this->user->getBirthdate()->get("EEEE, dd 'de' MMMM 'de' yyyy") : ''; ?><br />
+            <i class="icon-info-sign"></i> Gênero: <?php $generos = array('M' => 'Masculino', 'F' => 'Feminino', '' => ''); echo $generos[$this->user->gender]; ?>
         </p><p>
             <i class="icon-calendar"></i> Cadastrado em: <?php echo $this->user->getDateRegistered()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm"); ?>.<br />
             <i class="icon-calendar"></i> Última alteração cadastral feita: <?php echo $this->user->getdateUpdated()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm"); ?>.<br />
@@ -43,7 +43,7 @@
 
     <p><strong>Confirma a exclusão deste usuário?</strong></p>
 
-    <form action="<?php echo $this->url(array('action' => 'remove')); ?>" 
+    <form action="<?php echo $this->url(array('action' => 'remove')); ?>"
           class="form-actions" method="post">
         <input type="hidden" name="id" value="<?php echo $this->user->id; ?>" />
         <?php if($this->user->status != 'D'): ?>

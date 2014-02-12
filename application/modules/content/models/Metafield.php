@@ -104,7 +104,7 @@ class Content_Model_Metafield extends FrontZend_Module_Model_Abstract
         return $this->getType();
     }
     
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(            
             'id_metafield' => array(

@@ -5,7 +5,7 @@
  */
 require_once 'Zend/View/Helper/Navigation/Menu.php';
 
-class Twitter_Bootstrap_View_Helper_Menu
+class Twitter_Bootstrap_View_Helper_Navbar
     extends Zend_View_Helper_Navigation_Menu
 {
     protected $_tagAttribs = array(
@@ -17,6 +17,15 @@ class Twitter_Bootstrap_View_Helper_Menu
         'rev'
     );
 
+    public function navbar(Zend_Navigation_Container $container = null)
+    {
+        if (null !== $container) {
+            $this->setContainer($container);
+        }
+
+        return $this;
+    }
+    
     public function renderNavbar(Zend_Navigation_Container $container = null,
         array $options = array())
     {
@@ -38,9 +47,7 @@ class Twitter_Bootstrap_View_Helper_Menu
             ? Zend_Registry::get('Zend_Acl')
             : null;
         
-        $role = Zend_Auth::getInstance()->hasIdentity()
-            ? Zend_Auth::getInstance()->getIdentity()->id_role
-            : 'guest';
+        $role = $this->getRole();
 
         foreach ($container as $page) {
 
@@ -133,9 +140,7 @@ class Twitter_Bootstrap_View_Helper_Menu
             ? Zend_Registry::get('Zend_Acl')
             : null;
         
-        $role = Zend_Auth::getInstance()->hasIdentity()
-            ? Zend_Auth::getInstance()->getIdentity()->id_role
-            : 'guest';
+        $role = $this->getRole();
 
         foreach ($container as $page) {
             // show only the current branch and the visible item
@@ -182,4 +187,13 @@ class Twitter_Bootstrap_View_Helper_Menu
         return $html;
     }
 
+    public function render(Zend_Navigation_Container $container = null)
+    {
+        if ($partial = $this->getPartial()) {
+            return $this->renderPartial($container, $partial);
+        } else {
+            return $this->renderNavbar($container);
+        }
+    }
+    
 }

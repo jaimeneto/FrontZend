@@ -141,7 +141,8 @@ class Media_Form_Image extends Twitter_Bootstrap_Form_Horizontal
     {
         $this->setAttrib('class', 'tab-content');
 
-        $if = Media_Model_File::getInputFilter();
+        $model = new Media_Model_File();
+        $if = $model->getInputFilter();
         foreach ($if as $name => $options) {
             $element = $this->getElement($name);
             if ($element) {

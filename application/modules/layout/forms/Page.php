@@ -93,7 +93,8 @@ class Layout_Form_Page extends Twitter_Bootstrap_Form_Horizontal
 
     public function init()
     {
-        $if = Layout_Model_Page::getInputFilter();
+        $model = new Layout_Model_Page();
+        $if = $model->getInputFilter();
         foreach ($if as $name => $options) {
             $element = $this->getElement($name);
             if ($element) {

@@ -262,7 +262,8 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
     {
         $this->setAttrib('class', 'tab-content');
 
-        $if = Content_Model_Content::getInputFilter();
+        $model = new Content_Model_Content();
+        $if = $model->getInputFilter();
         foreach ($if as $name => $options) {
             $element = $this->getElement($name);
             if ($element) {

@@ -267,8 +267,8 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
     {
         $this->setAttrib('class', 'tab-content');
 
-        $if = Acl_Model_User::getInputFilter();
-
+        $model = new Acl_Model_User();
+        $if = $model->getInputFilter();
         foreach ($if as $name => $options) {
             if ($name == 'password' && $this->_edit) {
                 $options['required'] = false;

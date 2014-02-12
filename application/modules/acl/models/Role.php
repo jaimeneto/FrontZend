@@ -54,7 +54,7 @@ class Acl_Model_Role extends FrontZend_Module_Model_Abstract
 
     }
 
-    public static function getInputFilter()
+    public function getInputFilter()
     {
         return array();
     }

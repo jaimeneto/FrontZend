@@ -38,13 +38,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             $autoloader = Zend_Loader_Autoloader::getInstance();
             $autoloader->registerNamespace('ZFDebug');
 
+            $cache = $this->getResource('cachemanager')->getCache('database');
+
             $options = array(
                 'plugins' => array('Variables',
                     'Database' => array('adapter' => Zend_Db_Table::getDefaultAdapter()),
                     'File' => array('basePath' => APPLICATION_PATH . '../'),
                     'Memory',
                     'Time',
-//                    'Cache' => array('backend' => $cache->getBackend()),
+                    'Cache' => array('backend' => $cache->getBackend()),
                     'Exception'
                 )
             );

@@ -34,7 +34,7 @@ class Content_Model_ContentUser extends FrontZend_Module_Model_Abstract
         }
     }
 
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(
             'id_content_user' => array(

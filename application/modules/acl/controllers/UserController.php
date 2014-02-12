@@ -18,17 +18,17 @@ class Acl_UserController extends Zend_Controller_Action
 
         $this->_helper->acl("{$module}_{$controller}_{$action}");
     }
-    
+
     public function indexAction()
     {
         $this->_forward('list');
     }
 
     public function listAction()
-    {        
+    {
         $form = new Acl_Form_Filter_User();
         $form->setAction($this->view->url());
-        
+
         $filters = $this->_getParam('filter');
         if ($filters) {
             $form->populate($filters);
@@ -89,7 +89,7 @@ class Acl_UserController extends Zend_Controller_Action
             $this->getHelper('Redirector')
                 ->gotoUrlAndExit(ADMIN_ROUTE . '/acl/user');
         }
-        
+
         $id = $this->_getParam('id');
 
         if (!$id) {
@@ -140,7 +140,7 @@ class Acl_UserController extends Zend_Controller_Action
                                'dados inválidos ou faltando');
             }
         }
-        
+
         $this->view->form = $form;
     }
 
@@ -162,7 +162,7 @@ class Acl_UserController extends Zend_Controller_Action
         if ($data) {
             try {
                 if(isset($data['delete'])) {
-                    if (Container::get('AclUser')->deleteById($id)) {
+                    if (FrontZend_Container::get('AclUser')->deleteById($id)) {
                         $this->getHelper('alerts')
                              ->addSuccess('Usuário excluído com sucesso');
                         $this->getHelper('Redirector')->gotoUrlAndExit(
@@ -176,7 +176,7 @@ class Acl_UserController extends Zend_Controller_Action
                 } else if(isset($data['trash'])) {
                     $content = FrontZend_Container::get('AclUser')->findById($id);
                     $content->status = 'D';
-                    if (Container::get('AclUser')->save($content)) {
+                    if (FrontZend_Container::get('AclUser')->save($content)) {
                         $this->getHelper('alerts')
                              ->addSuccess('Usuário enviado para a lixeira ' .
                                           'com sucesso');
@@ -192,7 +192,7 @@ class Acl_UserController extends Zend_Controller_Action
                 } else if(isset($data['restore'])) {
                     $content = FrontZend_Container::get('AclUser')->findById($id);
                     $content->status = 'I';
-                    if (Container::get('AclUser')->save($content)) {
+                    if (FrontZend_Container::get('AclUser')->save($content)) {
                         $this->getHelper('alerts')
                              ->addSuccess('O usuário foi restaurado sucesso, '
                                  . 'porém ainda está inativo');
@@ -218,4 +218,3 @@ class Acl_UserController extends Zend_Controller_Action
     }
 
 }
-
