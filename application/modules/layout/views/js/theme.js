@@ -1,5 +1,4 @@
 $(document).ready(function(){
-
     Layout_Theme_AjaxActivate();
     Layout_Theme_AjaxTest();
 
@@ -8,6 +7,7 @@ $(document).ready(function(){
 function Layout_Theme_AjaxActivate()
 {
     $('#layout_themes button[name=activate]').click(function(){
+        event.preventDefault();
         var id_theme = $(this).parents('li').attr('id').replace('theme_', '');
         var env = $(this).parents('.tab-pane').attr('id');
 
@@ -33,15 +33,13 @@ function Layout_Theme_AjaxActivate()
                 alert(msg);
             }
         });
-
-
-        return false;
-    })
+    });
 }
 
 function Layout_Theme_AjaxTest()
 {
-    $('#layout_themes button[name=test]').click(function(){
+    $('#layout_themes button[name=test]').click(function(event){
+        event.preventDefault();
         var id_theme = $(this).parents('li').attr('id').replace('theme_', '');
         var button = $(this);
 
@@ -67,8 +65,5 @@ function Layout_Theme_AjaxTest()
                 alert(msg);
             }
         });
-
-
-        return false;
-    })
+    });
 }

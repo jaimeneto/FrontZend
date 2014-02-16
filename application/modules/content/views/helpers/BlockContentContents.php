@@ -37,6 +37,11 @@ class Content_View_Helper_BlockContentContents extends Zend_View_Helper_Abstract
 
         // Define content types to filter
         $types = $block->getOption('types');
+        
+        if (!$types) {
+            return;
+        }
+        
         foreach($types as &$type) {
             // Add quotes to content type name
             $type = Zend_Db_Table::getDefaultAdapter()->quote($type);
@@ -67,20 +72,15 @@ class Content_View_Helper_BlockContentContents extends Zend_View_Helper_Abstract
             }
         }
 
-        $options['where']['status = ?'] = Content_Model_Content::STATUS_ACTIVE;
-        $nextActive = $this->_getNextActiveContentPublishDate($options);
-        if ($nextActive) {
-            $options['where']['dt_published <= ?'] = $nextActive;
-        } else {
-            $options['where'][] = 'dt_published <= NOW()';
-        }
-
         // Define how many items to load
         $limit = $block->getOption('limit');
         if ($limit) {
             $options['limit'] = $limit;
             $options['page'] = $this->view->pageNumber;
         }
+
+        $options['where']['status = ?'] = Content_Model_Content::STATUS_ACTIVE;
+        $options['where']['dt_published <= ?'] = Zend_Date::now()->get('yyyy-MM-dd HH:mm:ss');
 
         // Find the contents
         $contents = FrontZend_Container::get('Content')->findAll($options);
@@ -116,14 +116,5 @@ class Content_View_Helper_BlockContentContents extends Zend_View_Helper_Abstract
         }
 
         return $xhtml;
-    }
-
-    private function _getNextActiveContentPublishDate($options)
-    {
-        $options['where'][] = 'dt_published > NOW()';
-        $options['order'][] = 'dt_published';
-
-        $nextActive = FrontZend_Container::get('Content')->findOne($options);
-        return $nextActive ? $nextActive->dt_published : '';
     }
 }

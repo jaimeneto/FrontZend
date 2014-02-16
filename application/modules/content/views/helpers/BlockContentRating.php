@@ -12,8 +12,12 @@
 class Content_View_Helper_BlockContentRating extends Zend_View_Helper_Abstract
 {
     public function blockContentRating(Layout_Model_Block $block,
-        Content_Model_Content $content, $user = null)
+        Content_Model_Content $content = null, $user = null)
     {
+        if (!$content) {
+            return;
+        }   
+        
         $field = $block->getOption('field');
         $rating = $content->getMetafield($field);
 

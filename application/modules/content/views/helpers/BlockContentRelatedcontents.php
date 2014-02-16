@@ -24,6 +24,10 @@ class Content_View_Helper_BlockContentRelatedcontents
          * title, limit, related, template, visibility
          */
 
+        if(!$content) {
+            return;
+        }
+        
         $related = $block->getOption('related');
         $metafield = FrontZend_Container::get('Metafield')->findById($related);
         

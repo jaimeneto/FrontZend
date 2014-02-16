@@ -12,13 +12,16 @@
 class Content_View_Helper_BlockContentInfo extends Zend_View_Helper_Abstract
 {
     public function blockContentInfo(Layout_Model_Block $block,
-        Content_Model_Content $content, $user = null)
+        Content_Model_Content $content = null, $user = null)
     {
         $maindata = $block->getOption('maindata');
+        
+        if (!$content || !$maindata) {
+            return;
+        }   
+        
         $metadataFields = $block->getOption('metadata');
         $relationshipFields = $block->getOption('relationships');
-
-        // TODO se não selecionar nenhuma maindata, não exibe nada => consertar
 
         $metadata = array();
         if ($maindata) {

@@ -19,6 +19,10 @@ class Content_View_Helper_BlockContentComments extends Zend_View_Helper_Abstract
     public function blockContentComments(Layout_Model_Block $block,
         Content_Model_Content $content = null, $user = null)
     {
+        if (!$content) {
+            return;
+        }
+        
         $form = new Content_Form_Comments();
         $form->setAction($this->view->baseUrl('comments/add'));
         $form->getElement('id_content')->setValue($content->id);

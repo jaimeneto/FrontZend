@@ -1,21 +1,21 @@
 <ul class="youtube thumbnails">
-<?php foreach($this->videoFeed as $videoEntry): ?>
-    <?php $thumbs = $videoEntry->getVideoThumbnails(); ?>
-	<li class="span2">
-        
-		<div id="youtube_info_<?php echo $videoEntry->getVideoId(); ?>">
-			<a href="#<?php echo $videoEntry->getVideoId(); ?>">
-                <div class="thumbnail">
-                    <img src="<?php echo $thumbs[0]['url']; ?>" />
-                </div>
-                
-                <p class="title" title="<?php echo $videoEntry->getVideoTitle(); ?>">
-                    <?php echo $videoEntry->getVideoTitle(); ?>
-                </p>
-				<? /* <p><?php echo $videoEntry->getVideoDescription(); ?><p> */ ?>
-			</a>
-		</div>
+    <?php foreach ($this->videoFeed as $videoEntry): ?>
+        <?php $thumbs = $videoEntry->getVideoThumbnails(); ?>
+        <li class="span2">
 
-	</li>
-<? endforeach ?>
+            <div id="youtube_info_<?php echo $videoEntry->getVideoId(); ?>">
+                <a href="#<?php echo $videoEntry->getVideoId(); ?>">
+                    <div class="thumbnail">
+                        <img src="<?php echo $thumbs[0]['url']; ?>" />
+                    </div>
+
+                    <p class="title" title="<?php echo $videoEntry->getVideoTitle(); ?>">
+                        <?php echo $videoEntry->getVideoTitle(); ?>
+                    </p>
+                    <?php /* <p><?php echo $videoEntry->getVideoDescription(); ?><p> */ ?>
+                </a>
+            </div>
+
+        </li>
+    <?php endforeach ?>
 </ul>

@@ -1,6 +1,7 @@
 <?php
-$contentUsers = $this->content->getUsers();
-if($contentUsers):
+if ($this->content):
+    $contentUsers = $this->content->getUsers();
+    if($contentUsers):
 ?>
 <div class="block block-content-users <?php echo $this->cssVisibility($this->block); ?>">
     <?php 
@@ -12,4 +13,5 @@ if($contentUsers):
         </a>
     <?php endforeach; ?>
 </div>
-<?php endif; ?>
+<?php endif; 
+endif; ?>

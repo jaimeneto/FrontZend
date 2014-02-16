@@ -256,6 +256,8 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
             }
         }
 
+        FrontZend_Container::get('LayoutBlock')->deleteEmptyAreas();
+
         if ($updates) {
             $this->getHelper('alerts')
                  ->addSuccess('Página atualizada com sucesso');

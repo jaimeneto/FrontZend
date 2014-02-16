@@ -23,7 +23,11 @@ class Content_View_Helper_BlockContentImages extends Zend_View_Helper_Abstract
          * title, image, width, height, fill, template, visibility
          */
 
-        $image = $block->getOption('image');
+        if (!$content) {
+            return;
+        }
+        
+        $image = $block->getOption('image');       
         $contentImages = $content->getFiles($image);
         $images = array();
         if ($contentImages) {
