@@ -48,6 +48,6 @@ class Core_View_Helper_NavAdmin extends Zend_View_Helper_HtmlElement
         $role = Zend_Auth::getInstance()->getIdentity()->id_role;
         $this->view->navigation()->setRole($role);
 
-        return $this->view->navigation()->menu()->renderNavbar($navAdmin);
+        return $this->view->navigation()->navbar($navAdmin);
     }
 }
