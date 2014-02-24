@@ -74,7 +74,7 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
         }
     }
 
-    static public function getInputFilter()
+    public function getInputFilter()
     {
         return array(
             'id_comment' => array(
