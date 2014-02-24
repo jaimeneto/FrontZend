@@ -1,7 +1,7 @@
 <div id="content_type" class="meta-elements">
-    <? if($this->contentType->id_parent): ?>
+    <?php if($this->contentType->id_parent): ?>
         <?php echo $this->form->getElement('parent')->render(); ?>
-    <? endif ?>
+    <?php endif; ?>
 
     <?php echo $this->form->getElement('id_content_type')->render(); ?>
 

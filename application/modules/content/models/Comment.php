@@ -1,6 +1,6 @@
 <?php
 
-class Content_Model_Comment extends Core_Model_Abstract
+class Content_Model_Comment extends FrontZend_Module_Model_Abstract
 {
     const STATUS_ACTIVE   = 'A';
     const STATUS_INACTIVE = 'I';

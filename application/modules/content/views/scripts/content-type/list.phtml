@@ -46,7 +46,7 @@ $order = str_replace(' desc', '', $order);
                 </tr>
             </thead>
             <tbody>
-                <? foreach ($this->paginator as $contentType):
+                <?php foreach ($this->paginator as $contentType):
                     $parent = $contentType->getParent(); ?>
                     <tr>
                         <td title="<?php echo $contentType->id; ?>">
@@ -69,15 +69,15 @@ $order = str_replace(' desc', '', $order);
                             <a href="<?php echo $this->adminBaseUrl("content/content-type/edit/id/{$contentType->id}"); ?>"
                                title="Editar" rel="tooltip"><i class="icon-edit"></i></a>
                             
-                            <? if($parent): ?>
+                            <?php if($parent): ?>
                             <a href="<?php echo $this->adminBaseUrl('content/content-type/remove'); ?>"
                                title="Enviar para a lixeira" rel="tooltip"><i class="icon-trash"></i></a>
-                            <? else: ?>
+                            <?php else: ?>
                                 <i class="icon-trash icon-white"></i>
-                            <? endif; ?>
+                            <?php endif; ?>
                         </td>
                     </tr>
-                <? endforeach; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
         

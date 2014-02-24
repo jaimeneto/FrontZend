@@ -35,7 +35,7 @@ $rowClass = array(
                 </tr>
             </thead>
             <tbody>
-                <? foreach ($this->paginator as $comment): ?>
+                <?php foreach ($this->paginator as $comment): ?>
                     <tr<?php echo $rowClass[$comment->status]; ?>>
                         <td title="<?php echo $comment->id; ?>" class="hidden-phone hidden-tablet">
                             <?php echo $comment->id; ?>
@@ -71,7 +71,7 @@ $rowClass = array(
                                title="Enviar para a lixeira" rel="tooltip"><i class="icon-trash"></i></a>
                         </td>
                     </tr>
-                <? endforeach; ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
         

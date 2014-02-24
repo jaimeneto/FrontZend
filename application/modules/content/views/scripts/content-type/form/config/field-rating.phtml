@@ -10,7 +10,7 @@
             Permitir selecionar meia-estrela
         </label>
 
-        <?  $half = $this->metafield->getOption('half') ? $this->metafield->getOption('half') : 0;
+        <?php $half = $this->metafield->getOption('half') ? $this->metafield->getOption('half') : 0;
 
             $defaultMetaOptions = array(
                 0 => array(
@@ -39,20 +39,20 @@
         <div class="meta-field-rating-multioptions-half-<?php echo $halfOpt ? 'on' : 'off' ?>"
             <?php echo $halfOpt != $half ? ' style="display:none"' : '' ?>>
 
-            <? foreach($dmo as $k => $v):
+            <?php foreach($dmo as $k => $v):
                 $multiOptions = $this->metafield->getOption('multiOptions');
             ?>
 
             <div class="rating-option">
                 <div class="rating-option input-prepend">
                     <span class="rating-<?php echo str_replace('.','',$k) ?> add-on">
-                        <? for($i=0; $i<5; $i++): ?>
-                            <? if ($i < $k && $i + 0.5 == $k): ?>
+                        <?php for($i=0; $i<5; $i++): ?>
+                            <?php if ($i < $k && $i + 0.5 == $k): ?>
                                 <i class="icon-star-half icon-custom"></i>
-                            <? else: ?>
+                            <?php else: ?>
                                 <i class="icon-star<?php echo $i>=$k ? ' icon-white' : ''?>"></i>
-                            <? endif ?>
-                        <? endfor; ?>
+                            <?php endif; ?>
+                        <?php endfor; ?>
                     </span>
                     <?php echo $this->formText("meta[field][{$this->metafield->fieldname}][multiOptions][$halfOpt][{$k}]",
                        (isset($multiOptions[$halfOpt][$k]) && $multiOptions[$halfOpt][$k])
@@ -60,8 +60,8 @@
                             array('class' => 'medium')) ?>
                 </div>
             </div>
-            <? endforeach ?>
+            <?php endforeach; ?>
         </div>
-        <? endforeach ?>
+        <?php endforeach; ?>
     </div>
 </div>
