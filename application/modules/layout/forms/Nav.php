@@ -171,7 +171,7 @@ class Layout_Form_Nav extends Twitter_Bootstrap_Form_Horizontal
     public function init()
     {
         $model = new Layout_Model_Nav();
-        $if = $model->getInputFilter();getInputFilter();
+        $if = $model->getInputFilter();
         foreach ($if as $name => $options) {
             $element = $this->getElement($name);
             if ($element) {
