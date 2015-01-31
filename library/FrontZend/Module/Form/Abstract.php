@@ -9,8 +9,10 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
+require_once 'Bootstrap/Form/Horizontal.php';
+
 Abstract class FrontZend_Module_Form_Abstract
-    extends Twitter_Bootstrap_Form_Horizontal
+    extends Bootstrap_Form_Horizontal
 {
     protected $_modelClass = null;
     
@@ -25,8 +27,8 @@ Abstract class FrontZend_Module_Form_Abstract
         
         $this->setAttrib('id', strtolower(__CLASS__));
         
-        $this->initElements();
         parent::__construct($options);
+        $this->initElements();
         $this->initButtons();
     }
 
@@ -36,38 +38,40 @@ Abstract class FrontZend_Module_Form_Abstract
     {
         $this->addElement('submit', 'save', array(
             'label'       => 'Salvar',
-            'class'       => 'btn-large',
             'ignore'      => true,
-            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+            'buttonType'  => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY,
+            'size'        => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'apply', array(
-            'label'      => 'Aplicar',
-            'class'      => 'btn-large',
-            'ignore'     => true,
-            'buttonType' => Twitter_Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
+            'label'         => 'Aplicar',
+            'ignore'        => true,
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_SUCCESS,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'cancel', array(
-            'label'  => 'Cancelar',
-            'class'  => 'btn-large',
-            'ignore' => true
+            'label'         => 'Cancelar',
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'ignore'        => true
         ));
 
-        $this->addDisplayGroup(
-            array('save', 'apply', 'cancel'), 'form_actions', array(
-                'disableLoadDefaultDecorators' => true,
-                'decorators' => array(
-                    array('Actions', array('style' => 'clear:both'))
-                )
-            )
-        );
+        $this->addDisplayGroup(array('save', 'apply', 'cancel'), 'buttons', array(
+            'decorators' => array(
+                'FormElements', 
+                array('HtmlTag', array(
+                    'class' => 'col-sm-offset-2', 
+                    'tag'   => 'div',
+                    'style' => 'clear:both'
+                ))
+            ),
+        ));
     }
 
     public function init()
     {
         $model = new $this->_modelClass;
-        $if = $model::getInputFilter();
+        $if = $model->getInputFilter();
         foreach ($if as $name => $options) {
             $element = $this->getElement($name);
             if ($element) {

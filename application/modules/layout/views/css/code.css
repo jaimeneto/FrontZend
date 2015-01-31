@@ -14,11 +14,11 @@
 }
 #layouts .treeview > li {
     white-space: nowrap;
-    width: 270px;
+    overflow: hidden;
 }
 #layouts .treeview > li > a {
     line-height: 14px;
-    padding: 0 0 0 18px;
+    padding: 0 0 0 3px;
 }
 #layouts .treeview > li.active > a {
     background-color: transparent;

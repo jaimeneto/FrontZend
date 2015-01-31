@@ -8,23 +8,24 @@ $(document).ready(function(){
     initMetaFields();
     initRatingElements();
     Content_Content_AjaxSearch();
+    Content_Content_AjaxGenerateSlug();
 });
 
 function initRatingElements()
 {
-    $('.radio.rating').each(function(){
-        $(this).parents('.control-group').addClass('rating');
-        $(this).parents('.controls').addClass('rating');
+    $('.rating.radio-inline').each(function(){
+        $(this).parents('.form-group').addClass('rating');
         $(this).attr('title', $(this).html().replace(/<\/?[^>]+>/gi, ''));
     });
-
-    $('.controls.rating').each(function(){
+   
+    $('.form-group.rating').each(function(){
         var half = $(this).find('input[type=radio]').size() == 10;
         var checked = $(this).find('input[type=radio]:checked');
         var checkedDescription = checked.parents('label').html();
 
-        $(this).append('<div class="rating-description"></div>');
+        $(this).find('div').append('<span class="rating-description"></span>');
 
+        
         // If accepts half stars, add class to display the first or second half
         if (half) {
             $(this).find('input[type=radio]').each(function(){
@@ -37,72 +38,96 @@ function initRatingElements()
         }
 
         if (checkedDescription) {
-            // Shows de description of the selected rating
             checkedDescription = checkedDescription.replace(/<\/?[^>]+>/gi, ''); // stripTags
-            var checkedDescription = checked.parents('label').html().replace(/<\/?[^>]+>/gi, '');
             $(this).find('.rating-description').html(checkedDescription);
         }
 
         // Replace the radio buttons with stars
         $(this).find('input[type=radio]').each(function(){
             var iconClass = (parseFloat($(this).val()) <= parseFloat(checked.val()))
-                ? 'icon-large icon-star' : 'icon-large icon-star-empty';
+                ? 'glyphicon-star' 
+                : 'glyphicon-star-empty';
             $(this).hide();
             $(this).parents('label').html($(this).clone().wrap('<p>').parent().html()
-                + '<i class="' + iconClass + '"></i>');
+                + '<span class="glyphicon ' + iconClass + '"></span>');
         });
     });
-
+    
     // Change the star icons and rating description accourding to the cursor
-    $('.radio.rating').hover(function(){
+    $('.radio-inline.rating').hover(function(){
             var pointed = $(this).find('input[type=radio]');
-            var inputRating = $(this).parents('.controls.rating');
+            var inputRating = $(this).parents('.form-group.rating');
             var pointedDescription = $(this).attr('title');
             inputRating.find('.rating-description').html(pointedDescription);
             inputRating.find('input[type=radio]').each(function(){
+                var starIcon = $(this).parents('label').find('span.glyphicon');
                 if(parseFloat($(this).val()) <= parseFloat(pointed.val())) {
-                    $(this).parents('label').find('i').removeClass('icon-star-empty');
-                    $(this).parents('label').find('i').addClass('icon-star');
+                    starIcon.removeClass('glyphicon-star-empty');
+                    starIcon.addClass('glyphicon-star');
                 } else {
-                    $(this).parents('label').find('i').removeClass('icon-star');
-                    $(this).parents('label').find('i').addClass('icon-star-empty');
+                    starIcon.removeClass('glyphicon-star');
+                    starIcon.addClass('glyphicon-star-empty');
                 }
             });
         },function(){
-            var inputRating = $(this).parents('.controls.rating');
+            var inputRating = $(this).parents('.form-group.rating');
             var checked = inputRating.find('input[type=radio]:checked');
             var checkedDescription = checked.length
                 ? checked.parents('label').attr('title') : '';
             inputRating.find('.rating-description').html(checkedDescription);
             inputRating.find('input[type=radio]').each(function(){
+                var starIcon = $(this).parents('label').find('span.glyphicon');
                 if(parseFloat($(this).val()) <= parseFloat(checked.val())) {
-                    $(this).parents('label').find('i').removeClass('icon-star-empty');
-                    $(this).parents('label').find('i').addClass('icon-star');
+                    starIcon.removeClass('glyphicon-star-empty');
+                    starIcon.addClass('glyphicon-star');
                 } else {
-                    $(this).parents('label').find('i').removeClass('icon-star');
-                    $(this).parents('label').find('i').addClass('icon-star-empty');
+                    starIcon.removeClass('glyphicon-star');
+                    starIcon.addClass('glyphicon-star-empty');
                 }
             });
         }
     );
-        
+
     // Change the star icons and rating description on changing the value
-    $('.radio.rating input[type=radio]').change(function(){
-        var inputRating = $(this).parents('.controls.rating');
-        var checked = inputRating.find('input[type=radio]:checked');
+    $('.form-group.rating input[type=radio]').change(function(){
+        var groupRating = $(this).parents('.form-group.rating');
+        var checked = groupRating.find('input[type=radio]:checked');
         var checkedDescription = checked.parent().attr('title');
-        inputRating.find('.rating-description').html(checkedDescription);
-        inputRating.find('input[type=radio]').each(function(){
+        groupRating.find('.rating-description').html(checkedDescription);
+        groupRating.find('input[type=radio]').each(function(){
+            var starIcon = $(this).parents('label').find('span.glyphicon');
             if(parseFloat($(this).val()) <= parseFloat(checked.val())) {
-                $(this).parents('label').find('i').removeClass('icon-star-empty');
-                $(this).parents('label').find('i').addClass('icon-star');
+                starIcon.removeClass('glyphicon-star-empty');
+                starIcon.addClass('glyphicon-star');
             } else {
-                $(this).parents('label').find('i').removeClass('icon-star');
-                $(this).parents('label').find('i').addClass('icon-star-empty');
+                starIcon.removeClass('glyphicon-star');
+                starIcon.addClass('glyphicon-star-empty');
             }
         });
+        uncheckRatingElement();
     });
+    
+    uncheckRatingElement();
+}
 
+function uncheckRatingElement()
+{
+    // If clicks the checked option, uncheck it
+    $('.form-group.rating input[type=radio]:checked').click(function(){
+        var groupRating = $(this).parents('.form-group.rating');
+        if (groupRating.find('.control-label').hasClass('required')) {
+            return;
+        }
+        $(this).prop('checked', false);
+        groupRating.find('.rating-description').html('');
+        groupRating.find('input[type=radio]').each(function(){
+            var starIcon = $(this).parents('label').find('span.glyphicon');
+            starIcon.removeClass('glyphicon-star');
+            starIcon.addClass('glyphicon-star-empty');
+            $(this).unbind('click');
+        });
+        uncheckRatingElement();
+    });
 }
 
 function Content_Content_AjaxSearch()
@@ -111,6 +136,7 @@ function Content_Content_AjaxSearch()
         var elementId = $(this).attr('id').replace('_search','');
         var elementName = $(this).attr('data-name');
         var contentType = $(this).attr('data-type');
+        var contentRelated = $(this).attr('data-related');
 
         // Evita o envio do formulário se o usuário apertar Enter
         $(this).parents('form').bind("keypress", function(event) {
@@ -120,8 +146,10 @@ function Content_Content_AjaxSearch()
         });
 
         var id_content = $('#id_content').val();
-        var source = adminBaseUrl + '/content/content/ajax-search/';
-        if (contentType) source += 'type/'+ contentType;
+        var source = contentType == 'contents'
+            ? adminBaseUrl + '/content/content/ajax-search/'
+            : adminBaseUrl + '/acl/user/ajax-search/';
+        if (contentRelated) source += 'type/'+ contentRelated;
         if (id_content) source += '/id/' + id_content;
 
         $(this).focus(function(){
@@ -132,32 +160,67 @@ function Content_Content_AjaxSearch()
             select: function(event, ui) {
                 if ($('#'+elementId+'-' + ui.item.id).length == 0) {
                     if($(this).attr('data-multiple') != 1) {
-                        $('#'+elementId+'_search').parents('.controls').find('label.checkbox').remove();
+                        $('#'+elementId+'_search').parents('.input-group').parent().find('div.checkbox').remove();
                     }
                     
-                    $('#'+elementId+'_search').parents('.controls').append(
-                        '<label for="'+elementId+'-' + ui.item.id + '" class="checkbox">'
+                    var listItem = '<div class="checkbox">'
+                        + '<label for="'+elementId+'-' + ui.item.id + '">'
                         + '<input type="checkbox" value="' + ui.item.id + '" '
                         + 'id="'+elementId+'-' + ui.item.id + '" '
                         + 'name="'+elementName+'" checked="checked">'
+                        + ui.item.filteredValue;
 
-                        + '<span>'
-                        + ui.item.filteredValue
-                        + ' <a title="editar conteúdo" target="_blank" '
-                        + 'href="/sites/blockscms/public/content/content/edit/id/'
+                    if (contentType == 'contents') {
+                        listItem += ' <a title="editar conteúdo" target="_blank" '
+                        + 'href="' + adminBaseUrl + '/content/content/edit/id/'
                         + ui.item.id + '">'
-                        + '<i class="icon-edit"></i></a> '
+                        + '<span class="glyphicon glyphicon-edit"></span></a> '
                         + '<a title="Acessar página do conteúdo" target="_blank" '
-                        + 'href="/sites/blockscms/public/content/content/view/id/113">'
-                        + '<i class="icon-globe"></i></a></span>'
+                        + 'href="' + baseUrl + '/' + ui.item.slug + '">'
+                        + '<span class="glyphicon glyphicon-globe"></span></a>'
+                    }
 
-                        + '</label>');
+                    listItem += '</label></div>';
+                    
+                    $('#'+elementId+'_search').parents('.input-group').parent().append(listItem);
 
-                        $('#'+elementId+'-' + ui.item.id).focus();
+                    $('#'+elementId+'-' + ui.item.id).focus();
                 }
 
                 $('#'+elementId+'-' + ui.item.id).parent().pisca();
             }
         });
     })
+}
+
+function Content_Content_AjaxGenerateSlug()
+{
+    $('#content_form_content #title').change(function(){
+        var title = $(this).val();
+        
+        if ($('#content_form_content #id_content').length > 0 
+                && $('#content_form_content #slug').val()) {
+            return;
+        }
+        
+        $.ajax({
+            type: 'POST',
+            url: adminBaseUrl + '/content/content/ajax-generate-slug',
+            data: {
+                title: title
+            },
+            dataType: 'json',
+            success: function(json){
+                if (json.status == 1) {
+                    $('#content_form_content #slug').val(json.slug);
+                } else {
+                    alert(json.msg);
+                }
+            },
+
+            error: function(msg) {
+                alert(msg);
+            }
+        })
+    });
 }

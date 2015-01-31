@@ -1,59 +1,70 @@
-<fieldset>
-    <legend>Excluir usuário</legend>
+<div class="page-header">
+    <h1>
+        <span class="glyphicon glyphicon-lock"></span> 
+        Acesso
+        <small>Usuários</small>
+    </h1>    
+</div>
 
-    <?php echo $this->alerts(); ?>
+<?php echo $this->alerts(); ?>
 
-    <div class="well">
-        <div id="avatar_preview" class="thumbnail" style="margin-right: 20px;">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Excluir usuário</h3>
+    </div>
+    <div class="panel-body" style="position:relative">
+        <div id="avatar_preview" class="thumbnail">
             <?php echo $this->gravatar($this->user->email); ?>
         </div>
-        <h3>
+        <h4>
             <?php $status = array(
-                'A' => array('title' => 'Ativo', 'icon'  => 'icon-check'),
-                'I' => array('title' => 'Inativo', 'icon'  => 'icon-check icon-white'),
-                'B' => array('title' => 'Bloqueado', 'icon'  => 'icon-ban-circle'),
-                'D' => array('title' => 'Excluído', 'icon'  => 'icon-trash')
+                'A' => array('title' => 'Ativo', 'icon'  => 'glyphicon glyphicon-check'),
+                'I' => array('title' => 'Inativo', 'icon'  => 'glyphicon glyphicon-check inative'),
+                'B' => array('title' => 'Bloqueado', 'icon'  => 'glyphicon glyphicon-ban-circle'),
+                'D' => array('title' => 'Excluído', 'icon'  => 'glyphicon glyphicon-trash')
             ); ?>
             <?php echo $this->escape($this->user->name); ?>
-            <i class="<?php echo $status[$this->user->status]['icon']; ?>"
-               title="<?php echo $status[$this->user->status]['title']; ?>"></i>
-        </h3>
-        <span class="label label-info"><?php echo $this->escape($this->user->getRole()->role); ?></span>
+            <span class="label label-info"><?php echo $this->escape($this->user->getRole()->role); ?></span>
+            <span class="<?php echo $status[$this->user->status]['icon']; ?>"
+               title="<?php echo $status[$this->user->status]['title']; ?>"></span>
+        </h4>
         <p>
-            <i class="icon-user"></i> <?php echo $this->escape($this->user->username); ?><br />
-            <i class="icon-envelope"></i> <?php echo $this->escape($this->user->email); ?><br />
-            <i class="icon-glass"></i> Conhecido como: <?php echo $this->escape($this->user->display_name); ?><br />
-            <i class="icon-calendar"></i> Nascido em: <?php echo $this->birthdate ? $this->user->getBirthdate()->get("EEEE, dd 'de' MMMM 'de' yyyy") : ''; ?><br />
-            <i class="icon-info-sign"></i> Gênero: <?php $generos = array('M' => 'Masculino', 'F' => 'Feminino', '' => ''); echo $generos[$this->user->gender]; ?>
+            <span class="glyphicon glyphicon-user"></span> <?php echo $this->escape($this->user->username); ?><br />
+            <span class="glyphicon glyphicon-envelope"></span> <?php echo $this->escape($this->user->email); ?><br />
+            <span class="glyphicon glyphicon-glass"></span> Conhecido como: <?php echo $this->escape($this->user->display_name); ?><br />
+            <span class="glyphicon glyphicon-calendar"></span> Nascido em: <?php echo $this->user->getBirthdate()->get("EEEE, dd 'de' MMMM 'de' yyyy"); ?>.<br />
+            <span class="glyphicon glyphicon-info-sign"></span> Gênero: <?php $generos = array('M' => 'Masculino', 'F' => 'Feminino'); echo $generos[$this->user->gender]; ?>
         </p><p>
-            <i class="icon-calendar"></i> Cadastrado em: <?php echo $this->user->getDateRegistered()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm"); ?>.<br />
-            <i class="icon-calendar"></i> Última alteração cadastral feita: <?php echo $this->user->getdateUpdated()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm"); ?>.<br />
-            <i class="icon-calendar"></i> <?php echo $this->user->getLastAccess()
+            <span class="glyphicon glyphicon-calendar"></span> Cadastrado em: <?php echo $this->user->getDateRegistered()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm"); ?>.<br />
+            <span class="glyphicon glyphicon-calendar"></span> Última alteração cadastral feita: <?php echo $this->user->getdateUpdated()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm"); ?>.<br />
+            <span class="glyphicon glyphicon-calendar"></span> <?php echo $this->user->getLastAccess()
             ? 'Acessou pela última vez em ' . $this->user->getLastAccess()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm")
             : 'Nunca acessou a conta' ; ?>.<br />
-            <i class="icon-calendar"></i> <?php echo $this->user->getDateActivated()
+            <span class="glyphicon glyphicon-calendar"></span> <?php echo $this->user->getDateActivated()
                 ? 'Conta ativada em: ' . $this->user->getDateActivated()->get("EEEE, dd 'de' MMMM 'de' yyyy 'às' HH:mm")
                 : 'Nunca ativou a conta'; ?>.
         </p><p>
-            <i class="icon-pencil"></i> Conteúdos cadastrados: <?php echo $this->user->countContents(); ?><br />
-            <i class="icon-comment"></i> Comentários: <?php echo $this->user->countComments(); ?><br />
-            <i class="icon-file"></i> Arquivos enviados: <?php echo $this->user->countFiles(); ?><br />
+            <span class="glyphicon glyphicon-pencil"></span> Itens cadastrados: <?php echo $this->user->countContents(); ?><br />
+            <span class="glyphicon glyphicon-comment"></span> Comentários: <?php echo $this->user->countComments(); ?><br />
+            <span class="glyphicon glyphicon-file"></span> Arquivos enviados: <?php echo $this->user->countFiles(); ?><br />
         </p>
     </div>
 
-    <p><strong>Confirma a exclusão deste usuário?</strong></p>
+    <div class="panel-footer">
+        <p><strong>Confirma a exclusão deste usuário?</strong></p>
 
-    <form action="<?php echo $this->url(array('action' => 'remove')); ?>"
-          class="form-actions" method="post">
-        <input type="hidden" name="id" value="<?php echo $this->user->id; ?>" />
-        <?php if($this->user->status != 'D'): ?>
-        <input type="submit" name="trash" value="Enviar para a lixeira" class="btn btn-warning btn-large" />
-        <?php endif; ?>
-        <?php if($this->user->status == 'D'): ?>
-        <input type="submit" name="restore" value="Restaurar" class="btn btn-primary btn-large" />
-        <input type="submit" name="delete" value="Excluir definitivamente" class="btn btn-danger btn-large" />
-        <?php endif; ?>
-        <input type="submit" name="cancel" value="Cancelar" class="btn btn-large" />
-    </form>
-
-</fieldset>
+        <form action="<?php echo $this->url(array('action' => 'remove')); ?>" 
+              class="form-actions" method="post">
+            <input type="hidden" name="id" value="<?php echo $this->user->id; ?>" />
+            <?php if($this->user->status != 'D'): ?>
+            <input type="submit" name="trash" value="Enviar para a lixeira" class="btn btn-warning btn-lg" />
+            <?php endif; ?>
+            <?php if($this->user->status == 'D'): ?>
+            <input type="submit" name="restore" value="Restaurar" class="btn btn-primary btn-lg" />
+            <input type="submit" name="delete" value="Excluir definitivamente" class="btn btn-danger btn-lg" />
+            <?php endif; ?>
+            <input type="submit" name="cancel" value="Cancelar" class="btn btn-default btn-lg" />
+        </form>
+    </div>
+    
+</div>

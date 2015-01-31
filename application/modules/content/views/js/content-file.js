@@ -22,11 +22,12 @@ function initSortingImages()
 
 function initSelectImage()
 {
-    $('#file_elements .btn-select-image').click(function(){
+    $('.content-form-meta-file-images .btn-select-image').click(function(){
         if (!($('#file_list').length > 0)) {
-            $('body').append('<div id="file_list" class="modal hide fade" ' +
-                             'tabindex="-1" role="dialog" aria-hidden="true" ' +
-                             'aria-labelledby="modal_label"></id>');
+            $('body').append('<div class="modal fade" tabindex="-1" ' + 
+                'role="dialog" aria-labelledby="modal_label" id="file_list" ' + 
+                    'aria-hidden="true"><div class="modal-dialog modal-lg">' +
+                    '<div class="modal-content"></div></div></div>');
         }
 
         var images = $(this).parent().find('ul.thumbnails');
@@ -43,16 +44,16 @@ function initSelectImage()
             dataType: 'json',
             success: function(json){
                 if (json.status == 1) {
-                    $('#file_list').html(
+                    $('#file_list .modal-content').html(
                         '<div class="modal-header">' +
-                            '<button type="button" class="close" ' +
-                            'data-dismiss="modal" aria-hidden="true">×' +
-                            '</button>' +
-                            '<h3 id="modal_label">Selecione uma imagem</h3>' +
-                        '</div>' +
-                        '<div class="modal-body">' +
-                            json.content +
-                        '</div>');
+                        '<button type="button" class="close" ' + 
+                        'data-dismiss="modal" aria-label="Close">' + 
+                        '<span aria-hidden="true">&times;</span></button>' +
+                        '<h4 class="modal-title" id="modal_label">' + 
+                        'Selecione uma imagem</h4></div>' +
+                        '<div class="modal-body">' + json.content + '</div>');
+
+                    $('#file_list').modal('show');
 
                     $('#file_list .thumbnail').unbind('click');
                     $('#file_list .thumbnail').click(function(){
@@ -64,7 +65,7 @@ function initSelectImage()
                                 '<a title="Remover" href="#files_meta-'+ target + '-' + fileId + '" ' +
                                     'class="pull-right file-remove" ' +
                                     'id="remove_meta-'+ target + '-' + fileId + '">' +
-                                '<i class="icon-remove"></i>' +
+                                '<span class="glyphicon glyphicon-remove"></span>' +
                                 '</a>' +
                                 '<div type="images" class="thumbnail file-preview" ' +
                                     'id="meta-'+ target + '-' + fileId + '_preview">' +
@@ -174,8 +175,8 @@ function initUploader()
 
 function initDisassociateImage()
 {
-    $('#file_elements .file-remove').unbind('click');
-    $('#file_elements .file-remove').click(function(){
+    $('.content-form-meta-file-images .file-remove').unbind('click');
+    $('.content-form-meta-file-images .file-remove').click(function(){
         var image = $(this).attr('href').replace('#', '');
 
         if (confirm('Deseja remover essa imagem da lista?\n(A imagem não será excluída)')) {

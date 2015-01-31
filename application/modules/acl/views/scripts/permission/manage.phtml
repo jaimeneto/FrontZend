@@ -1,10 +1,27 @@
-<fieldset>
-    <legend>Controle de Acesso de Usuários</legend>
+<div class="page-header">
+    <div class="btn-group pull-right">
+        <?php echo $this->formSubmit(
+                'btn_update', 
+                '<span class="glyphicon glyphicon-refresh"></span> Atualizar permissões', 
+                array('class' => 'btn btn-default', 'escape' => false)); 
+        ?>
+    </div>
+    <h1>
+        <span class="glyphicon glyphicon-lock"></span> 
+        Acesso
+        <small>Permissões</small>
+    </h1>
+</div>
 
-    <?php echo $this->alerts(); ?>
+<?php echo $this->alerts(); ?>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Gerenciar permissões</h3>
+    </div>
 
     <form id="acl_permission_form" action="<?php echo $this->url(array('action' => 'save')); ?>" method="post">
-    <table class="table table-hover table-striped table-condensed treetable">
+    <table class="table table-hover table-striped table-bordered treetable">
         <thead>
             <tr>
                 <th>Recursos/Privilégios</th>
@@ -70,13 +87,6 @@
             <?php endforeach; ?>
         </tbody>
     </table>
-        <div class="form-actions">
-            <?php echo $this->formSubmit(
-                    'btn_update', 
-                    'Atualizar permissões', 
-                    array('class' => 'btn btn-primary btn-large')); 
-            ?>
-        </div>
     </form>
-
-</fieldset>
+    
+</div>

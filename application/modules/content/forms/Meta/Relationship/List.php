@@ -32,9 +32,8 @@ class Content_Form_Meta_Relationship_List extends Zend_Form_Element_Multi
         if (!isset($options['separator'])) {
             $options['separator'] = '';
         }
-        if (!isset($options['label_class'])) {
-            $options['label_class'] = 'inline span2';
-        }
+        
+        $options['inline'] = true;
 
         parent::__construct($spec, $options);
     }

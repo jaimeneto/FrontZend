@@ -5,9 +5,9 @@ $status = array(
     'D' => 'Excluído',
 );
 $statusIcon = array(
-    'A' => 'icon-eye-open',
-    'I' => 'icon-eye-close',
-    'D' => 'icon-remove-circle',
+    'A' => 'glyphicon glyphicon-eye-open',
+    'I' => 'glyphicon glyphicon-eye-close',
+    'D' => 'glyphicon glyphicon-remove-circle',
 );
 $rowClass = array(
     'A' => '',
@@ -16,18 +16,35 @@ $rowClass = array(
 );
 ?>
 
-<div class="span9">
+<div class="page-header">
+    <h1>
+        <span class="glyphicon glyphicon-file"></span> 
+        Conteúdo
+        <small>Comentários</small>
+    </h1>
+</div>
 
-    <fieldset>
-        <legend>Comentários</legend>
+<?php echo $this->alerts(); ?>
 
-        <table class="table table-hover table-striped table-condensed">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Comentários cadastrados</h3>
+    </div>
+    
+    <div class="panel-body">
+        <div id="filters">
+            <?php echo $this->form; ?>
+        </div>        
+    </div>
+
+    <div class="table-horizontal">
+        <table class="table table-bordered table-hover table-striped">
             <thead>
                 <tr>
-                    <th class="hidden-phone hidden-tablet">Id</th>
+                    <th class="hidden-xs hidden-sm">Id</th>
                     <th>Nome</th>
-                    <th class="hidden-phone hidden-tablet">Tipo</th>
-                    <th class="hidden-phone hidden-tablet">Conteúdo</th>
+                    <th class="hidden-xs hidden-sm">Tipo</th>
+                    <th class="hidden-xs hidden-sm">Conteúdo</th>
                     <th>Comentários</th>
                     <th style="display:none">Status</th>
                     <th class="span1">Alteração</th>
@@ -37,16 +54,16 @@ $rowClass = array(
             <tbody>
                 <?php foreach ($this->paginator as $comment): ?>
                     <tr<?php echo $rowClass[$comment->status]; ?>>
-                        <td title="<?php echo $comment->id; ?>" class="hidden-phone hidden-tablet">
+                        <td title="<?php echo $comment->id; ?>" class="hidden-xs hidden-sm">
                             <?php echo $comment->id; ?>
                         </td>
                         <td title="<?php echo $this->escape($comment->name); ?>">
                             <?php echo $this->escape($comment->name); ?>
                         </td>
-                        <td title="<?php echo $this->escape($comment->getContent()->getType()->type); ?>" class="hidden-phone hidden-tablet">
+                        <td title="<?php echo $this->escape($comment->getContent()->getType()->type); ?>" class="hidden-xs hidden-sm">
                             <?php echo $this->escape($comment->getContent()->getType()->type); ?>
                         </td>
-                        <td style="max-width: 200px" title="<?php echo $this->escape($comment->getContent()->title); ?>" class="hidden-phone hidden-tablet">
+                        <td style="max-width: 200px" title="<?php echo $this->escape($comment->getContent()->title); ?>" class="hidden-xs hidden-sm">
                             <?php echo $this->escape($comment->getContent()->title); ?>
                         </td>
                         <td title="<?php echo $this->escape($comment->comments); ?>">
@@ -56,35 +73,33 @@ $rowClass = array(
                             <?php echo $status[$comment->status]; ?>
                         </td>
                         <td title="<?php echo $comment->getDateUpdated()->get('dd/MM/yyyy HH:mm:ss'); ?>">
-                            <span class="visible-desktop"><?php echo $comment->getDateUpdated()->get('dd/MM/yy HH:mm') ?></span>
-                            <span class="hidden-desktop"><?php echo $comment->getDateUpdated()->get('dd/MM/yy') ?></span>
+                            <span class="visible-md visible-lg"><?php echo $comment->getDateUpdated()->get('dd/MM/yy HH:mm') ?></span>
+                            <span class="hidden-md hidden-lg"><?php echo $comment->getDateUpdated()->get('dd/MM/yy') ?></span>
                         </td>
                         <td class="actions">
                             <a href="#" title="<?php echo $status[$comment->status] ?>"
-                               rel="tooltip"><i class="<?php echo $statusIcon[$comment->status] ?>"></i></a>
+                               rel="tooltip"><span class="<?php echo $statusIcon[$comment->status] ?>"></span></a>
 
                             <a href="mailto:<?php echo $this->escape($comment->email); ?>"
                                title="<?php echo $this->escape($comment->email); ?>"
-                               target="_blank" rel="tooltip"><i class="icon-envelope"></i></a>
-                            
+                               target="_blank" rel="tooltip"><span class="glyphicon glyphicon-envelope"></span></a>
+
                             <a href="<?php echo $this->adminBaseUrl('content/comment/remove'); ?>"
-                               title="Enviar para a lixeira" rel="tooltip"><i class="icon-trash"></i></a>
+                               title="Enviar para a lixeira" rel="tooltip"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="8" class="text-center">
+                        Exibindo <?php echo $this->paginator->getCurrentItemCount(); ?> de
+                        <?php echo $this->paginator->getTotalItemCount(); ?> itens cadastrados
+                    </td>
+                </tr>
+            </tfoot>
         </table>
+    </div>
         
-        <?php echo $this->paginator; ?>
-        
-    </fieldset>
-
-</div>
-<div class="span3">
-
-    <fieldset>
-        <legend>Filtros</legend>
-        <?php echo $this->form; ?>
-    </fieldset>
-    
+    <div class="panel-body"><?php echo $this->paginator; ?></div>
 </div>

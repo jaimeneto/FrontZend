@@ -28,6 +28,9 @@ class IndexController extends Zend_Controller_Action
         if (Zend_Auth::getInstance()->hasIdentity()) {
             $this->view->user = Zend_Auth::getInstance()->getIdentity();
         }
+        
+        $nav = FrontZend_Container::get('LayoutNav')->generateContainer();
+        Zend_Registry::set('Zend_Navigation', $nav);
     }
 
     public function indexAction()
@@ -37,13 +40,20 @@ class IndexController extends Zend_Controller_Action
         $page = null;
         $content = null;
 
+        $themeName = Acl_Model_Auth::getTheme();
+        $theme = FrontZend_Container::get('LayoutTheme')
+                    ->findByName($themeName, 'frontend');
+        $themeId = $theme->getId();
+        
         if ($slug) {
             $content = FrontZend_Container::get('Content')->findBySlug($slug);
             if ($content) {
-                $page = FrontZend_Container::get('LayoutPage')->findByContent($content);
+                $page = FrontZend_Container::get('LayoutPage')
+                            ->findByContent($content, true, $themeId);
             }
         } else {
-            $page = FrontZend_Container::get('LayoutPage')->findSpecial('home');
+            $page = FrontZend_Container::get('LayoutPage')
+                        ->findSpecial('home', $themeId);
         }
 
         if (!$page) {

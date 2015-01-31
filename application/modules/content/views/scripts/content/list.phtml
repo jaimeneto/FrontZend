@@ -3,20 +3,6 @@ $order = $this->form->getElement('order')->getValue();
 $orderDesc = strpos($order, ' desc') > 0;
 $order = str_replace(' desc', '', $order);
 
-$columnHeadLink = array();
-$filters = $this->form->getValues();
-$filters = $filters['filter'];
-foreach($filters as $filter => $value) {
-    if ($value) {
-        $filters[$filter] = "filter[{$filter}]={$value}";
-    } else {
-        unset($filters[$filter]);
-    }
-}
-$columnFilters = $filters;
-unset($columnFilters['order']);
-$columnFilters = implode('&', $columnFilters);
-
 $status = array(
     'A' => 'Ativo',
     'I' => 'Inativo',
@@ -24,70 +10,84 @@ $status = array(
     'D' => 'Excluído',
 );
 $statusIcon = array(
-    'A' => 'icon-eye-open',
-    'I' => 'icon-eye-close',
-    'L' => 'icon-lock',
-    'D' => 'icon-remove-circle',
+    'A' => 'glyphicon glyphicon-eye-open',
+    'I' => 'glyphicon glyphicon-eye-close',
+    'L' => 'glyphicon glyphicon-lock',
+    'D' => 'glyphicon glyphicon-remove-circle',
 );
 $rowClass = array(
     'A' => '',
     'I' => ' class="warning"',
     'L' => ' class="info"',
-    'D' => ' class="error"',
+    'D' => ' class="danger"',
 );
 ?>
 
-<div class="span9">
+<div class="page-header">
+    <div class="btn-group pull-right">
+      <a class="btn btn-default" href="<?php echo $this->adminBaseUrl('content/content/add') ?>">
+          <span class="glyphicon glyphicon-plus"></span> Cadastrar
+      </a>
+    </div>
+    <h1>
+        <span class="glyphicon glyphicon-file"></span> 
+        Conteúdo
+        <small>Itens</small>
+    </h1>
+</div>
 
-    <fieldset>
-        <legend>
-            Conteúdo
-            <a class="btn pull-right" href="<?php echo $this->adminBaseUrl('content/content/add') ?>">
-                <i class="icon-plus"></i> Cadastrar
-            </a>
-        </legend>
+<?php echo $this->alerts(); ?>
 
-        <?php echo $this->alerts(); ?>
-
-        <table class="table table-hover table-striped table-condensed">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Itens cadastrados</h3>
+    </div>
+    
+    <div class="panel-body">
+        <div id="filters">
+            <?php echo $this->form; ?>
+        </div>        
+    </div>
+    
+    <div class="table-horizontal">
+        <table class="table table-bordered table-hover table-striped">
             <thead>
                 <tr>
-                    <th class="hidden-phone hidden-tablet<?php echo $order=='id_content' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
-                        <a href="<?php echo $this->adminBaseUrl('content/content/list?filter[order]=id_content' . ($order=='id_content' && !$orderDesc ? '+desc' : '') . ($columnFilters ? '&' . $columnFilters : '')); ?>">
+                    <th class="hidden-xs hidden-sm<?php echo $order=='id_content' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content/list/order/id_content' . ($order=='id_content' && !$orderDesc ? '+desc' : '')); ?>">
                             Id
-                            <?php echo $order == 'id_content' ? '<b class="caret"></b>' : ''; ?>
+                            <?php echo $order == 'id_content' ? '<span class="caret"></span>' : ''; ?>
                         </a>
                     </th>
                     <th<?php echo $order=='title' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
-                        <a href="<?php echo $this->adminBaseUrl('content/content/list?filter[order]=title' . ($order=='title' && !$orderDesc ? '+desc' : '') . ($columnFilters ? '&' . $columnFilters : '')); ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content/list/order/title' . ($order=='title' && !$orderDesc ? '+desc' : '')); ?>">
                             Título
-                            <?php echo $order == 'title' ? '<b class="caret"></b>' : ''; ?>
+                            <?php echo $order == 'title' ? '<span class="caret"></span>' : ''; ?>
                         </a>
                     </th>
-                    <th class="hidden-phone hidden-tablet<?php echo $order=='slug' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
-                        <a href="<?php echo $this->adminBaseUrl('content/content/list?filter[order]=slug' . ($order=='slug' && !$orderDesc ? '+desc' : '') . ($columnFilters ? '&' . $columnFilters : '')); ?>">
+                    <th class="hidden-xs hidden-sm<?php echo $order=='slug' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content/list/order/slug' . ($order=='slug' && !$orderDesc ? '+desc' : '')); ?>">
                             Slug
-                            <?php echo $order == 'slug' ? '<b class="caret"></b>' : ''; ?>
+                            <?php echo $order == 'slug' ? '<span class="caret"></span>' : ''; ?>
                         </a>
                     </th>
                     <th<?php echo $order=='id_content_type' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
-                        <a href="<?php echo $this->adminBaseUrl('content/content/list?filter[order]=id_content_type' . ($order=='id_content_type' && !$orderDesc ? '+desc' : '') . ($columnFilters ? '&' . $columnFilters : '')); ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content/list/order/id_content_type' . ($order=='id_content_type' && !$orderDesc ? '+desc' : '')); ?>">
                             Tipo
-                            <?php echo $order == 'id_content_type' ? '<b class="caret"></b>' : ''; ?>
+                            <?php echo $order == 'id_content_type' ? '<span class="caret"></span>' : ''; ?>
                         </a>
                     </th>
                     <th <?php echo $order=='status' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>
                          style="display:none">
-                        <a href="<?php echo $this->adminBaseUrl('content/content/list?filter[order]=status' . ($order=='status' && !$orderDesc ? '+desc' : '') . ($columnFilters ? '&' . $columnFilters : '')); ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content/list/order/status' . ($order=='status' && !$orderDesc ? '+desc' : '')); ?>">
                             Status
-                            <?php echo $order == 'status' ? '<b class="caret"></b>' : ''; ?>
+                            <?php echo $order == 'status' ? '<span class="caret"></span>' : ''; ?>
                         </a>
                     </th>
-                    <th class="span1<?php echo $order=='dt_published' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
-                        <a href="<?php echo $this->adminBaseUrl('content/content/list?filter[order]=dt_published' . ($order=='dt_published' && !$orderDesc ? '+desc' : '') . ($columnFilters ? '&' . $columnFilters : '')); ?>">
-                            <span class="visible-desktop">Publicação</span>
-                            <span class="hidden-desktop">Public.</span>
-                            <?php echo $order == 'dt_published' ? '<b class="caret"></b>' : ''; ?>
+                    <th class="<?php echo $order=='dt_published' ? ($orderDesc ? ' dropup' : ' dropdown') : ''; ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content/list/order/dt_published' . ($order=='dt_published' && !$orderDesc ? '+desc' : '')); ?>">
+                            <span class="visible-md visible-lg">Publicação <?php echo $order == 'dt_published' ? '<span class="caret"></span>' : ''; ?></span>
+                            <span class="hidden-md hidden-lg">Public. <?php echo $order == 'dt_published' ? '<span class="caret"></span>' : ''; ?></span>
                         </a>
                     </th>
                     <th width="70"></th>
@@ -98,13 +98,13 @@ $rowClass = array(
                     <tr<?php echo $content->status == 'A' &&
                           $content->getDatePublished()->compare(Zend_Date::now()) == 1
                           ? $rowClass['I'] : $rowClass[$content->status]; ?>>
-                        <td title="<?php echo $content->id; ?>" class="hidden-phone hidden-tablet">
+                        <td title="<?php echo $content->id; ?>" class="hidden-xs hidden-sm">
                             <?php echo $content->id; ?>
                         </td>
                         <td title="<?php echo $this->escape($content->title); ?>">
                             <?php echo $this->escape($content->title); ?>
                         </td>
-                        <td title="<?php echo $this->escape($content->slug); ?>" class="hidden-phone hidden-tablet">
+                        <td title="<?php echo $this->escape($content->slug); ?>" class="hidden-xs hidden-sm">
                             <?php echo $this->escape($content->slug); ?>
                         </td>
                         <td title="<?php echo $this->escape($content->getType()->type); ?>">
@@ -114,37 +114,35 @@ $rowClass = array(
                             <?php echo $status[$content->status]; ?>
                         </td>
                         <td title="<?php echo $content->getDatePublished()->get('dd/MM/yyyy HH:mm:ss'); ?>">
-                            <span class="visible-desktop"><?php echo $content->getDatePublished()->get('dd/MM/yy HH:mm'); ?></span>
-                            <span class="hidden-desktop"><?php echo $content->getDatePublished()->get('dd/MM/yy'); ?></span>
+                            <span class="visible-md visible-lg"><?php echo $content->getDatePublished()->get('dd/MM/yyyy HH:mm'); ?></span>
+                            <span class="hidden-md hidden-lg"><?php echo $content->getDatePublished()->get('dd/MM/yy'); ?></span>
                         </td>
                         <td class="actions">
-                            <i class="<?php echo $statusIcon[$content->status] ?>" title="<?php echo $status[$content->status]; ?>"></i>
+                            <span rel="tooltip" class="<?php echo $statusIcon[$content->status] ?>" title="<?php echo $status[$content->status]; ?>"></span>
 
                             <a href="<?php echo $this->baseUrl($content->slug); ?>" target="_blank"
-                               title="Visualizar" rel="tooltip"><i class="icon-globe"></i></a>
+                               title="Visualizar" rel="tooltip"><span class="glyphicon glyphicon-globe"></span></a>
 
                             <a href="<?php echo $this->adminBaseUrl("content/content/edit/id/{$content->id}"); ?>"
-                               title="Editar" rel="tooltip"><i class="icon-edit"></i></a>
+                               title="Editar" rel="tooltip"><span class="glyphicon glyphicon-edit"></span></a>
 
                             <a href="<?php echo $this->adminBaseUrl("content/content/remove/id/{$content->id}"); ?>"
-                               title="<?php echo $content->status == 'D' ? 'Excluir' : 'Enviar para a lixeira'; ?>" rel="tooltip"><i class="icon-<?php
-                               echo $content->status == 'D' ? 'remove' : 'trash'; ?>"></i></a>
+                               title="<?php echo $content->status == 'D' ? 'Excluir' : 'Enviar para a lixeira'; ?>" rel="tooltip"><span class="glyphicon glyphicon-<?php
+                               echo $content->status == 'D' ? 'remove' : 'trash'; ?>"></span></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="7" class="text-center">
+                        Exibindo <?php echo $this->paginator->getCurrentItemCount(); ?> de
+                        <?php echo $this->paginator->getTotalItemCount(); ?> itens cadastrados
+                    </td>
+                </tr>
+            </tfoot>
         </table>
-        
-        <?php echo $this->paginator; ?>
-        
-    </fieldset>
-
-</div>
-<div class="span3">
-
-    <fieldset>
-        <legend>Filtros</legend>
-        <?php echo $this->form; ?>
-    </fieldset>
+    </div>
     
+    <div class="panel-body"><?php echo $this->paginator; ?></div>
 </div>

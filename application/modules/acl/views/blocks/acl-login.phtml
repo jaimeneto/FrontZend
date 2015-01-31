@@ -11,7 +11,7 @@
 }
 </style>
 
-<fieldset class="block block-acl-login <?php echo $this->cssVisibility($this->block); ?>">
+<fieldset <?php echo $this->htmlTagAttribs($this->block); ?>>
 
     <?php if(Zend_Auth::getInstance()->hasIdentity()): ?>
     

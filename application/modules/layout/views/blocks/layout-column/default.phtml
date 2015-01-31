@@ -1,0 +1,5 @@
+<div <?php echo $this->htmlTagAttribs($this->block); ?>>
+    <?php foreach($this->block->getBlocks(true) as $block):
+        echo $this->showBlock($block, $this->content, $this->user);
+    endforeach; ?>
+</div>

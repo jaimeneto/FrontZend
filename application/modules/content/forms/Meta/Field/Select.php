@@ -27,8 +27,11 @@ class Content_Form_Meta_Field_Select extends Zend_Form_Element_Multi
             } else {
                 $this->helper = 'formRadio';
             }
+            $this->_separator = '';
+            $options['inline'] = true;
             unset($options['multiple']);
         } else {
+            $options['class'] = 'form-control';
             $this->helper = 'formSelect';
         }
         

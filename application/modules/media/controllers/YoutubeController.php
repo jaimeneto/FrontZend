@@ -19,6 +19,18 @@ class Media_YoutubeController extends Zend_Controller_Action
         $this->_helper->acl("{$module}_{$controller}_{$action}");
     }
 
+    public function ajaxSearchModalAction()
+    {
+        $modalTitle = $this->getParam('title', 'Buscar vídeo no youtube...');
+        
+        $this->view->modalTitle = $modalTitle;
+        
+        $this->_helper->json(array(
+            'status'  => 1,
+            'content' => $this->view->render('youtube/ajax-search-modal.phtml')
+        ));
+    }
+    
     /**
      * Busca videos no Youtube e retorna um JSON com os resultados
      * 

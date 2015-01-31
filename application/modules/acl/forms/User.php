@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
+class Acl_Form_User extends Bootstrap_Form_Horizontal
 {
     protected $_edit = false;
 
@@ -16,17 +16,17 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
     {
         $this->setAttrib('id', strtolower(__CLASS__));
         $this->addPrefixPath('FrontZend_Form', 'FrontZend/Form');
-        $this->addPrefixPath('Twitter_Bootstrap_Form', 'Twitter/Bootstrap/Form');
+        $this->addPrefixPath('Bootstrap_Form', 'Bootstrap/Form');
 
         if (isset($options['edit']) && $options['edit']) {
             $this->_edit = (bool) $options['edit'];
             unset($options['edit']);
         }
+        
+        parent::__construct($options);
+        
         $this->initElements();
         $this->initInfo();
-
-        parent::__construct($options);
-
         $this->initButtons();
     }
 
@@ -39,51 +39,46 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
         );
         $this->addElement('select', 'id_role', array(
             'label'        => 'Tipo de usuário',
-            'class'        => 'input-block-level',
             'multiOptions' => $roles,
         ));
         $groupElements[] = 'id_role';
 
         $this->addElement('text', 'name', array(
-            'label' => 'Nome',
-            'class' => 'input-block-level',
+            'label' => 'Nome'
         ));
         $groupElements[] = 'name';
 
         $this->addElement('text', 'display_name', array(
-            'label' => 'Nome de exibição',
-            'class' => 'input-block-level',
+            'label' => 'Nome de exibição'
         ));
         $groupElements[] = 'display_name';
 
         $this->addElement('text', 'email', array(
-            'label'   => 'E-mail',
-            'class'   => 'input-block-level',
-            'prepend' => '<i class="icon-envelope"></i>'
+            'label'         => 'E-mail',
+            'prepend'       => '<span class="glyphicon glyphicon-envelope"></span>'
         ));
         $groupElements[] = 'email';
 
         $this->addElement('text', 'avatar', array(
-            'label'       => 'Avatar',
-            'class'       => 'input-block-level',
-            'prepend'     => '<i class="icon-picture"></i>',
-            'description' => 'Será usado <a href="http://www.gravatar.com" '
-                           . 'target="_blank">gravatar</a>, se o e-mail '
-                           . 'estiver associado.'
+            'label'         => 'Avatar',
+            'prepend'       => '<span class="glyphicon glyphicon-picture"></span>',
+            'description'   => 'Será usado <a href="http://www.gravatar.com" '
+                             . 'target="_blank">gravatar</a>, se o e-mail '
+                             . 'estiver associado.'
         ));
         $groupElements[] = 'avatar';
 
         $this->addElement('text', 'username', array(
-            'label' => 'Nome de usuário',
-            'class' => 'input-small',
-            'prepend' => '<i class="icon-user"></i>'
+            'label'     => 'Nome de usuário',
+            'class'     => 'input-small',
+            'prepend'   => '<span class="glyphicon glyphicon-user"></span>'
         ));
         $groupElements[] = 'username';
 
         $this->addElement('password', 'password', array(
             'label' => 'Senha',
             'class' => 'input-small',
-            'prepend' => '<i class="icon-lock"></i>'
+            'prepend' => '<span class="glyphicon glyphicon-lock"></span>'
         ));
         $groupElements[] = 'password';
 
@@ -94,7 +89,7 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
                 'validators' => array(
                     array('Identical', false, array('token' => 'password'))
                 ),
-                'prepend'    => '<i class="icon-lock"></i>'
+                'prepend'    => '<span class="glyphicon glyphicon-lock"></span>'
             ));
             $groupElements[] = 'password2';
         }
@@ -103,8 +98,7 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addElement('radio', 'gender', array(
             'label'        => 'Sexo',
-            'label_class'  => 'inline',
-            'separator'    => '',
+            'inline'       => true,
             'multiOptions' => array(
                 'M' => 'Masculino',
                 'F' => 'Feminino'
@@ -114,7 +108,6 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addElement('datetime', 'birthdate', array(
             'label'    => 'Data de aniversário',
-            'class'    => 'input-block-level',
             'format'   => 'dd/MM/yyyy',
             'max-year' => Zend_Date::now()->subYear(1)->get('yyyy')
         ));
@@ -122,9 +115,8 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
                
         $this->addElement('radio', 'status', array(
             'label'        => 'Status',
-            'label_class'  => 'inline',
             'value'        => 'I',
-            'separator'    => '',
+            'inline'       => true,
             'multiOptions' => array(
                 'A' => 'Ativo',
                 'I' => 'Inativo',
@@ -145,7 +137,8 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
                     'FormElements',
                     array('HtmlTag', array(
                         'tag'   => 'div',
-                        'class' => 'tab-pane active',
+                        'role'  => 'tabpanel',
+                        'class' => 'tab-pane form-horizontal active',
                         'id'    => 'main_elements'
                     ))
                 )
@@ -155,38 +148,43 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
 
     public function initInfo()
     {
-        $this->addElement('UneditableTextfield', 'date_registered', array(
-            'label'  => 'Data do cadastro',
-            'class'  => 'span7',
-            'ignore' => true
+        $this->addElement('StaticText', 'date_registered', array(
+            'label'    => 'Data do cadastro',
+            'class'    => 'form-control',
+            'ignore'   => true,
+            'disalbed' => true
         ));
         $groupElements[] = 'date_registered';
 
-        $this->addElement('UneditableTextfield', 'date_activated', array(
-            'label'  => 'Data de ativação',
-            'class'  => 'span7',
-            'ignore' => true
+        $this->addElement('StaticText', 'date_activated', array(
+            'label'    => 'Data de ativação',
+            'class'    => 'form-control',
+            'ignore'   => true,
+            'disalbed' => true
         ));
         $groupElements[] = 'date_activated';
 
-        $this->addElement('UneditableTextfield', 'date_updated', array(
-            'label'  => 'Última atualização',
-            'class'  => 'span7',
-            'ignore' => true
+        $this->addElement('StaticText', 'date_updated', array(
+            'label'    => 'Última atualização',
+            'class'    => 'form-control',
+            'ignore'   => true,
+            'disalbed' => true
         ));
         $groupElements[] = 'date_updated';
 
-        $this->addElement('UneditableTextfield', 'date_lastaccess', array(
-            'label'  => 'Último acesso',
-            'class'  => 'span7',
-            'ignore' => true
+        $this->addElement('StaticText', 'date_lastaccess', array(
+            'label'    => 'Último acesso',
+            'class'    => 'form-control',
+            'ignore'   => true,
+            'disalbed' => true
         ));
         $groupElements[] = 'date_lastaccess';
 
-        $this->addElement('UneditableTextfield', 'activation_key', array(
-            'label'  => 'Chave de ativação',
-            'class'  => 'span7',
-            'ignore' => true
+        $this->addElement('StaticText', 'activation_key', array(
+            'label'    => 'Chave de ativação',
+            'class'    => 'form-control',
+            'ignore'   => true,
+            'disalbed' => true
         ));
         $groupElements[] = 'activation_key';
 
@@ -197,6 +195,7 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
                     'FormElements',
                     array('HtmlTag', array(
                         'tag'   => 'div',
+                        'role'  => 'tabpanel',
                         'class' => 'tab-pane form-horizontal',
                         'id'    => 'content_info'
                     ))
@@ -207,60 +206,42 @@ class Acl_Form_User extends Twitter_Bootstrap_Form_Horizontal
 
     public function initButtons()
     {
-        $this->getElement('id_role')->addDecorator(
-            array('column-group' => 'HtmlTag'),
-            array(
-                'tag' => 'div',
-                'class' => 'span7 form-horizontal',
-                'openOnly' => true
-            )
-        );
-
-        $this->getElement($this->_edit ? 'password2' : 'password')
-            ->addDecorator(
-                array('column-group' => 'HtmlTag'),
-                array('tag' => 'div', 'closeOnly' => true)
-            );
         $this->getElement('avatar')->getDecorator('Description')
             ->setOption('escape', false);
-
-        $this->getElement('gender')->addDecorator(
-            array('column-group' => 'HtmlTag'),
-            array(
-                'tag' => 'div',
-                'class' => 'span3',
-                'style' => 'clear:right',
-                'openOnly' => true
-            )
-        );
-
-        $this->getElement('status')->addDecorator(
-            array('column-group' => 'HtmlTag'),
-            array('tag' => 'div', 'closeOnly' => true));
 
         // BUTTONS
 
         $this->addElement('submit', 'save', array(
             'label'       => 'Salvar',
-            'class'       => 'btn-large',
             'ignore'      => true,
-            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+            'buttonType'  => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'apply', array(
-            'label'      => 'Aplicar',
-            'class'      => 'btn-large',
-            'ignore'     => true,
-            'buttonType' => Twitter_Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
+            'label'         => 'Aplicar',
+            'ignore'        => true,
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_SUCCESS,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'cancel', array(
-            'label'  => 'Cancelar',
-            'class'  => 'btn-large',
-            'ignore' => true
+            'label'         => 'Cancelar',
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_DEFAULT,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'ignore'        => true
         ));
-
-        $this->addFormActions(array('save', 'apply', 'cancel'));
+        
+        $this->addDisplayGroup(array('save', 'apply', 'cancel'), 'buttons', array(
+            'decorators' => array(
+                'FormElements', 
+                array('HtmlTag', array(
+                    'class' => 'col-sm-offset-2', 
+                    'tag'   => 'div',
+                    'style' => 'clear:both'
+                ))
+            ),
+        ));
     }
 
     public function init()

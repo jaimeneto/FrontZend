@@ -1,29 +1,40 @@
-<fieldset>
-    <legend>Editar usuário</legend>
+<div class="page-header">
+    <h1>
+        <span class="glyphicon glyphicon-lock"></span> 
+        Acesso
+        <small>Usuários</small>
+    </h1>    
+</div>
 
-    <?php echo $this->alerts() ?>
+<?php echo $this->alerts(); ?>
 
-    <?php
-        $displayGroups = $this->form->getDisplayGroups();
-        if($displayGroups):
-    ?>
-    <ul class="nav nav-tabs">
-        <?php foreach($displayGroups as $displayGroup): ?>
-        <?php if($displayGroup->getLegend()): ?>
-        <li<?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : '' ?>>
-            <a href="#<?php echo $displayGroup->getName() ?>" data-toggle="tab">
-                <?php echo $displayGroup->getLegend() ?>
-            </a>
-        </li>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Editar usuário</h3>
+        <?php
+            $displayGroups = $this->form->getDisplayGroups();
+            if($displayGroups):
+        ?>
+        <ul class="nav nav-tabs">
+            <?php foreach($displayGroups as $displayGroup): ?>
+            <?php if($displayGroup->getLegend()): ?>
+            <li role="presentation" <?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : '' ?>>
+                <a href="#<?php echo $displayGroup->getName() ?>" data-toggle="tab">
+                    <?php echo $displayGroup->getLegend() ?>
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
         <?php endif; ?>
-        <?php endforeach; ?>
-    </ul>
-    <?php endif; ?>
-
-    <div id="avatar_preview" class="thumbnail">
-    <?php echo $this->gravatar($this->form->getElement('email')->getValue()); ?>
     </div>
+    <div class="panel-body" style="position:relative">
+        <div id="avatar_preview" class="thumbnail">
+            <?php echo $this->gravatar($this->form->getElement('email')->getValue()); ?>
+        </div>
 
-    <?php echo $this->form; ?>
-    
-</fieldset>
+        <div class="col-md-11 col-sm-10 col-xs-9">
+            <?php echo $this->form; ?>
+        </div>      
+    </div>    
+</div>

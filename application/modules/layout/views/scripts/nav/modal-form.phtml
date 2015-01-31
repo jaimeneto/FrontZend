@@ -1,31 +1,37 @@
-<div id="form_nav_item" class="modal hide fade">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3>Adicionar novo item de menu</h3>
-    </div>
-    <div class="modal-body">
+<div id="form_nav_item" class="modal fade" tabindex="-1" role="dialog" 
+     aria-labelledby="modal_label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="modal_label">Adicionar novo item de menu</h4>
+            </div>
+            <div class="modal-body">
+                <?php
+                    $displayGroups = $this->form->getDisplayGroups();
+                    if($displayGroups):
+                ?>
+                <ul class="nav nav-tabs" id="modal_form">
+                    <?php foreach($displayGroups as $displayGroup): ?>
+                    <?php if($displayGroup->getLegend()): ?>
+                    <li<?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : ''; ?>>
+                        <a href="#<?php echo $displayGroup->getName(); ?>" data-toggle="tab">
+                            <?php echo $displayGroup->getLegend(); ?>
+                        </a>
+                    </li>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+                <br />
+                <?php endif; ?>
 
-        <?php
-            $displayGroups = $this->form->getDisplayGroups();
-            if($displayGroups):
-        ?>
-        <ul class="nav nav-tabs" id="modal_form">
-            <?php foreach($displayGroups as $displayGroup): ?>
-            <?php if($displayGroup->getLegend()): ?>
-            <li<?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : ''; ?>>
-                <a href="#<?php echo $displayGroup->getName(); ?>" data-toggle="tab">
-                    <?php echo $displayGroup->getLegend(); ?>
-                </a>
-            </li>
-            <?php endif; ?>
-            <?php endforeach; ?>
-        </ul>
-        <?php endif; ?>
-
-        <?php echo $this->form; ?>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" aria-hidden="true" id="save">Salvar</button>
-        <button id="cancel_form_nav_item" class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                <?php echo $this->form; ?>
+            </div>
+            <div class="modal-footer">
+                <button id="save" type="button" class="btn btn-primary">Salvar</button>
+                <button id="cancel_form_nav_item" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
     </div>
 </div>

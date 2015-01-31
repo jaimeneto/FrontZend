@@ -41,7 +41,6 @@ ul.nav-container li span.ui-icon {
     float: left;
     margin: 2px;
 }
-
-#layouts.accordion .accordion-heading .accordion-toggle.active {
-    background-color: #eee;
+ul.nav-container li a {
+    color: #333;
 }

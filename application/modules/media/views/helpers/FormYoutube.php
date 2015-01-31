@@ -38,14 +38,15 @@ class Media_View_Helper_FormYoutube extends Zend_View_Helper_FormElement
 
         // XHTML or HTML end tag?
         $endTag = ' />';
-        if (($this->view instanceof Zend_View_Abstract) && !$this->view->doctype()->isXhtml()) {
+        if (($this->view instanceof Zend_View_Abstract) && 
+                !$this->view->doctype()->isXhtml()) {
             $endTag= '>';
         }
 
         $xhtml .= $this->view->formButton('select_' . $id,
                     'Buscar video no youtube...',
                     array('class' => 'btn btn-youtube-search'))
-                . '<ul class="thumbnails">';
+                . '<div class="row" id="' . $id . '_preview">';
         
         // Set up the filter - Alnum + hyphen + underscore
         require_once 'Zend/Filter/PregReplace.php';
@@ -59,18 +60,18 @@ class Media_View_Helper_FormYoutube extends Zend_View_Helper_FormElement
         // add radio buttons to the list.
         foreach ($value as $val) if ($val) {
 
-            $item = '<li id="files_' . $id . '-' . $val . '" class="span4">'
+            $item = '<div id="files_' . $id . '-' . $val . '" class="col-xs-6">'
                   . $this->view->formHidden($name, $val)
                   . '<div id="' . $id. '_preview" class="youtube-preview"'
                   . $this->_htmlAttribs($attribs)
                   . '>'
                   . '<a id="remove_' . $id . '" class="file-remove pull-right"'
                   . 'href="#files_' . $id . '-' . $val . '" title="Remover">'
-                  . '<i class="icon-remove"></i>'
+                  . '<span class="glyphicon glyphicon-remove"></span>'
                   .'</a>'
                   . $this->view->youtubeVideo($val, 360, 270)
                   . '</div>'
-                  . '</li>';
+                  . '</div>';
 
             // add to the array of radio buttons
             $list[] = $item;
@@ -78,7 +79,7 @@ class Media_View_Helper_FormYoutube extends Zend_View_Helper_FormElement
         
         // done!
         $xhtml .= implode($listsep, $list);
-        $xhtml .= '</ul>';
+        $xhtml .= '</div>';
         
         return $xhtml;
     }

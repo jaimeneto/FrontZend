@@ -13,38 +13,33 @@ class Acl_Form_Filter_User extends FrontZend_Module_Form_Filter_Abstract
 {
     public function initElements()
     {
-        $term = $this->addElement('text', 'term', array(
-            'label' => 'Buscar',
-            'class' => 'input-block-level',
-            'belongsTo' => 'filter'
+        $this->addElement('text', 'term', array(
+            'label'         => 'Buscar',
+            'belongsTo'     => 'filter'
         ));
 
-        $coreRoles = array(
-            ''        => 'Todos',
-            'Funções' => FrontZend_Container::get('AclRole')->fetchPairs('role')
-        );
         $this->addElement('select', 'id_role', array(
-            'label'        => 'Função',
-            'class'        => 'input-block-level',
-            'belongsTo'    => 'filter',
-            'multiOptions' => $coreRoles
+            'label'         => 'Função',
+            'belongsTo'     => 'filter',
+            'multiOptions'  => array(
+                ''        => 'Todos',
+                'Funções' => FrontZend_Container::get('AclRole')->fetchPairs('role')
+            )
         ));
 
-        $status = $this->createElement('select', 'status');
-        $status->setLabel('Status')
-            ->setMultiOptions(array(
+        $this->addElement('select', 'status', array(
+            'label'         => 'Status',
+            'belongsTo'     => 'filter',
+            'multiOptions'  => array(
                 ''  => 'Todos',
                 'A' => 'Ativo',
                 'I' => 'Inativo',
                 'B' => 'Bloqueado'
-            ))
-            ->setAttrib('class', 'input-block-level')
-            ->setBelongsTo('filter');
-        $this->addElement($status);
+            )
+        ));
 
         $this->addElement('select', 'order', array(
             'label'        => 'Ordernar por',
-            'class'        => 'input-block-level',
             'belongsTo'    => 'filter',
             'value'        => 'dt_registered desc',
             'multiOptions' => array(

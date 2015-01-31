@@ -1,6 +1,5 @@
 <?php if ($this->images): ?>
-<div class="block block-content-images block-content-images-default
-    <?php echo $this->cssVisibility($this->block); ?>">
+<div <?php echo $this->htmlTagAttribs($this->block, array('class' => 'block-content-images-default')); ?>>
     <?php foreach($this->images as $image): ?>
     <img src="<?php echo $image; ?>" alt="" />
     <?php endforeach;?>

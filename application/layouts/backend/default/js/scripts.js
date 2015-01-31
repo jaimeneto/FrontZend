@@ -1,9 +1,20 @@
 $(function(){
     $('[rel="tooltip"]').tooltip({'placement': 'left'})
     .each(function(){
-        var $this = $(this), data = $this.data('tooltip');
-        $this.on('focus.tooltip', $.proxy(data.enter, data))
-             .on('blur.tooltip', $.proxy(data.leave, data));
+        var data = $(this).data('tooltip');
+        if (data) {
+            $(this).on('focus.tooltip', $.proxy(data.enter, data))
+                 .on('blur.tooltip', $.proxy(data.leave, data));
+        }
+    });
+
+    $('[rel="tooltip-right"]').tooltip({'placement': 'right'})
+    .each(function(){
+        var data = $(this).data('tooltip');
+        if (data) {
+            $(this).on('focus.tooltip', $.proxy(data.enter, data))
+                 .on('blur.tooltip', $.proxy(data.leave, data));
+        }
     });
 
     $("table.treetable").treetable({

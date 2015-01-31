@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Layout_Form_Theme extends Twitter_Bootstrap_Form_Horizontal
+class Layout_Form_Theme extends Bootstrap_Form_Horizontal
 {
     public function __construct($options = null)
     {
@@ -31,18 +31,27 @@ class Layout_Form_Theme extends Twitter_Bootstrap_Form_Horizontal
     {
         $this->addElement('submit', 'save', array(
             'label'       => 'Instalar',
-            'class'       => 'btn-large',
             'ignore'      => true,
-            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+            'buttonType'  => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY,
+            'size'        => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE
         ));
 
         $this->addElement('submit', 'cancel', array(
-            'label'  => 'Cancelar',
-            'class'  => 'btn-large',
-            'ignore' => true
+            'label'       => 'Cancelar',
+            'buttonType'  => Bootstrap_Form_Element_Submit::BUTTON_DEFAULT,
+            'size'        => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'ignore'      => true
         ));
 
-        $this->addFormActions(array('save', 'apply', 'cancel'));
+        $this->addDisplayGroup(array('save', 'apply', 'cancel'), 'buttons', array(
+            'decorators' => array(
+                'FormElements', 
+                array('HtmlTag', array(
+                    'tag'   => 'div',
+                    'style' => 'clear:both'
+                ))
+            ),
+        ));
     }
 
     public function init()

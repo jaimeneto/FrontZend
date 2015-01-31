@@ -1,66 +1,77 @@
-<div>
+<div class="page-header">
+    <h1>
+        <span class="glyphicon glyphicon-th-large"></span> 
+        Layout
+        <small>Temas</small>
+    </h1>
+</div>
 
-    <fieldset>
-        <legend>Temas de layout</legend>
+<?php echo $this->alerts(); ?>
 
-        <?php echo $this->alerts(); ?>
-
-        <ul class="nav nav-tabs">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Selecionar tema</h3>
+        <ul class="nav nav-tabs pull-right">
             <?php $first=true; foreach($this->themes as $env => $themes): ?>
             <li<?php echo $first ? ' class="active"' : ''; ?>>
                 <a href="#<?php echo $env; ?>" data-toggle="tab"><?php echo ucfirst($env); ?></a>
             </li>
             <?php $first=false; endforeach; ?>
         </ul>
-
+    </div>
+    <div class="panel-body">
         <div class="tab-content" id="layout_themes">
             <?php $first=true; foreach($this->themes as $env => $themes): ?>
             <div class="tab-pane<?php echo $first ? ' active' : ''; ?>" id="<?php echo $env; ?>">
-                <ul class="thumbnails">
+                <div class="thumbnails">
                     <?php foreach($themes as $theme): 
                         $this->syncLayoutFiles('img', $theme->theme, $env, true);
                     ?>
-                    <li<?php echo $theme->active ? ' class="active"' : ''; ?> id="theme_<?php echo $theme->id; ?>">
-                        <div class="thumbnail">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="thumbnail<?php echo $theme->active ? ' active' : ''; ?>" id="theme_<?php echo $theme->id; ?>">
                             <img alt="" width="200" height="150"
                                  src="<?php echo $this->baseUrl("cache/layouts/{$env}/{$theme->theme}/img/preview.jpg"); ?>" />
+                            <div class="caption">
+                                <p class="text-center">
+                                    <strong><?php echo $this->escape($theme->name); ?></strong><br />
+                                    <small>Versão <?php echo $this->escape($theme->version); ?></small>
+                                    <span class="btns"><br />
+                                    <button type="button" name="activate" class="btn btn-small btn-success">Ativar</button>
+                                    <?php if ($env == 'frontend'): ?>
+                                    <button type="button" name="test" class="btn btn-small btn-warning<?php echo Zend_Auth::getInstance()->getIdentity()->theme == $theme->theme ? ' active' : ''; ?>">Testar</button>
+                                    <?php endif; ?>
+                                    </span>
+                                </p>
+                            </div>
                         </div>
-                        <p class="text-center">
-                            <strong><?php echo $this->escape($theme->name); ?></strong><br />
-                            <small>Versão <?php echo $this->escape($theme->version); ?></small>
-                            <span class="btns"><br />
-                            <button type="button" name="activate" class="btn btn-small btn-success">Ativar</button>
-                            <?php if ($env == 'frontend'): ?>
-                            <button type="button" name="test" class="btn btn-small btn-warning<?php echo Zend_Auth::getInstance()->getIdentity()->theme == $theme->theme ? ' active' : ''; ?>">Testar</button>
-                            <?php endif; ?>
-                            </span>
-                        </p>
-                    </li>
+                    </div>
                     <?php endforeach; ?>
 
                     <?php if(isset($this->toInstall[$env])): ?>
                     <?php foreach($this->toInstall[$env] as $theme => $themeCfg):
                             $this->syncLayoutFiles('img', $theme, $env, true); ?>
-                        <li class="new-theme">
-                            <div class="thumbnail">
-                                <img alt="" width="200" height="150"
-                                     src="<?php echo $this->baseUrl("cache/layouts/{$env}/{$theme}/img/preview.jpg"); ?>" alt="" />
+                    <div class="col-sm-6 col-md-3">
+                        <div class="thumbnail new-theme">
+                            <img alt="" width="200" height="150"
+                                 src="<?php echo $this->baseUrl("cache/layouts/{$env}/{$theme}/img/preview.jpg"); ?>" alt="" />
+                            <div class="caption">
+                                <p class="text-center">
+                                    <strong><?php echo $this->escape($themeCfg->name); ?></strong><br />
+                                    <small>Versão <?php echo $this->escape($themeCfg->version); ?></small><br />
+                                    <a href="<?php echo $this->adminBaseUrl("layout/theme/install/env/{$env}/theme/{$theme}"); ?>" class="install-btn btn btn-small btn-primary">Instalar</a>
+                                </p>
                             </div>
-                            <p class="text-center">
-                                <strong><?php echo $this->escape($themeCfg->name); ?></strong><br />
-                                <small>Versão <?php echo $this->escape($themeCfg->version); ?></small><br />
-                                <a href="<?php echo $this->adminBaseUrl("layout/theme/install/env/{$env}/theme/{$theme}"); ?>" class="install-btn btn btn-small btn-primary">Instalar</a>
-                            </p>
-                        </li>
+                        </div>
+                    </div>
                     <?php endforeach; ?>
                     <?php endif; ?>
-                </ul>
+                </div>
 
             </div>
             <?php $first=false; endforeach; ?>
         </div>
 
         
-    </fieldset>
+    </div>
 
 </div>

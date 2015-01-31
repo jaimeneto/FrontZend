@@ -8,7 +8,7 @@
         echo $this->headTitle();
 
         $this->headMeta()->setCharset('UTF-8')
-             ->appendName('keywords', 'framework, PHP, productivity')
+             ->appendName('keywords', isset($this->content) ? $this->content->keywords : 'framework, PHP, productivity')
              ->appendName('viewport', 'width=device-width, initial-scale=1.0')
              ->appendName('description', '')
              ->appendName('author', 'jaimeneto.com');
@@ -18,7 +18,6 @@
 
         echo $this->cssHeadLinks(array(
             'lib/bootstrap/css/bootstrap.min.css',
-            'lib/bootstrap/css/bootstrap-responsive.min.css',
             "{$themePath}/css/style.css",
             "{$themePath}/css/blocks.css"
         ));
@@ -39,41 +38,41 @@
 
 <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <button data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar" type="button">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="brand" href="<?php echo $this->baseUrl(); ?>">MEU SITE</a>
-                <div class="nav-collapse collapse">
-                    <?php echo $this->showMenu(1, 'navbar.phtml'); ?>
-                    <p class="navbar-text pull-right">
-                        <a href="<?php echo $this->adminBaseUrl(); ?>" target="_blank">
-                            Área administrativa
-                        </a>
-                    </p>
-                </div><!--/.nav-collapse -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            
+            <?php echo $this->navbarHeader('MEU SITE', 'navbar-collapse-1', $this->baseUrl()); ?>
+
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                
+                <?php echo $this->navbar(); ?>
+                
+                <div class="navbar-form navbar-right">
+                    <a href="<?php echo $this->adminBaseUrl(); ?>" target="_blank">
+                        Área administrativa
+                    </a>
+                </div>
+                
             </div>
         </div>
-    </div>
+    </nav>
 
-    <div class="container-fluid">
+    <main class="container-fluid">
 
         <?php echo $this->layout()->content; ?>
 
         <hr />
 
-        <footer>
+    </main>
+
+    <footer class="text-center">
+        <div class="container-fluid">
             <p>&copy; JAIMENETO.COM 2013</p>
-        </footer>
-
-    </div> <!-- /container -->
-
+        </div>
+    </footer>
+    
     <?php echo $this->jsHeadScripts(array(
-        'lib/jquery/jquery-1.8.3.min.js',
+        'lib/jquery/jquery-1.11.1.min.js',
         'lib/bootstrap/js/bootstrap.min.js'
     )); ?>
 </body>

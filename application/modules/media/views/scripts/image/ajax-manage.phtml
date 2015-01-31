@@ -1,17 +1,11 @@
-<?php /*
-<div class="span3 well sidebar-nav" id="dirs">
-    <?php echo $this->navigation($this->dirs)->menu()->setUlClass('nav nav-list'); ?>
-</div><!--/span-->
-*/ ?>
-
-<ul class="thumbnails">
+<div class="row thumbnails">
     <?php foreach($this->files as $image): ?>
-    <li class="span2">
+    <div class="col-xs-6 col-md-3">
         <a href="#<?php echo $image->id; ?>" class="thumbnail"
            rel="<?php echo $image->path; ?>">
             <img src="<?php echo $this->thumb($image, 150, 150, true); ?>"
                  alt="<?php echo $this->escape($image->original_name); ?>" />
         </a>
-    </li>
+    </div>
     <?php endforeach; ?>
-</ul>
+</div>

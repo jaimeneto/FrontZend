@@ -1,17 +1,16 @@
 <?php
-if ($this->content):
-    $contentUsers = $this->content->getUsers();
-    if($contentUsers):
+$field = $this->block->getOption('field');
+$contentUsers = $this->content->getUsers($field);
+if($contentUsers):
 ?>
-<div class="block block-content-users <?php echo $this->cssVisibility($this->block); ?>">
+<div <?php echo $this->htmlTagAttribs($this->block); ?>>
     <?php 
     foreach($contentUsers as $contentUser):
         $user = $contentUser->getUser(); ?>
         <a href="<?php echo $this->baseUrl('u/' . $user->username); ?>"
-           class="label label-important">
+           class="label label-default">
             <?php echo $this->escape($user->display_name); ?>
         </a>
     <?php endforeach; ?>
 </div>
-<?php endif; 
-endif; ?>
+<?php endif; ?>

@@ -1,8 +1,23 @@
-<fieldset>
-    <legend>Editar página</legend>
+<div class="page-header">
+    <div class="btn-group pull-right">
+        <a class="btn btn-default" href="<?php echo $this->adminBaseUrl('layout/page/config/id/' . $this->form->getValue('id_layout_page')); ?>">
+            <span class="glyphicon glyphicon-wrench"></span> Configurar página
+        </a>
+    </div>
+    <h1>
+        <span class="glyphicon glyphicon-th-large"></span> 
+        Layout
+        <small>Páginas</small>
+    </h1>    
+</div>
 
-    <?php echo $this->alerts(); ?>
+<?php echo $this->alerts(); ?>
 
-    <?php echo $this->form; ?>
-    
-</fieldset>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Editar página</h3>
+    </div>
+    <div class="panel-body">
+        <?php echo $this->form; ?>        
+    </div>    
+</div>

@@ -1,5 +1,5 @@
-<div class="block block-content-comments">
-    <ul class="unstyled">
+<div <?php echo $this->htmlTagAttribs($this->block); ?>>
+    <ul class="list-unstyled">
         <?php if($this->block->getOption('allow_guest') || $this->auth): ?>
         <li class="form-comments">
             <div class="user-comments">

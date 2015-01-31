@@ -1,11 +1,11 @@
-<?php if($this->content && $this->content->text): ?>
+<?php if($this->content->text): ?>
 <style type="text/css">
 .block-content-text {
     text-align: justify;
 }
 </style>
 
-<div class="block block-content-text <?php echo $this->cssVisibility($this->block); ?>">
+<div <?php echo $this->htmlTagAttribs($this->block); ?>>
     <?php echo $this->content->text; ?>
 </div>
 <?php endif; ?>

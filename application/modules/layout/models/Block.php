@@ -21,7 +21,14 @@ class Layout_Model_Block extends FrontZend_Module_Model_Abstract
     {
         if ($this->id_parent) {
             $parentOptions = $this->getParent()->getOptions();
+            $visibility = $options['visibility'] != $parentOptions['visibility']
+                    ? $options['visibility']
+                    : null;
+            unset($parentOptions['visibility'], $options['visibility']);
             $options = array_diff($options, $parentOptions);
+            if ($visibility) {
+                $options['visibility'] = $visibility;
+            }
         }
         $this->options = Zend_Json::encode($options);
         return $this;
@@ -49,6 +56,13 @@ class Layout_Model_Block extends FrontZend_Module_Model_Abstract
         return isset($options[$option]);
     }
 
+    public function setOption($option, $value)
+    {
+        $options = $this->getOptions();
+        $options[$option] = $value;
+        return $this->setOptions($options);
+    }
+    
     /**
      * Retorna o valor de uma opção
      *
@@ -62,6 +76,48 @@ class Layout_Model_Block extends FrontZend_Module_Model_Abstract
         return isset($options[$option]) ? $options[$option] : $default;
     }
 
+    public function getAttribs()
+    {
+        $options = $this->getOptions();
+        $attribs = array();
+        
+        if ($options['css_id']) {
+            $attribs[] = 'id="' . $options['css_id'] . '"';
+        }
+        
+        $class = array(
+            'block' ,
+            strtolower(str_replace('_', '-', get_class($this)))
+        );
+        
+        if ($options['css_class']) {
+            $class[] = $options['css_class'];
+        }
+        
+        if ($options['visibility']) {
+            switch (count($visibility)) {
+                case 1:
+                case 2:
+                    foreach($visibility as $screenSize) {
+                        $class[] = 'visible-' . $screenSize;
+                    }
+                    break;
+                case 3:
+                    $screenSizes = array('xs', 'sm', 'md', 'lg');
+                    foreach($screenSizes as $screenSize) {
+                        if (!in_array($screenSize, $visibility)) {
+                            $class[] = 'hidden-' . $screenSize;
+                        }
+                    }
+                    break;
+            }
+        }
+        
+        $attribs[] = 'class="' . implode(' ', $class) . '"';
+        
+        return implode(' ', $attribs);
+    }
+    
     /**
      *
      * @return Layout_Model_Page

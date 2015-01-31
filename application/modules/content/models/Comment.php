@@ -2,9 +2,9 @@
 
 class Content_Model_Comment extends FrontZend_Module_Model_Abstract
 {
-    const STATUS_ACTIVE   = 'A';
+    const STATUS_ACTIVE = 'A';
     const STATUS_INACTIVE = 'I';
-    const STATUS_DELETED  = 'D';
+    const STATUS_DELETED = 'D';
 
     /**
      *
@@ -44,9 +44,7 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
             throw new Core_Model_Exception("Content must be saved before
                 associate it to a comment");
         }
-
         $this->id_content = $content->getId();
-
         return $this;
     }
 
@@ -82,7 +80,6 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
                     'Int'
                 ),
             ),
-
             'id_user' => array(
                 'filters' => array(
                     'Int'
@@ -97,7 +94,6 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
 //                    ),
                 ),
             ),
-
             'id_content' => array(
                 'required' => true,
 //                'validators' => array(
@@ -110,7 +106,6 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
 //                    ),
 //                ),
             ),
-
             'answer_to' => array(
                 'required' => true,
 //                'validators' => array(
@@ -123,7 +118,6 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
 //                    ),
 //                ),
             ),
-
             'name' => array(
                 'filters' => array(
                     'StringTrim',
@@ -131,16 +125,15 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
                 ),
                 'validators' => array(
                     array(
-                        'name'    => 'StringLength',
+                        'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min'      => 0,
-                            'max'      => 30,
+                            'min' => 0,
+                            'max' => 30,
                         ),
                     ),
                 ),
             ),
-
             'email' => array(
                 'filters' => array(
                     'StringTrim',
@@ -148,20 +141,18 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
                 ),
                 'validators' => array(
                     array(
-                        'name'    => 'EmailAddress',
+                        'name' => 'EmailAddress',
                     ),
                     array(
-                        'name'    => 'StringLength',
+                        'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min'      => 0,
-                            'max'      => 100,
+                            'min' => 0,
+                            'max' => 100,
                         ),
                     ),
                 ),
             ),
-
-
             'site' => array(
                 'filters' => array(
                     'StringTrim',
@@ -169,16 +160,15 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
                 ),
                 'validators' => array(
                     array(
-                        'name'    => 'StringLength',
+                        'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min'      => 0,
-                            'max'      => 255,
+                            'min' => 0,
+                            'max' => 255,
                         ),
                     ),
                 ),
             ),
-
             'info' => array(
                 'filters' => array(
                     'StringTrim',
@@ -186,56 +176,51 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
                 ),
                 'validators' => array(
                     array(
-                        'name'    => 'StringLength',
+                        'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min'      => 0,
-                            'max'      => 255,
+                            'min' => 0,
+                            'max' => 255,
                         ),
                     ),
                 ),
             ),
-
             'comments' => array(
                 'required' => true,
             ),
-
             'spoiler' => array(
                 'filters' => array(
                     'Int'
                 ),
                 'validators' => array(
                     array(
-                        'name'    => 'InArray',
+                        'name' => 'InArray',
                         'options' => array(
                             'haystack' => array(0, 1),
                         ),
                     ),
                 ),
             ),
-
             'dt_created' => array(
                 'validators' => array(
                     array(
-                        'name'    => 'Date',
+                        'name' => 'Date',
                         'options' => array(
                             'format' => 'yyyy-MM-dd HH:mm:ss',
                         ),
                     ),
                 ),
             ),
-
             'dt_updated' => array(
                 'validators' => array(
                     array(
-                        'name'    => 'Date',
+                        'name' => 'Date',
                         'options' => array(
                             'format' => 'yyyy-MM-dd HH:mm:ss',
                         ),
                     ),
                 ),
             ),
-
             'status' => array(
                 'required' => true,
                 'validators' => array(
@@ -247,10 +232,7 @@ class Content_Model_Comment extends FrontZend_Module_Model_Abstract
 //                    ),
                 ),
             ),
-
-
         );
     }
 
 }
-

@@ -18,7 +18,6 @@ class Content_Form_Block_Users extends Layout_Form_Block
         $this->addElement('text', 'title', array(
             'label'      => 'Título',
             'maxlength'  => 60,
-            'class'      => 'input-block-level',
             'filters'    => array(
                 'StripTags',
                 'StringTrim'
@@ -35,7 +34,7 @@ class Content_Form_Block_Users extends Layout_Form_Block
             ),
             'append' => '<a href="#" rel="tooltip" ' 
                 . 'title="Apenas para referência" data-placement="left">'
-                . '<i class="icon-info-sign"></i></a>'
+                . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
 
         // image
@@ -50,18 +49,18 @@ class Content_Form_Block_Users extends Layout_Form_Block
             $relationships = array();
             if ($contentType) {
                 $metafields = $contentType->getMetafields();
-                if ($metafields->relationship) {
-                    foreach($metafields->relationship as $key => $relationship) {
-                        if ($relationship->getOption('type') == 'users') {
-                            $relationships[$key] = $relationship->getOption('label');
-                        }
+                foreach($metafields as $key => $field) {
+                    if ($field->datatype == 'relationship' 
+                            && $field->getOption('type') == 'users') {
+                        $relationships[$field->fieldname] = 
+                                $field->getOption('label');
                     }
                 }
             }
 
             if ($relationships) {
-                $this->addElement('radio', 'image', array(
-                    'label'        => 'Imagem',
+                $this->addElement('radio', 'field', array(
+                    'label'        => 'Campo',
                     'multiOptions' => $relationships
                 ));
             }

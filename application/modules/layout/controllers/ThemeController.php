@@ -22,6 +22,8 @@ class Layout_ThemeController extends Zend_Controller_Action
 
     public function listAction()
     {
+        $this->view->headTitle()->append('Temas');
+        
         $themesList = FrontZend_Container::get('LayoutTheme')->fetchAll();
 
         $themes = array(
@@ -55,11 +57,12 @@ class Layout_ThemeController extends Zend_Controller_Action
         
         $this->view->themes = $themes;
         $this->view->toInstall = $toInstall;
-        $this->view->headTitle()->append('Temas');
     }
 
     public function installAction()
     {
+        $this->view->headTitle()->append('Instalar tema');
+        
         if ($this->_getParam('cancel')) {
             $this->getHelper('Redirector')
                  ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/theme');

@@ -11,9 +11,16 @@
 class Content_ContentController extends FrontZend_Module_Controller_Abstract
 {
    
+    public function listAction()
+    {
+        $this->view->headTitle()->append('Conteúdo');
+        
+        parent::listAction();
+    }
+    
     public function addAction()
     {
-        $this->view->headTitle()->append('Adicionar conteúdo');
+        $this->view->headTitle()->append('Cadastrar item');
 
         parent::addAction();
     }
@@ -23,6 +30,8 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
      */
     public function editAction()
     {
+        $this->view->headTitle()->append('Editar item');
+        
         $id = $this->_getParam('id');
         
         if (!$id) {
@@ -34,15 +43,16 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
         $content = FrontZend_Container::get('Content')->findById($id);
 
         if (!$content) {
-            $this->getHelper('alerts')->addError('Conteúdo inválido');
+            $this->getHelper('alerts')->addError('Item inválido');
             $this->getHelper('Redirector')
                  ->gotoUrlAndExit(ADMIN_ROUTE . '/content/content');
         }
 
         if ($this->_getParam('cancel')) {
-            $this->_redirect(ADMIN_ROUTE . '/content/content/list' .
-                             '?filter[id_content_type]=' .
-                             $content->id_content_type);
+            $ns = new Zend_Session_Namespace('Content_Form_Filter_Content');
+            $ns->filters['id_content_type'] = $content->id_content_type;
+            
+            $this->_redirect(ADMIN_ROUTE . '/content/content');
         }
 
         $form = new Content_Form_Content(array(
@@ -58,7 +68,7 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
                     $form->persistData();
                     if ($id) {
                         $this->getHelper('alerts')
-                            ->addSuccess('Conteúdo alterado com sucesso');
+                            ->addSuccess('Item alterado com sucesso');
                         if ($data['apply']) {
                             $this->getHelper('Redirector')->gotoUrlAndExit(
                                 ADMIN_ROUTE . "/content/content/edit/id/{$id}");
@@ -70,27 +80,32 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
                         }
                     } else {
                         $this->getHelper('alerts')
-                            ->addError('Erro ao editar conteúdo: ' .
+                            ->addError('Erro ao editar item: ' .
                                        'dados inválidos ou faltando');
                     }
                 } catch(Exception $e) {
                     $this->getHelper('alerts')
-                        ->addError('Erro ao editar conteúdo: ' .
+                        ->addError('Erro ao editar item: ' .
                                    $e->getMessage());
 //                    pr($e->getTraceAsString(),1);
                 }
             } else {
                 $this->getHelper('alerts')
-                    ->addError('Erro ao editar conteúdo: ' .
+                    ->addError('Erro ao editar item: ' .
                                'dados inválidos ou faltando');
             }
         }
         
         $this->view->form = $form;
-        
-        $this->view->headTitle()->append('Editar conteúdo');
     }
 
+    public function removeAction()
+    {
+        $this->view->headTitle()->append('Excluir item');
+        
+        parent::removeAction();
+    }
+    
     public function configPageAction()
     {
         $id = $this->_getParam('id');
@@ -104,7 +119,7 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
         $content = FrontZend_Container::get('Content')->findById($id);
 
         if (!$content) {
-            $this->getHelper('alerts')->addError('Conteúdo inválido');
+            $this->getHelper('alerts')->addError('Item inválido');
             $this->getHelper('Redirector')
                  ->gotoUrlAndExit(ADMIN_ROUTE . '/content/content');
         }
@@ -115,7 +130,7 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
             $url = ADMIN_ROUTE . '/layout/page/config/id/' . $page->id;
         } else {
             $this->getHelper('alerts')->addAlert('Ainda não foi foi criada'
-                . ' uma página para esse conteúdo');
+                . ' uma página para esse item');
             $url = ADMIN_ROUTE . "/layout/page/add/content/{$id}";
         }
 
@@ -154,7 +169,7 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
 
                 $dtPublished = $content->getDatePublished()->get('dd/MM/yyyy');
                 $data[] = array(
-                    'id'            => $content->id_content,
+                    'id'            => $content->getId(),
                     'value'         => $value,
                     'filteredValue' => $filterStringLength->filter($value),
                     'date'          => $dtPublished,
@@ -164,6 +179,29 @@ class Content_ContentController extends FrontZend_Module_Controller_Abstract
         }
 
         $this->_helper->json($data);
+    }
+
+    public function ajaxGenerateSlugAction()
+    {
+        $title = $this->_getParam('title');
+        $filterSlug = new FrontZend_Filter_Slug();
+        $slug = $filterSlug->filter($title);
+        
+        $slugs = FrontZend_Container::get('Content')->fetchPairs(
+            'slug', array('slug LIKE ?' => "%{$slug}%"));
+        
+        if ($slugs) {
+            $baseSlug = $slug;
+            $i = 1;
+            while(in_array($slug, $slugs)) {
+                $slug = $baseSlug . '-' . $i++;
+            }
+        }
+            
+        $this->_helper->json(array(
+            'status' => 1,
+            'slug'   => $slug
+        ));
     }
 
 }

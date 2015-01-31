@@ -17,7 +17,6 @@ class Content_Form_Filter_Comment extends FrontZend_Module_Form_Filter_Abstract
     {        
         $this->addElement('text', 'term', array(
             'label'     => 'Buscar',
-            'class'     => 'input-block-level',
             'belongsTo' => 'filter'
         ));
         
@@ -27,14 +26,12 @@ class Content_Form_Filter_Comment extends FrontZend_Module_Form_Filter_Abstract
         );
         $this->addElement('select', 'id_content_type', array(
             'label'        => 'Tipo de conteúdo',
-            'class'        => 'input-block-level',
             'belongsTo'    => 'filter',
             'multiOptions' => $contentTypes
         ));
 
         $this->addElement('select', 'status', array(
             'label'     => 'Status',
-            'class'     => 'input-block-level',
             'belongsTo' => 'filter',
             'multiOptions' => array(
                 ''  => 'Todos',
@@ -46,7 +43,6 @@ class Content_Form_Filter_Comment extends FrontZend_Module_Form_Filter_Abstract
 
         $this->addElement('select', 'order', array(
             'label'     => 'Ordenar por',
-            'class'     => 'input-block-level',
             'belongsTo' => 'filter',
             'value'     => 'dt_updated desc',
             'multiOptions' => array(

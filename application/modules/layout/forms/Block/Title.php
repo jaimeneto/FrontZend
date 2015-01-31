@@ -15,9 +15,9 @@ class Layout_Form_Block_Title extends Layout_Form_Block
     {       
         // title
         $this->addElement('text', 'title', array(
+            'required'   => true,
             'label'      => 'Título',
             'maxlength'  => 60,
-            'class'      => 'input-block-level',
             'filters'    => array(
                 'StripTags',
                 'StringTrim'
@@ -32,6 +32,24 @@ class Layout_Form_Block_Title extends Layout_Form_Block
                     ),
                 ),
             )
+        ));
+        
+        $this->addElement('radio', 'tag', array(
+            'required'     => true,
+            'label'        => 'Tag',
+            'maxlength'    => 60,
+            'inline'       => true,
+            'multiOptions' => array(
+                'h1'   => 'h1',
+                'h2'   => 'h2',
+                'h3'   => 'h3',
+                'h4'   => 'h4',
+                'h5'   => 'h5',
+                'h6'   => 'h6',
+                'div'  => 'div',
+                'span' => 'span'
+            ),
+            'value' => 'div'
         ));
     }
 

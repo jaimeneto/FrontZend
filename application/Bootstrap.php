@@ -12,7 +12,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     protected function _initPaginator()
     {
-        Zend_View_Helper_PaginationControl::setDefaultViewPartial('paginator.phtml');
+        Zend_View_Helper_PaginationControl::setDefaultViewPartial('pagination.phtml');
         Zend_Paginator::setDefaultScrollingStyle('Sliding');
         Zend_Paginator::setDefaultItemCountPerPage(25);
         Zend_Paginator::setDefaultPageRange(8);
@@ -32,7 +32,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->bootstrap('db');
 
         $config = $this->getOption('zfdebug');
-        if($config && Zend_Auth::getInstance()->hasIdentity() &&
+        if($config['enabled'] && Zend_Auth::getInstance()->hasIdentity() &&
                 isset(Zend_Auth::getInstance()->getIdentity()->id_role) &&
                 Zend_Auth::getInstance()->getIdentity()->id_role == 'master') {
             $autoloader = Zend_Loader_Autoloader::getInstance();

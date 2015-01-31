@@ -3,43 +3,54 @@ $order = $this->form->getElement('order')->getValue();
 $orderDesc = strpos($order, ' desc') > 0;
 $order = str_replace(' desc', '', $order);
 ?>
-<div class="span9">
+<div class="page-header">
+    <div class="btn-group pull-right">
+      <a class="btn btn-default" href="<?php echo $this->adminBaseUrl('content/content-type/add'); ?>">
+          <span class="glyphicon glyphicon-plus"></span> Cadastrar
+      </a>
+    </div>
+    <h1>
+        <span class="glyphicon glyphicon-file"></span> 
+        Conteúdo
+        <small>Tipos de conteúdo</small>
+    </h1>
+</div>
 
-    <fieldset>
-        <legend>
-            Tipos de conteúdo
-            <a class="btn pull-right" href="<?php echo $this->adminBaseUrl('content/content-type/add'); ?>">
-                <i class="icon-plus"></i> Cadastrar
-            </a>
-        </legend>
+<?php echo $this->alerts(); ?>
 
-        <?php echo $this->alerts(); ?>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div id="filters">
+            <?php echo $this->form; ?>
+        </div>        
+    </div>
 
-        <table class="table table-hover table-striped table-condensed">
+    <div class="table-horizontal">
+        <table class="table table-bordered table-hover table-striped">
             <thead>
                 <tr>
                     <th<?php echo $order=='id_content_type' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
-                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list?filter[order]=id_content_type' . ($order=='id_content_type' && !$orderDesc ? '+desc' : '')); ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list/order/id_content_type' . ($order=='id_content_type' && !$orderDesc ? '+desc' : '')); ?>">
                             Id
-                            <?php echo $order == 'id_content_type' ? '<b class="caret"></b>' : ''; ?>
+                            <?php echo $order == 'id_content_type' ? '<span class="caret"></span>' : ''; ?>
                         </a>
                     </th>
                     <th<?php echo $order=='type' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
-                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list?filter[order]=type' . ($order=='type' && !$orderDesc ? '+desc' : '')); ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list/order/type' . ($order=='type' && !$orderDesc ? '+desc' : '')); ?>">
                             Tipo
-                            <?php echo $order == 'type' ? '<b class="caret"></b>' : ''; ?>
+                            <?php echo $order == 'type' ? '<span class="caret"></span>' : ''; ?>
                         </a>
                     </th>
                     <th<?php echo $order=='plural' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
-                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list?filter[order]=plural' . ($order=='plural' && !$orderDesc ? '+desc' : '')); ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list/order/plural' . ($order=='plural' && !$orderDesc ? '+desc' : '')); ?>">
                             Plural
-                            <?php echo $order == 'plural' ? '<b class="caret"></b>' : ''; ?>
+                            <?php echo $order == 'plural' ? '<span class="caret"></span>' : ''; ?>
                         </a>
                     </th>
                     <th<?php echo $order=='id_parent' ? ($orderDesc ? ' class="dropup"' : ' class="dropdown"') : ''; ?>>
-                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list?filter[order]=id_parent' . ($order=='id_parent' && !$orderDesc ? '+desc' : '')); ?>">
+                        <a href="<?php echo $this->adminBaseUrl('content/content-type/list/order/id_parent' . ($order=='id_parent' && !$orderDesc ? '+desc' : '')); ?>">
                             Tipo pai
-                            <?php echo $order == 'id_parent' ? '<b class="caret"></b>' : ''; ?>
+                            <?php echo $order == 'id_parent' ? '<span class="caret"></span>' : ''; ?>
                         </a>
                     </th>
                     <th width="50"></th>
@@ -64,33 +75,31 @@ $order = str_replace(' desc', '', $order);
                         <td class="actions">
                              <a href="<?php echo $this->adminBaseUrl("content/content-type/config-page/id/{$contentType->id}"); ?>"
                                title="<?php echo $contentType->getLayoutPage() ? 'Configurar página' : 'Criar página'; ?>"
-                               rel="tooltip"><i class="icon-wrench"></i></a>
+                               rel="tooltip"><span class="glyphicon glyphicon-wrench"></span></a>
 
                             <a href="<?php echo $this->adminBaseUrl("content/content-type/edit/id/{$contentType->id}"); ?>"
-                               title="Editar" rel="tooltip"><i class="icon-edit"></i></a>
-                            
+                               title="Editar" rel="tooltip"><span class="glyphicon glyphicon-edit"></span></a>
+
                             <?php if($parent): ?>
-                            <a href="<?php echo $this->adminBaseUrl('content/content-type/remove'); ?>"
-                               title="Enviar para a lixeira" rel="tooltip"><i class="icon-trash"></i></a>
+                            <a href="<?php echo $this->adminBaseUrl("content/content-type/remove/id/{$contentType->id}"); ?>"
+                               title="Enviar para a lixeira" rel="tooltip"><span class="glyphicon glyphicon-trash"></span></a>
                             <?php else: ?>
-                                <i class="icon-trash icon-white"></i>
+                                <span class="glyphicon glyphicon-trash inactive"></span>
                             <?php endif; ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="7" class="text-center">
+                        Exibindo <?php echo $this->paginator->getCurrentItemCount(); ?> de
+                        <?php echo $this->paginator->getTotalItemCount(); ?> itens cadastrados
+                    </td>
+                </tr>
+            </tfoot>
         </table>
+    </div>
         
-        <?php echo $this->paginator; ?>
-        
-    </fieldset>
-
-</div>
-<div class="span3">
-
-    <fieldset>
-        <legend>Filtros</legend>
-        <?php echo $this->form; ?>
-    </fieldset>
-    
+    <div class="panel-body"><?php echo $this->paginator; ?></div>
 </div>

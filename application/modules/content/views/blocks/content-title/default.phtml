@@ -1,0 +1,5 @@
+<<?php echo $this->block->getOption('tag', 'div'); ?> 
+    <?php echo $this->htmlTagAttribs($this->block); ?>>
+    <!-- CONTENT <?php echo $this->content->id; ?> -->
+    <?php echo $this->escape($this->content->title); ?>
+</<?php echo $this->block->getOption('tag', 'div'); ?>>

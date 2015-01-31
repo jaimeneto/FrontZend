@@ -17,7 +17,6 @@ class Layout_Form_Block_Nav extends Layout_Form_Block
         $this->addElement('text', 'title', array(
             'label'      => 'Título',
             'maxlength'  => 60,
-            'class'      => 'input-block-level',
             'filters'    => array(
                 'StripTags',
                 'StringTrim'
@@ -34,14 +33,13 @@ class Layout_Form_Block_Nav extends Layout_Form_Block
             ),
             'append' => '<a href="#" rel="tooltip" data-placement="left" '
                       . 'title="Apenas para referência">'
-                      . '<i class="icon-info-sign"></i></a>'
+                      . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
 
         //container
         $multiOptions = FrontZend_Container::get('LayoutNav')->fetchPairs('label');
         $this->addElement('select', 'container', array(
             'label'        => 'Menu',
-            'class'        => 'input-block-level',
             'multiOptions' => $multiOptions
         ));
 
@@ -61,7 +59,6 @@ class Layout_Form_Block_Nav extends Layout_Form_Block
         }
         $this->addElement('select', 'template', array(
             'label'        => 'Modelo',
-            'class'        => 'input-block-level',
             'multiOptions' => $multiOptions
         ));
 

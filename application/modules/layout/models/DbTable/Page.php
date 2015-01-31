@@ -44,22 +44,33 @@ class Layout_Model_DbTable_Page extends FrontZend_Module_Model_DbTable_Abstract
      *
      * @param mixed $content
      * @param bool $findByContentType Se não encontrar, busca pelo tipo
+     * @param integer $idTheme
      */
-    public function findByContent($content, $findByContentType=true)
+    public function findByContent($content, 
+                                  $findByContentType=true, 
+                                  $idTheme=null)
     {
         $idContent = $content instanceof Content_Model_Content
             ? $content->getId()
             : $content;
 
-        $page = FrontZend_Container::get('LayoutPage')->findOne(array('where' =>
-            array('id_content = ?' => $idContent)));
+        $where = array('id_content = ?' => $idContent);
+        
+        if ($idTheme) {
+            $where['id_layout_theme = ?'] = $idTheme;
+        }
+        
+        $page = FrontZend_Container::get('LayoutPage')->findOne(
+            array('where' => $where));
 
         if ($findByContentType && !$page) {
             if (!($content instanceof Content_Model_Content)) {
-                $content = FrontZend_Container::get('Content')->findById($idContent);
+                $content = FrontZend_Container::get('Content')
+                                ->findById($idContent);
             }
 
-            $page = $this->findByContentType($content->id_content_type);
+            $page = $this->findByContentType($content->id_content_type, 
+                                             $idTheme);
         }
 
         return $page;
@@ -69,15 +80,22 @@ class Layout_Model_DbTable_Page extends FrontZend_Module_Model_DbTable_Abstract
      * Retorna a página do layout relativa ao tipo de conteúdo
      *
      * @param mixed $contentType
+     * @param integer $idTheme
      */
-    public function findByContentType($contentType)
+    public function findByContentType($contentType, $idTheme=null)
     {
         if ($contentType instanceof Content_Model_ContentType) {
             $contentType = $contentType->getId();
         }
 
-        return FrontZend_Container::get('LayoutPage')->findOne(array('where' =>
-            array('id_content_type = ?' => $contentType)));
+        $where = array('id_content_type = ?' => $contentType);
+        
+        if ($idTheme) {
+            $where['id_layout_theme = ?'] = $idTheme;
+        }
+        
+        return FrontZend_Container::get('LayoutPage')->findOne(
+            array('where' => $where));
     }
 
     /**
@@ -85,11 +103,18 @@ class Layout_Model_DbTable_Page extends FrontZend_Module_Model_DbTable_Abstract
      * ou tipo de conteúdo
      *
      * @param mixed $special
+     * @param integer $idTheme
      */
-    public function findSpecial($special)
+    public function findSpecial($special, $idTheme=null)
     {
-        return FrontZend_Container::get('LayoutPage')->findOne(array('where' =>
-            array('special = ?' => $special)));
+        $where = array('special = ?' => $special);
+        
+        if ($idTheme) {
+            $where['id_layout_theme = ?'] = $idTheme;
+        }
+        
+        return FrontZend_Container::get('LayoutPage')->findOne(
+            array('where' => $where));
     }
 
 }

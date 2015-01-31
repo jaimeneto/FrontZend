@@ -31,16 +31,16 @@ class FrontZend_Filter_Slug implements Zend_Filter_Interface
     
     private static function _filter($string)
     {
-        $a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖŌØÙÚÛÜŪÝÞ$ß£àáâãäåæ@ç¢èéêë&ìíîïðñòóôõöōø'
-           . 'ùúûüūýýþÿŔŕ°ºª¹²³¨¬§,.;:\|/"^~*%# ()[]{}=!?`´‘’><' . "'";
-
-        $b = 'aaaaaaaceeeeiiiidnooooooouuuuuybsslaaaaaaaacceeeeeiiiidnooooooo'
-           . 'uuuuuyybyRrooa123--------------------------------' . '-';
-
-        $string = strtr($string, $a, $b);
+        $a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞ$ßàáâãäåæ@çèéêë&ìíîïðñòóôõöøùúûü' 
+           . 'ýýþÿŔŕ°ºª¹²³,.;:\|/"^~*%# ()[]{}><=!?`´‘’¨¬§' . "'";
+        $b = 'aaaaaaaceeeeiiiidnoooooouuuuybssaaaaaaaaceeeeeiiiidnoooooouuuu' 
+           . 'yybyRrooa123--------------------------------' . '-';
+        
+        $string = utf8_decode($string);
+        $string = strtr($string, utf8_decode($a), $b);
         $string = strtolower($string);
         $string = preg_replace('/--+/', '-', $string);
         $string = trim($string, '-');
-        return $string;
+        return utf8_encode($string);
     }
 }

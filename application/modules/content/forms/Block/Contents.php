@@ -18,7 +18,6 @@ class Content_Form_Block_Contents extends Layout_Form_Block
         $this->addElement('text', 'title', array(
             'label'      => 'Título',
             'maxlength'  => 60,
-            'class'      => 'input-block-level',
             'filters'    => array(
                 'StripTags',
                 'StringTrim'
@@ -35,7 +34,7 @@ class Content_Form_Block_Contents extends Layout_Form_Block
             ),
             'append' => '<a href="#" rel="tooltip" ' 
                 . 'title="Apenas para referência" data-placement="left">'
-                . '<i class="icon-info-sign"></i></a>'
+                . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
 
         // relationship
@@ -50,13 +49,12 @@ class Content_Form_Block_Contents extends Layout_Form_Block
             $relationships = array();
             if ($contentType) {
                 $metafields = $contentType->getMetafields();
-                if ($metafields->relationship) {
-                    foreach($metafields->relationship as $key => $relationship) {
-                        if ($relationship->getOption('type') == 'contents') {
-                            $relationships[$key] = $relationship->getOption('label');
-                        }
-                    }
-                }
+//                foreach($metafields as $key => $field) {
+//                    if ($field->datatype == 'relationship' 
+//                            && $field->getOption('type') == 'contents') {
+//                        $relationships[$key] = $field->getOption('label');
+//                    }
+//                }
             }
 
             if ($relationships) {
@@ -105,7 +103,7 @@ class Content_Form_Block_Contents extends Layout_Form_Block
             'label'        => 'Tipos de conteúdo',
             'multiOptions' => $contentTypes,
             'separator'    => '',
-            'label_class'  => 'inline span2'
+            'inline'       => true
         ));
 
         // limit
@@ -130,27 +128,26 @@ class Content_Form_Block_Contents extends Layout_Form_Block
             ),
             'append' => '<a href="#" rel="tooltip" title="Deixe em branco '
                 . 'para exibir todos" data-placement="right">'
-                . '<i class="icon-info-sign"></i></a>'
+                . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
 
         // form_filter
         $this->addElement('checkbox', 'form_filter', array(
-            'input_label' => 'Exibir formulário para filtrar conteúdo'
+            'label' => 'Exibir formulário para filtrar conteúdo'
         ));
 
         // form_result
         $this->addElement('checkbox', 'form_result', array(
-            'input_label'  => 'Exibir resultados de uma busca <a rel="tooltip" '
-                            . 'title="Utilize um bloco de formulário de busca" '
-                            . 'data-placement="right"><i class="icon-info-sign">'
-                            . '</i></a>',
-            'escape'       => false,
+            'label' => 'Exibir resultados de uma busca <a rel="tooltip" '
+                     . 'title="Utilize um bloco de formulário de busca" '
+                     . 'data-placement="right"><span class="glyphicon glyphicon-info-sign">'
+                     . '</span></a>',
+            'escape' => false,
         ));
 
         // order
         $this->addElement('select', 'order', array(
             'label'        => 'Ordenação',
-            'class'        => 'input-block-level',
             'multiOptions' => array(
                 ''                  => '',
                 'title'             => 'Título',
@@ -159,33 +156,6 @@ class Content_Form_Block_Contents extends Layout_Form_Block
             )
         ));
 
-        //template
-        $multiOptions = array(
-            '' => '',
-        );
-        $theme = Acl_Model_Auth::getTheme();
-        if (is_dir(APPLICATION_PATH . '/layouts/frontend/' . $theme .
-            '/scripts/blocks/content-contents')) {
-            $dir = new DirectoryIterator(APPLICATION_PATH . '/layouts/frontend/'
-                 . $theme . '/scripts/blocks/content-contents');
-            foreach($dir as $file) if($file->isFile()) {
-                $multiOptions[$theme][$file->getFilename()] = $file->getFilename();
-            }
-        }
-
-        $dir = new DirectoryIterator(APPLICATION_PATH . '/modules/content/views'
-                 . '/blocks/content-contents');
-        foreach($dir as $file) if($file->isFile()) {
-            if (!isset($multiOptions[$theme][$file->getFilename()])) {
-                $multiOptions['standard'][$file->getFilename()] = $file->getFilename();
-            }
-        }
-        
-        $this->addElement('select', 'template', array(
-            'label'        => 'Modelo',
-            'class'        => 'input-block-level',
-            'multiOptions' => $multiOptions
-        ));
     }
 
 }

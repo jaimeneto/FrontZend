@@ -1,19 +1,31 @@
 $(document).ready(function(){
     Media_Youtube_AjaxSearch();
 
-    $('#image_filters input, #image_adjustments select, #image_resize input')
+    $('#image_filters input, #image_adjustments select, #image_resize input, #modify-write')
     .change(function(){
         Media_Image_AjaxModify();
     });
-    $('#revert_original').click(function(event){
+    
+    $('#media_form_image #credits').change(function(){
+        if ($('#media_form_image #modify-write').is(':checked')) {
+            Media_Image_AjaxModify();
+        }
+    });
+    
+    $('#media_form_image #revert_original').click(function(event){
         event.preventDefault();
         $(this).closest('form').get(0).reset();
-        $('#image_options .ui-slider').each(function(){
+        $('#media_form_image .ui-slider').each(function(){
             var sliderObj = $(this);
             sliderObj.slider('value', 0);
         });
         Media_Image_AjaxModify();
     });
+
+    $('#toggle_original').change(function(){
+        console.log('toggle');
+        $('#modified_image, #original_image').toggle();
+    })
 
     initSliders();
 
@@ -24,137 +36,154 @@ function Media_Youtube_AjaxSearch() {
 
     if ($('.btn-youtube-search').length == 0) return;
 
-    $('body').append('<div id="youtube_search" class="modal hide fade" style="width:90%;left:5%;margin:auto;">' +
-        '<div class="modal-header">' +
-        '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
-        '<h3 id="youtube_modal_label">' + $('.btn-youtube-search').val() + '</h3>' +
-        '</div>' +
-        '<div class="modal-body">' +
-        '<div class="input-append" style="margin-bottom:15px">' +
-        '<input type="text" id="youtube_search_term" class="input-block-level" />' +
-        '<a href="#" id="youtube_search_btn" class="add-on btn" style="padding:4px 30px"><i class="icon-search"></i></a>' +
-        '</div>' +
-        '<div class="input-block-level" id="youtube_search_results" style="height:360px;overflow:auto">' +
-        '</div>' +
-        '</div>' +
-        '<div class="modal-footer">' +
-        '<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>' +
-        '</div>' +
-        '</div>');
+    $.ajax({
+        type: 'POST',
+        url: adminBaseUrl + '/media/youtube/ajax-search-modal',
+        data: {
+            title: $('.btn-youtube-search').val()
+        },
+        dataType: 'json',
+        success: function(json){
+            if (json.status == 1) {
+                $('body').append(json.content);
+                
+                // Se apertar enter no campo de texto de busca, apertar o botão
+                $('#youtube_search_term').bind("keypress", function(event) {
+                    if(event.keyCode == 13) {
+                        $('#youtube_search_btn').click();
+                    }
+                });
+                
+                var fieldId;
 
-    // Se apertar enter no campo de texto de busca, apertar o botão
-    $('#youtube_search_term').bind("keypress", function(event) {
-        if(event.keyCode == 13) {
-            $('#youtube_search_btn').click();
+                $('#youtube_search').modal({
+                    show:false
+                });
+                $('#youtube_search').on('shown', function(){
+                    autosizeInputWithAddOn();
+
+                    if (!$('#youtube_search_term').val() && $('#title').val()) {
+                        $('#youtube_search_term').val($('#title').val());
+                        $('#youtube_search_btn').click();
+                    }
+                })
+
+                $('.btn-youtube-search').click(function(){
+                    fieldId = $(this).attr('id').replace('select_', '');
+                    $('#youtube_search').modal('show');
+                });
+
+                $('#youtube_search_btn').click(function(){
+                    var searchString = $('#youtube_search_term').val();
+
+                    $('#youtube_search_results').html('<div class="progress" ' +
+                        'style="margin:100px auto 0; width: 80%">' +
+                        '<div class="progress-bar progress-bar-striped active" ' + 
+                        'role="progressbar" aria-valuenow="100" aria-valuemin="0" ' + 
+                        'aria-valuemax="100" style="width: 100%">' +
+                        '</div></div>');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: adminBaseUrl + '/media/youtube/ajax-search',
+                        data: {
+                            term: searchString
+                        },
+                        dataType: 'json',
+                        success: function(json){
+                            if (json.status == 1) {
+                                if (json.vars.youtubeId) {
+                                    $('#youtube_search_results').html('');
+                                    $('#youtube_search').modal('hide');
+                                    modalYoutubeVideo(fieldId, json.vars.youtubeId, $('.btn-youtube-search').val());
+                                } else {
+                                    $('#youtube_search_results').html(json.content);
+                                    $('#youtube_search_results a').click(function(){
+                                        $('#youtube_search').modal('hide');
+                                        var idVideo = $(this).attr('href').replace('#', '');
+                                        var videoTitle = $(this).parent().find('.title').html();
+
+                                        if (!$('#youtube_video_'+idVideo).length) {
+                                            modalYoutubeVideo(fieldId, idVideo, videoTitle);
+                                        }
+                                        return false;
+                                    });
+                                }
+                            } else {
+                                if (json.log) console.log(json.log);
+                                $('#youtube_search_results').html('<div class="alert alert-error">'
+                                    + '<a href="#" class="close" data-dismiss="alert">&times;</a>'
+                                    + '<strong>Erro!</strong> ' + json.msg + '</div>');
+                            }
+                        },
+
+                        error: function(msg) {
+                            alert(msg);
+                        }
+                    });
+                });
+            }
+        },
+
+        error: function(msg) {
+            alert(msg);
         }
     });
+}
 
-    var fieldId;
+function modalYoutubeVideo(fieldId, idVideo, videoTitle)
+{
+    $('body').append('<div class="modal fade" id="youtube_video_' + idVideo + '" ' + 
+        'tabindex="-1" role="dialog" aria-hidden="true"' + 
+        ' aria-labelledby="youtube_video_' + idVideo + '_label">' +
+      '<div class="modal-dialog">' +
+        '<div class="modal-content">' +
+          '<div class="modal-header">' +
+            '<button type="button" class="close" data-dismiss="modal" ' + 
+                'aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            '<h4 class="modal-title" id="youtube_video_' + idVideo + '_label">' + videoTitle + '</h4>' +
+          '</div>' +
+          '<div class="modal-body text-center">' +
+            youtubeVideo(idVideo, 450, 338) +
+          '</div>' +
+          '<div class="modal-footer">' +
+            '<button class="btn btn-primary" id="select_youtube_video_' + idVideo + '">Selecionar</button>' +
+            '<button class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="cancel_youtube_video_' + idVideo + '">Cancelar</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>');
 
-    $('#youtube_search').modal({
-        show:false
+    $('#youtube_video_' + idVideo).modal();
+    $('#youtube_video_' + idVideo).on('hidden', function(){
+        $(this).remove();
     });
-    $('#youtube_search').on('shown', function(){
-        autosizeInputWithAddOn();
-        
-        if (!$('#youtube_search_term').val() && $('#title').val()) {
-            $('#youtube_search_term').val($('#title').val());
-            $('#youtube_search_btn').click();
-        }
-    })
-
-    $('.btn-youtube-search').click(function(){
-        fieldId = $(this).attr('id').replace('select_', '');
+    $('#cancel_youtube_video_' + idVideo).click(function(){
+        $('#youtube_video_' + idVideo).modal('hide');
         $('#youtube_search').modal('show');
     });
 
-    $('#youtube_search_btn').click(function(){
-        var searchString = $('#youtube_search_term').val();
-
-        $('#youtube_search_results').html(
-            '<div class="progress progress-striped active" style="margin:150px auto;width:80%;">' +
-            '<div class="bar" style="width:100%;"></div>' +
-            '</div>');
-
-        $.ajax({
-            type: 'POST',
-            url: adminBaseUrl + '/media/youtube/ajax-search',
-            data: {
-                term: searchString
-            },
-            dataType: 'json',
-            success: function(json){
-                if (json.status == 1) {
-                    $('#youtube_search_results').html(json.content);
-                    $('#youtube_search_results a').click(function(){
-                        $('#youtube_search').modal('hide');
-                        var idVideo = $(this).attr('href').replace('#', '');
-                        var videoTitle = $(this).parent().find('.title').html();
-
-                        if (!$('#youtube_video_'+idVideo).length) {
-
-                            $('body').append('<div id="youtube_video_' + idVideo + '" class="modal hide fade">' +
-                                '<div class="modal-header">' +
-                                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>' +
-                                '<h3 id="youtube_modal_label">' + videoTitle + '</h3>' +
-                                '</div>' +
-                                '<div class="modal-body" style="text-align:center">' +
-                                youtubeVideo(idVideo, 450, 338) +
-                                '</div>' +
-                                '<div class="modal-footer">' +
-                                '<button class="btn btn-primary" id="select_youtube_video_' + idVideo + '">Selecionar</button>' +
-                                '<button class="btn" data-dismiss="modal" aria-hidden="true" id="cancel_youtube_video_' + idVideo + '">Cancelar</button>' +
-                                '</div>' +
-                                '</div>');
-
-                            $('#youtube_video_' + idVideo).modal();
-                            $('#youtube_video_' + idVideo).on('hidden', function(){
-                                $(this).remove();
-                            });
-                            $('#cancel_youtube_video_' + idVideo).click(function(){
-                                $('#youtube_video_' + idVideo).modal('hide');
-                                $('#youtube_search').modal('show');
-                            });
-
-                            $('#select_youtube_video_' + idVideo).click(function() {
-                                $('#youtube_video_'+idVideo).modal('hide');
-                                selectYoutubeVideo(fieldId, idVideo);
-                            });
-
-                        }
-                        return false;
-                    });
-                }
-                else {
-                    if (json.log) console.log(json.log);
-                    $('#youtube_search_results').html('<div class="alert alert-error">'
-                        + '<a href="#" class="close" data-dismiss="alert">&times;</a>'
-                        + '<strong>Erro!</strong> ' + json.msg + '</div>');
-                }
-            },
-
-            error: function(msg) {
-                alert(msg);
-            }
-        });
+    $('#select_youtube_video_' + idVideo).click(function() {
+        $('#youtube_video_'+idVideo).modal('hide');
+        selectYoutubeVideo(fieldId, idVideo);
     });
 }
 
 function selectYoutubeVideo(fieldId, idVideo) {
     idVideo = getIdYoutube(idVideo);
-
     var fieldName = fieldId.replace('meta-', '');
-    $('#select_' + fieldId).parent().find('.thumbnails').html('<li '
-        + 'id="files_' + fieldId + '-' + idVideo + '">'
+    $('#' + fieldId + '_preview').html('<div '
+        + 'id="files_' + fieldId + '-' + idVideo + '" class="col-xs-6">'
         + '<input type="hidden" name="meta[' + fieldName + ']"'
         + ' id="' + fieldId + '"'
-        + ' value="' + idVideo + '" class="span4" />'
+        + ' value="' + idVideo + '" />'
         + '<div id="' + fieldId + '_preview" class="youtube-preview">'
         + '<a id="remove_' + fieldId + '" class="file-remove pull-right" '
-        + 'href="#files_' + fieldId + '-' + idVideo + '" title="Remover"><i class="icon-remove"></i></a>'
-        + youtubeVideo(idVideo, 320, 240)
-        + '</div></li>');
-
+        + 'href="#files_' + fieldId + '-' + idVideo + '" title="Remover">' 
+        + '<span class="glyphicon glyphicon-remove"></span></a>'
+        + youtubeVideo(idVideo, 360, 270)
+        + '</div></div>');
+    
     initYoutubeRemoveClick();
 }
 
@@ -236,10 +265,10 @@ function Media_Image_AjaxModify() {
         success: function(json){
             if (json.status == 1) {
                 d = new Date();
-                var src = $('#image_preview img').attr('src');
-                $('#image_preview img').attr('src', json.src + '?' + d.getTime());
-                $('#image_preview .size .width').html(json.width);
-                $('#image_preview .size .height').html(json.height);
+                var src = $('#modified_image img').attr('src');
+                $('#modified_image img').attr('src', json.src + '?' + d.getTime());
+                $('#modified_image .size .width').html(json.width);
+                $('#modified_image .size .height').html(json.height);
             }
             else {
                 if (json.log) console.log(json.log);

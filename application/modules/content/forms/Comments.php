@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Content_Form_Comments extends Zend_Form
+class Content_Form_Comments extends Bootstrap_Form_Horizontal
 {  
     public function init()
     {
@@ -37,15 +37,14 @@ class Content_Form_Comments extends Zend_Form
         $this->addElement('textarea', 'comments', array(
             'required'    => true,
             'decorators'  => array('ViewHelper'),
-            'class'       => 'input-block-level',
-            'rows'        => 3
+            'rows'        => 2
         ));
 
         // btn_comment
         $this->addElement('submit', 'btn_comment', array(
             'ignore'     => true,
             'label'      => 'comentar',
-            'class'      => 'btn',
+            'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY,
             'decorators' => array(
                 'ViewHelper',
                 array('HtmlTag', array(

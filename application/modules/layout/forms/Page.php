@@ -8,20 +8,8 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Layout_Form_Page extends Twitter_Bootstrap_Form_Horizontal
+class Layout_Form_Page extends FrontZend_Module_Form_Abstract
 {
-    public function __construct($options = null)
-    {
-        $this->setAttrib('id', strtolower(__CLASS__));
-
-//        $this->addPrefixPath('FrontZend_Form', 'FrontZend/Form');
-//        $this->addPrefixPath('Twitter_Bootstrap_Form', 'Twitter/Bootstrap/Form');
-        $this->addPrefixPath('Content_Form_Meta_Relationship', 'Content/Form/Meta/Relationship');
-
-        $this->initElements();
-        parent::__construct($options);
-        $this->initButtons();
-    }
 
     public function initElements()
     {
@@ -37,13 +25,11 @@ class Layout_Form_Page extends Twitter_Bootstrap_Form_Horizontal
         }
         $this->addElement('select', 'id_layout_theme', array(
             'label'        => 'Tema',
-            'class'        => 'span4',
             'multiOptions' => $multiOptions
         ));
 
         $this->addElement('text', 'page', array(
-            'label' => 'Página',
-            'class' => 'span4'
+            'label'        => 'Página'
         ));
 
         $contentTypes = FrontZend_Container::get('ContentType')->fetchPairs('type', null,
@@ -51,44 +37,54 @@ class Layout_Form_Page extends Twitter_Bootstrap_Form_Horizontal
         $multiOptions = array('' => '') + $contentTypes;
         $this->addElement('select', 'id_content_type', array(
             'label'        => 'Tipo de conteúdo',
-            'class'        => 'span4',
             'multiOptions' => $multiOptions,
             'description'  => 'Selecione um tipo de conteúdo '
                             . 'OU um conteúdo específico abaixo'
         ));
-
-        $this->addElement(new Content_Form_Meta_Relationship_Search(
+        
+        $search = new Content_Form_Meta_Relationship_Search(
             'id_content', array(
-                'label'        => 'Conteúdo',
-                'text_class'   => 'input-block-level',
-                'type'         => 'contents'
+                'label'         => 'Conteúdo',
+                'type'          => 'contents'
             )
-        ));
+        );
+        $search->setDecorators($this->_elementDecorators);
+        $this->addElement($search);
     }
 
     public function initButtons()
     {
         $this->addElement('submit', 'save', array(
             'label'       => 'Salvar',
-            'class'       => 'btn-large',
             'ignore'      => true,
-            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+            'buttonType'  => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY,
+            'size'        => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'apply', array(
-            'label'      => 'Aplicar',
-            'class'      => 'btn-large',
-            'ignore'     => true,
-            'buttonType' => Twitter_Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
+            'label'         => 'Aplicar',
+            'ignore'        => true,
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_SUCCESS,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'cancel', array(
-            'label'  => 'Cancelar',
-            'class'  => 'btn-large',
-            'ignore' => true
+            'label'         => 'Cancelar',
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_DEFAULT,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'ignore'        => true
         ));
 
-        $this->addFormActions(array('save', 'apply', 'cancel'));
+        $this->addDisplayGroup(array('save', 'apply', 'cancel'), 'buttons', array(
+            'decorators' => array(
+                'FormElements', 
+                array('HtmlTag', array(
+                    'class' => 'col-sm-offset-2', 
+                    'tag'   => 'div',
+                    'style' => 'clear:both'
+                ))
+            ),
+        ));
     }
 
     public function init()

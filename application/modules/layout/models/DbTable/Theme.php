@@ -19,13 +19,23 @@ class Layout_Model_DbTable_Theme extends FrontZend_Module_Model_DbTable_Abstract
     protected $_dependentTables = array(
         'Layout_Model_DbTable_Page',
     );
-
+    
+    public function findByName($theme, $env='frontend')
+    {
+        return FrontZend_Container::get('LayoutTheme')->findOne(
+            array('where' => array(
+                'theme = ?' => $theme,
+                'env = ?'   => $env
+            )));
+    }
+    
     public function findActive($env='frontend')
     {
-        return FrontZend_Container::get('LayoutTheme')->findOne(array('where' => array(
-            'active = ?' => '1',
-            'env = ?'    => $env
-        )));
+        return FrontZend_Container::get('LayoutTheme')->findOne(
+            array('where' => array(
+                'active = ?' => '1',
+                'env = ?'    => $env
+            )));
     }
 
     public function activate($theme)

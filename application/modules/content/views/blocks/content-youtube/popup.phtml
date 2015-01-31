@@ -6,17 +6,11 @@ $youtube = $this->content->getMetafield($field);
 
 if ($youtube && $youtube->value): ?>
 
-<style type="text/css">
-.block-content-youtube-link a {
-    cursor: pointer;
-    margin-top: 5px;
-}
-</style>
+<div <?php echo $this->htmlTagAttribs($this->block, array(
+    'class' => 'block-content-youtube-popup', 'id' => 'content_' . $field)); ?>>
 
-<div class="block block-content-youtube block-content-youtube-link <?php echo $this->cssVisibility($this->block); ?>"
-     id="content_<?php echo $field; ?>">
-
-    <a href="#" onclick="popup('http://www.youtube.com/v/<?php echo $this->escape($youtube->value); ?>', <?php echo $width; ?>, <?php echo $height; ?>); return false;">
+    <a href="#" onclick="window.open('http://www.youtube.com/v/<?php echo $this->escape($youtube->value); 
+        ?>', 'popup', 'width=<?php echo $width; ?>,height=<?php echo $height; ?>,scrollbars=no,status=1'); return false;">
         <?php echo $this->youtubeThumb($youtube->value, $width, $height); ?>
     </a>
 

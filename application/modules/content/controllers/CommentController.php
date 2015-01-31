@@ -11,5 +11,11 @@
 class Content_CommentController extends FrontZend_Module_Controller_Abstract
 {
 
+    public function listAction()
+    {
+        $this->view->headTitle()->append('Comentários');
+        
+        parent::listAction();
+    }
+    
 }
-

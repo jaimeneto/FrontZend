@@ -1,21 +1,32 @@
-<div>
+<div class="page-header">
+    <h1>
+        <span class="glyphicon glyphicon-th-large"></span> 
+        Layout
+        <small>Temas</small>
+    </h1>
+</div>
 
-    <fieldset>
-        <legend>Instalar tema</legend>
+<?php echo $this->alerts(); ?>
 
-        <?php echo $this->alerts(); ?>
-
-        <div class="thumbnail pull-left">
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Instalar tema</h3>
+    </div>
+    <div class="panel-body">
+        
+        <div class="thumbnail pull-left" style="margin-right: 20px">
             <img alt="" width="200" height="150"
                  src="<?php echo $this->baseUrl("cache/layouts/{$this->layout->env}/{$this->layout->theme}/img/preview.jpg"); ?>" alt="" />
         </div>
         <p>
-            <strong><?php echo $this->escape($this->layout->name); ?></strong><br />
-            <small>Versão <?php echo $this->escape($this->layout->version); ?></small>
-        </p>
-
+            <h4>
+                <?php echo $this->escape($this->layout->name); ?>
+                <small>Versão <?php echo $this->escape($this->layout->version); ?></small>
+            </h4>
+        </p>        
+    </div>
+    <div class="panel-footer">
         <?php echo $this->form; ?>
-        
-    </fieldset>
-
+    </div>
+    
 </div>

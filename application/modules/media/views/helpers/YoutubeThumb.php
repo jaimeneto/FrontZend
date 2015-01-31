@@ -22,7 +22,16 @@ class Media_View_Helper_YoutubeThumb extends Zend_View_Helper_HtmlElement
                . 'src="http://img.youtube.com/vi/'
                . $this->view->escape($idVideo)
                . '/' . $imgNum . '.jpg" '
-               . 'border="0" />';
+               . 'border="0" ';
+        
+        if ($width) {
+            $xhtml .= 'width="' . $width . '" ';
+        }
+        if ($height) {
+            $xhtml .= 'height="' . $height . '" ';
+        }
+               
+        $xhtml .= '/>';
         
         return $xhtml;
     }

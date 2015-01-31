@@ -26,6 +26,8 @@ class Acl_UserController extends Zend_Controller_Action
 
     public function listAction()
     {
+        $this->view->headTitle()->append('Usuários');
+        
         $form = new Acl_Form_Filter_User();
         $form->setAction($this->view->url());
 
@@ -41,6 +43,8 @@ class Acl_UserController extends Zend_Controller_Action
 
     public function addAction()
     {
+        $this->view->headTitle()->append('Cadastrar usuário');
+        
         if ($this->_getParam('cancel')) {
             $this->getHelper('Redirector')
                 ->gotoUrlAndExit(ADMIN_ROUTE . '/acl/user');
@@ -85,6 +89,8 @@ class Acl_UserController extends Zend_Controller_Action
 
     public function editAction()
     {
+        $this->view->headTitle()->append('Editar usuário');
+        
         if ($this->_getParam('cancel')) {
             $this->getHelper('Redirector')
                 ->gotoUrlAndExit(ADMIN_ROUTE . '/acl/user');
@@ -146,6 +152,8 @@ class Acl_UserController extends Zend_Controller_Action
 
     public function removeAction()
     {
+        $this->view->headTitle()->append('Excluir usuário');
+        
         if ($this->_getParam('cancel')) {
             $this->_redirect(ADMIN_ROUTE . '/acl/user');
         }
@@ -217,4 +225,53 @@ class Acl_UserController extends Zend_Controller_Action
         $this->view->user = FrontZend_Container::get('AclUser')->findById($id);
     }
 
+    public function ajaxSearchAction()
+    {
+        $term = $this->_getParam('term');
+        $role = $this->_getParam('type');
+        $id   = $this->_getParam('id');
+
+        $options = array(
+            'where' => array(
+                'name LIKE ? OR username OR display_name LIKE ?' => "%{$term}%"
+            ),
+            'limit' => 10,
+            'joins' => false
+        );
+        if ($role) {
+            if (strstr($role, ',')) {
+                $options['where']['id_role IN (?)'] = explode(',', $role);
+            } else {
+                $options['where']['id_role = ?'] = $role;
+            }
+        }
+        if ($id) {
+            $options['where']['id_user != ?'] = $id;
+        }
+        $users = FrontZend_Container::get('AclUser')->findAll($options);
+
+        $data = array();
+        if ($users) {
+            $filterStringLength = new FrontZend_Filter_StringLength(100);
+
+            foreach ($users as $user) {
+                $value = $role && !strstr($role, ',')
+                    ? $user->display_name
+                    : '[' . $user->getRole()->role . '] ' . $user->display_name;
+
+                $dtRegistered = $user->getDateRegistered()->get('dd/MM/yyyy');
+                $data[] = array(
+                    'id'            => $user->getId(),
+                    'value'         => $value,
+                    'filteredValue' => $filterStringLength->filter($value),
+                    'date'          => $dtRegistered,
+                    'slug'          => $user->username
+                );
+            }
+        }
+
+        $this->_helper->json($data);
+    }
+    
 }
+

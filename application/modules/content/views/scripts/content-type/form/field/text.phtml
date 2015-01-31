@@ -1,0 +1,17 @@
+<div class="form-group">
+    <label for="meta_fields-<?php echo $this->metafield->fieldname ?>-value"
+           class="col-sm-2 control-label">Valor padrão</label>
+    <div class="col-sm-9">
+        <?php echo $this->formText("meta[{$this->metafield->fieldname}][value]",
+            $this->metafield->getOption('value'), array('class' => 'form-control')); ?>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="meta_fields-<?php echo $this->metafield->fieldname ?>-maxlength"
+           class="col-sm-2 control-label">Tamanho máximo</label>
+    <div class="col-sm-9">
+        <?php echo $this->formText("meta[{$this->metafield->fieldname}][maxlength]",
+            $this->metafield->getOption('maxlength'), array('class' => 'form-control')); ?>
+    </div>
+</div>

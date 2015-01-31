@@ -1,16 +1,15 @@
-<?php if($this->images): ?>
-<div class="block block-content-images block-content-images-thumbnails
-     <?php echo $this->cssVisibility($this->block); ?>">
+<?php if ($this->images): ?>
+<div <?php echo $this->htmlTagAttribs($this->block, array('class' => 'block-content-images-thumbnails')); ?>>
 
-    <ul class="thumbnails">
+    <div class="row">
         <?php foreach($this->images as $image): ?>
-        <li class="span4">
+        <div class="col-xs-6 col-md-3">
             <a href="<?php echo $image; ?>" class="thumbnail" target="_blank">
-                <img src="<?php echo $image; ?>" width="100%" alt="" />
+                <img src="<?php echo $image; ?>" alt="" />
             </a>
-        </li>
+        </div>
         <?php endforeach; ?>
-    </ul>
+    </div>
 
 </div>
 <?php endif; ?>

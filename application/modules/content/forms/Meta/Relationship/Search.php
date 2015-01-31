@@ -22,11 +22,14 @@ class Content_Form_Meta_Relationship_Search extends Zend_Form_Element_MultiCheck
         if (!isset($options['separator'])) {
             $options['separator'] = '';
         }
-        if (!isset($options['text_class'])) {
-            $options['text_class'] = 'span10';
-        }
         if (!isset($options['text_placeholder'])) {
-            $options['text_placeholder'] = 'Digite o título do conteúdo para buscar';
+            if ($this->_metaOptions['type'] == 'contents') {
+                $options['text_placeholder'] = 
+                        'Digite o título do conteúdo para buscar';
+            } else if ($this->_metaOptions['type'] == 'users') {
+                $options['text_placeholder'] = 
+                        'Digite o nome do usuário para buscar';
+            }
         }
         $options['escape'] = false;
 
@@ -111,7 +114,6 @@ class Content_Form_Meta_Relationship_Search extends Zend_Form_Element_MultiCheck
             'display_name'
         );
         $this->setMultiOptions($multiOptions);
-
         return $this;
     }
 
@@ -121,17 +123,17 @@ class Content_Form_Meta_Relationship_Search extends Zend_Form_Element_MultiCheck
      *
      * @return mixed
      */
-    public function getValue()
-    {
-        $value = parent::getValue();
-
-        if (is_array($value) && count($value) == 1 &&
-                (!isset($this->_metaOptions['multiple']) ||
-                !$this->_metaOptions['multiple'])) {
-            $value = current($value);
-        }
-
-        return $value;
-    }
+//    public function getValue()
+//    {
+//        $value = parent::getValue();
+//
+//        if (is_array($value) && count($value) == 1 &&
+//                (!isset($this->_metaOptions['multiple']) ||
+//                !$this->_metaOptions['multiple'])) {
+//            $value = current($value);
+//        }
+//
+//        return $value;
+//    }
 
 }

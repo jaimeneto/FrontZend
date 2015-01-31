@@ -1,4 +1,4 @@
-                                                      FrontZend
+FrontZend
 
 O FrontZend é um sistema de gerencimento de conteúdo desenvolvido com foco na
 usabilidade, procurando tornar o trabalho, tanto dos desenvolvedores quanto
@@ -28,6 +28,11 @@ mesma lógica do Zend Framework.
 Importe o arquivo frontzend.sql presente na pasta docs/ para o o seu banco de 
 dados. 
 
+É necessário acrescentar as seguintes bibliotecas a pasta library para que o 
+CMS funcione corretamente: 
+- Zend Framework 1.12 => http://www.zendframework.com/downloads/latest#ZF1
+- BootstrapZF => https://github.com/jaimeneto/BootstrapZF
+
 Acesse a área administrativa do seu site pela url padrão 
 http://url-exemplo.com/fz-admin ou pela que você definiu no .htaccess
 
@@ -35,9 +40,6 @@ Para seu primeiro acesso, utilize login admin e senha 123456. Altere seus
 dados após o primeiro acesso. Siga o menú Acesso > Usuários, e clique no ícone 
 de editar ao lado do nome do usuário admin. Insira uma senha forte. Lembre-se 
 que este usuário tem acesso a todas as configurações do sistema.
-
-É preciso ter uma cópia do Zend Framework 1.12+ na pasta library para que o
-CMS funcione. Baixe em http://www.zendframework.com/downloads/latest#ZF1
 
 ***
 

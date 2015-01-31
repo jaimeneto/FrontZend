@@ -18,7 +18,6 @@ class Content_Form_Filter_ContentType
     {
         $term = $this->addElement('text', 'term', array(
             'label'     => 'Buscar',
-            'class'     => 'input-block-level',
             'belongsTo' => 'filter'
         ));
         
@@ -30,14 +29,12 @@ class Content_Form_Filter_ContentType
         );
         $this->addElement('select', 'id_parent', array(
             'label'        => 'Conteúdo pai',
-            'class'        => 'input-block-level',
             'belongsTo'    => 'filter',
             'multiOptions' => $coreContentTypes
         ));
 
         $this->addElement('select', 'order', array(
             'label'        => 'Ordernar por',
-            'class'        => 'input-block-level',
             'belongsTo'    => 'filter',
             'value'        => 'type',
             'multiOptions' => array(

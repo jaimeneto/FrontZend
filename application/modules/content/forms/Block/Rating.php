@@ -18,7 +18,6 @@ class Content_Form_Block_Rating extends Layout_Form_Block
         $this->addElement('text', 'title', array(
             'label'      => 'Título',
             'maxlength'  => 60,
-            'class'      => 'input-block-level',
             'filters'    => array(
                 'StripTags',
                 'StringTrim'
@@ -35,7 +34,7 @@ class Content_Form_Block_Rating extends Layout_Form_Block
             ),
             'append' => '<a href="#" rel="tooltip" ' 
                 . 'title="Apenas para referência" data-placement="left">'
-                . '<i class="icon-info-sign"></i></a>'
+                . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
 
         if ($this->_block) {
@@ -49,11 +48,11 @@ class Content_Form_Block_Rating extends Layout_Form_Block
             $fields = array();
             if ($contentType) {
                 $metafields = $contentType->getMetafields();
-                if ($metafields->field) {
-                    foreach($metafields->field as $key => $field) {
-                        if ($field->getOption('type') == 'rating') {
-                            $fields[$key] = $field->getOption('label');
-                        }
+                foreach($metafields as $field) {
+                    if ($field->datatype == 'field' 
+                            && $field->getOption('type') == 'rating') {
+                        $fields[$field->id_metafield] 
+                            = $field->getOption('label');
                     }
                 }
             }

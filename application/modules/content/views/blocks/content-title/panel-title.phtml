@@ -1,0 +1,6 @@
+<div <?php echo $this->htmlTagAttribs($this->block, array('class' => 'panel-heading')); ?>>
+    <!-- CONTENT <?php echo $this->content->id; ?> -->
+    <<?php echo $this->block->getOption('tag', 'div'); ?> class="panel-title"><?php 
+        echo $this->escape($this->content->title); 
+    ?></<?php echo $this->block->getOption('tag', 'div'); ?>>
+</div>

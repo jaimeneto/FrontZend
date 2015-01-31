@@ -11,7 +11,7 @@
 
 if($this->contents): ?>
 
-    <div class="block block-content-contents-default <?php echo $this->cssVisibility($this->block); ?>">
+    <div <?php echo $this->htmlTagAttribs($this->block, array('class' => 'block-content-contents-default')); ?>>
         <?php if($this->block->getOption('form_filter')): ?>
         <fieldset>
             <legend>Busca avançada</legend>

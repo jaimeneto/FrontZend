@@ -13,8 +13,8 @@ if ($youtube && $youtube->value): ?>
 }
 </style>
 
-<div class="block block-content-youtube block-content-youtube-link <?php echo $this->cssVisibility($this->block); ?>"
-     id="content_<?php echo $field; ?>">
+<div <?php echo $this->htmlTagAttribs($this->block, array(
+    'class' => 'block-content-youtube-link', 'id' => 'content_' . $field)); ?>>
 
     <a href="http://www.youtube.com/watch?v=<?php echo $this->escape($youtube->value); ?>" target="_blank">
         <?php echo $this->youtubeThumb($youtube->value, $width, $height); ?>

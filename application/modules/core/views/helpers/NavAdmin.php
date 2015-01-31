@@ -43,11 +43,43 @@ class Core_View_Helper_NavAdmin extends Zend_View_Helper_HtmlElement
             }
         }
 
+        $navConfigs = array(
+            'home' => array(
+                'id'       => 'home',
+                'label'    => 'Início',
+                'uri'      => ADMIN_ROUTE,
+                'pages'    => $navConfigs
+            )
+        );
+        
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+        $activeUrls = array(ADMIN_ROUTE . '/' . $request->getModuleName());
+        $activeUrls[1] = $activeUrls[0] . '/' . $request->getControllerName();
+        $activeUrls[2] = $activeUrls[1] . '/' . $request->getActionName();
+        
         $navAdmin = new Zend_Navigation($navConfigs);
-
+        $baseUrl = $this->view->baseUrl('/');
+        $active = false;
+        foreach ($navAdmin->findById('home')->getPages() as $page) {
+            $href = str_replace($baseUrl, '', $page->getHref());
+            if (in_array($page->getHref(), $activeUrls)) {
+                $page->setActive(true);
+            }
+            foreach($page->getPages() as $subpage) {
+                $href = str_replace($baseUrl, '', $subpage->getHref());
+                if (in_array($href, $activeUrls)) {
+                    $subpage->setActive(true);
+                    break;
+                }
+            }
+            if ($active) break;
+        }
+        
+        Zend_Registry::set('Zend_Navigation', $navAdmin);
+        
         $role = Zend_Auth::getInstance()->getIdentity()->id_role;
         $this->view->navigation()->setRole($role);
 
-        return $this->view->navigation()->navbar($navAdmin);
+        return $this->view->navbar($navAdmin->findById('home'));
     }
 }

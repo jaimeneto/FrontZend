@@ -44,10 +44,12 @@ class Acl_Action_Helper_Acl extends Zend_Controller_Action_Helper_Abstract
 
         if($role == 'master') {
             $debug = Zend_Controller_Front::getInstance()
-                ->getPlugin('ZFDebug_Controller_Plugin_Debug')
-                ->getPlugin('log')->mark('Acl_Action_Helper_Acl::isAllowed(' .
-                                         $resource . ')', 
-                                         true);
+                ->getPlugin('ZFDebug_Controller_Plugin_Debug');
+            if ($debug) {
+                $debug->getPlugin('log')
+                        ->mark('Acl_Action_Helper_Acl::isAllowed(' .
+                                $resource . ')', true);
+            }
         }
 
         return $acl->isAllowed($role, $resource);

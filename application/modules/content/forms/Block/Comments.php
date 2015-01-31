@@ -18,7 +18,6 @@ class Content_Form_Block_Comments extends Layout_Form_Block
         $this->addElement('text', 'title', array(
             'label'      => 'Título',
             'maxlength'  => 60,
-            'class'      => 'input-block-level',
             'filters'    => array(
                 'StripTags',
                 'StringTrim'
@@ -35,13 +34,12 @@ class Content_Form_Block_Comments extends Layout_Form_Block
             ),
             'append' => '<a href="#" rel="tooltip" ' 
                 . 'title="Apenas para referência" data-placement="left">'
-                . '<i class="icon-info-sign"></i></a>'
+                . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
 
         // placeholder
         $this->addElement('text', 'placeholder', array(
             'label' => 'Mensagem padrão',
-            'class' => 'input-block-level',
             'value' => 'Deixe seu comentário...'
         ));
 
@@ -67,7 +65,7 @@ class Content_Form_Block_Comments extends Layout_Form_Block
             ),
             'append' => '<a href="#" rel="tooltip" title="Deixe em branco '
                 . 'para exibir todos" data-placement="right">'
-                . '<i class="icon-info-sign"></i></a>'
+                . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
 
         // order

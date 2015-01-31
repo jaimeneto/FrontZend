@@ -1,6 +1,7 @@
 #avatar_preview {
     position: absolute;
-    right: 20px;
+    right: 30px;
     width: 80px;
     height: 80px;
+    margin-top: 15px;
 }

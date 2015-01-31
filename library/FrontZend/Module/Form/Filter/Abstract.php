@@ -9,9 +9,15 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
+require_once 'Bootstrap/Form/Vertical.php';
+
 abstract class FrontZend_Module_Form_Filter_Abstract
-    extends Twitter_Bootstrap_Form_Vertical
+    extends Bootstrap_Form_Horizontal
 {
+    protected $colLabel = 4;
+    protected $colInput = 8;
+    protected $colWrapper = 4;
+    
     protected $_modelClass;
     protected $_cacheAlias;
 
@@ -23,11 +29,11 @@ abstract class FrontZend_Module_Form_Filter_Abstract
         }
 
         $this->setAttrib('id', strtolower(__CLASS__));
-        $this->initElements();
+        
         parent::__construct($options);
+        
+        $this->initElements();
         $this->initButtons();
-
-        $this->setMethod(self::METHOD_GET);
     }
 
     abstract public function initElements();
@@ -38,9 +44,19 @@ abstract class FrontZend_Module_Form_Filter_Abstract
     {
         $this->addElement('submit', 'submit', array(
             'label'       => 'Filtrar',
-            'class'       => 'btn-large',
             'ignore'      => true,
-            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+            'buttonType'  => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY,
+            'icon'        => 'glyphicon glyphicon-search'
+        ));
+        
+        $this->addDisplayGroup(array('submit'), 'buttons', array(
+            'decorators' => array(
+                'FormElements', 
+                array('HtmlTag', array(
+                    'class' => 'col-sm-4', 
+                    'tag'   => 'div'
+                ))
+            ),
         ));
     }
 

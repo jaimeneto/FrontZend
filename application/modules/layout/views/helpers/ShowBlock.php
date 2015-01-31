@@ -26,8 +26,9 @@ class Layout_View_Helper_ShowBlock extends Zend_View_Helper_Abstract
             // use the template directly if view helper does not exist
             } else {
                 // define template, is case block has a specific one
-                $script = $block->getOption('template')
-                    ? "blocks/{$block->block}/{$block->getOption('template')}.phtml"
+                $template = $block->getOption('template');
+                $script = $template && $template != "{$block->block}.phtml"
+                    ? "blocks/{$block->block}/{$block->getOption('template')}"
                     : "blocks/{$block->block}.phtml";
 
                 $xhtml = $this->view->partial($script, array(

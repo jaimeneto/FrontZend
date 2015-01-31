@@ -12,9 +12,10 @@ class Acl_Model_Auth extends Zend_Auth
 {
     public static function isLoggedIn()
     {
-        return Zend_Auth::getInstance()->hasIdentity() &&
-                isset(Zend_Auth::getInstance()->getIdentity()->theme) &&
-                Zend_Auth::getInstance()->getIdentity()->theme == self::getTheme();
+        return Zend_Auth::getInstance()->hasIdentity() 
+                && isset(Zend_Auth::getInstance()->getIdentity()->theme) 
+                && Zend_Auth::getInstance()->getIdentity()->theme 
+                    == self::getTheme();
     }
 
     public static function getRole()

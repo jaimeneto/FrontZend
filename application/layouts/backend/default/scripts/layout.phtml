@@ -1,23 +1,21 @@
 <?php echo $this->doctype(Zend_View_Helper_Doctype::HTML5); ?>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="jaimeneto.com">
+    <meta name="description" content="PHP Content Management Framework powered by Zend Framework">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 <?php
     $this->syncLayoutFiles('img', 'default', 'backend');
     $this->headTitle()->setSeparator(' - ')->append('FrontZend');
     echo $this->headTitle() . PHP_EOL;
 
-    $this->headMeta()->setCharset('UTF-8')
-        ->appendName('author', 'jaimeneto.com')
-        ->appendName('description', 'PHP Content Management Framework powered by Zend Framework')
-        ->appendName('viewport', 'width=device-width, initial-scale=1.0');
-    echo $this->headMeta() . PHP_EOL;
-
     $cssFiles = array(
         'lib/bootstrap/css/bootstrap.min.css',
-        'lib/jquery/themes/smoothness/jquery-ui-1.9.2.custom.min.css',
+        'lib/jquery/jquery-ui-1.11.2.custom/jquery-ui.min.css',
         'lib/jquery/plugins/jquery-treetable/stylesheets/jquery.treetable.css',
         'lib/jquery/plugins/treeview/jquery.treeview.css',
-        'lib/bootstrap/css/bootstrap-responsive.min.css',
         'lib/valums-file-uploader/client/fileuploader.css',
     );
     $modulesDir = new DirectoryIterator(APPLICATION_PATH . '/modules');
@@ -33,59 +31,117 @@
     }
 
     $cssFiles[] = APPLICATION_PATH . '/layouts/backend/default/css/style.css';
-    echo $this->cssHeadLinks($cssFiles, 'default', 'backend', false);
+    echo $this->cssHeadLinks($cssFiles, 'default', 'backend', false, false);
 ?>
-
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
     <link rel="shortcut icon" href="<?php echo $this->baseUrl('cache/layouts/backend/default/img/favicon.png'); ?>" />
 </head>
 
 <body class="backend">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="<?php echo $this->adminBaseUrl(); ?>"></a>
-                <div class="nav-collapse collapse">
-                    <?php if(Acl_Model_Auth::isLoggedIn()): ?>
-                    <ul class="nav pull-right">
-                        <li><a href="#" class="navbar-link"><strong><?php echo $this->escape(Zend_Auth::getInstance()->getIdentity()->display_name); ?></strong></a></li>
-                        <li><a href="<?php echo $this->baseUrl(); ?>" target="_blank" class="navbar-link">Acessar o site</a></li>
-                        <li><a href="<?php echo $this->baseUrl('logout'); ?>" class="navbar-link">Sair</a></li>
-                    </ul>
-                    <?php endif; ?>
-                    <?php echo $this->navAdmin(); ?>
-                </div><!--/.nav-collapse -->
-            </div>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <?php echo $this->navbarHeader('FrontZend', 'navbar-collapse-1', $this->adminBaseUrl()); ?>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+
+                <?php echo $this->navAdmin(); ?>
+
+                <?php if(Acl_Model_Auth::isLoggedIn()): ?>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#" class="navbar-link">
+                            <span class="glyphicon glyphicon-user"></span>
+                            <strong><?php echo $this->escape(Zend_Auth::getInstance()->getIdentity()->display_name); ?></strong>
+                        </a></li>
+                    <li class="visible-xs"><a href="<?php echo $this->baseUrl(); ?>" target="_blank" class="navbar-link">
+                        <span class="glyphicon glyphicon-globe" title="Acessar o site"></span>
+                        Acessar o site
+                    </a></li>
+                    <li><a href="<?php echo $this->baseUrl('logout'); ?>" class="navbar-link">
+                            <span class="glyphicon glyphicon-off" title="Sair"></span>
+                            <span class="hidden-sm">Sair</span>
+                        </a></li>
+                </ul>
+                <?php endif; ?>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container -->
+    </nav>
+    <div class="breadcrumbs hidden-xs">
+        <div class="container">
+            <ul class="pull-right">
+                <li><a href="<?php echo $this->baseUrl(); ?>" target="_blank" class="navbar-link">
+                        <span class="glyphicon glyphicon-globe" title="Acessar o site"></span>
+                        Acessar o site
+                    </a></li>
+            </ul>
+            
+            <?php echo $this->adminBreadcrumbs(); ?>
         </div>
     </div>
+    
+    <main>
+    
+        <div class="container">
 
-    <div class="container-fluid">
+            <div class="row">
+                <?php echo $this->layout()->content; ?>
+            </div>
 
-        <div class="row-fluid">
-            <?php echo $this->layout()->content; ?>
-        </div>
-
-        <hr />
+        </div> <!-- /container -->
 
         <footer>
-            <p><a href="http://www.jaimeneto.com" target="_blank">&copy; JAIMENETO.COM 2013</a></p>
+            <div class="extra hidden-xs hidden-sm">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="http://www.zendframework.com/manual/1.12/en/manual.html" class="btn" target="_blank">
+                                <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-zf.png'); ?>" />
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <a href="http://getbootstrap.com" class="btn" target="_blank">
+                                <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-bootstrap.png'); ?>" />
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <a href="http://jquery.com" class="btn" target="_blank">
+                                <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-jquery.png'); ?>" />
+                            </a>
+                        </div>
+                        <div class="col-md-3 text-right">
+                            <a href="http://api.jqueryui.com" class="btn" target="_blank">
+                                <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-jquery-ui.png'); ?>" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <div class="container">
+                    &copy; 2013-<?php echo Zend_Date::now()->get('YY'); ?> <a href="http://www.jaimeneto.com" target="_blank">JAIMENETO.COM</a>
+
+                    <a href="http://frontzend.jaimeneto.com" target="_blank" class="pull-right">
+                        <span class="glyphicon glyphicon-link"></span>
+                        frontzend.jaimeneto.com
+                    </a>
+                </div> <!-- /container -->
+            </div>
         </footer>
-
-    </div> <!-- /container -->
-
+    
+    </main>
+    
     <?php
     $jsFiles = array(
-        'lib/jquery/jquery-1.8.3.min.js',
-        'lib/jquery/jquery-ui-1.9.2.custom.min.js',
+        'lib/jquery/jquery-1.11.1.min.js',
+        'lib/jquery/jquery-ui-1.11.2.custom/jquery-ui.min.js',
         'lib/jquery/plugins/jquery-mask-v0.7.4/jquery.mask.min.js',
         'lib/tiny_mce/jquery.tinymce.js',
         'lib/valums-file-uploader/client/fileuploader.js',
@@ -110,5 +166,6 @@
     $jsFiles[] = APPLICATION_PATH . '/layouts/backend/default/js/scripts.js';
     echo $this->jsHeadScripts($jsFiles, 'default', 'backend');
     ?>
+
 </body>
 </html>

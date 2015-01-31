@@ -8,14 +8,14 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Layout_Form_Nav extends Twitter_Bootstrap_Form_Horizontal
+class Layout_Form_Nav extends Bootstrap_Form_Horizontal
 {
     public function __construct($options = null)
     {
         $this->setAttrib('id', strtolower(__CLASS__));
 
-        $this->initElements();
         parent::__construct($options);
+        $this->initElements();
         $this->initButtons();
     }
 
@@ -28,14 +28,12 @@ class Layout_Form_Nav extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('hidden', 'order');
 
         $this->addElement('text', 'label', array(
-            'label' => 'Rótulo',
-            'class' => 'input-block-level'
+            'label' => 'Rótulo'
         ));
         $mainElements[] = 'label';
 
         $this->addElement('text', 'uri', array(
-            'label' => 'Url',
-            'class' => 'input-block-level'
+            'label' => 'Url'
         ));
         $mainElements[] = 'uri';
 
@@ -51,17 +49,16 @@ class Layout_Form_Nav extends Twitter_Bootstrap_Form_Horizontal
         asort($resources);
         $this->addElement('select', 'resource', array(
             'label'        => 'Recurso',
-            'class'        => 'input-block-level',
             'multiOptions' => $multiOptions,
             'append' => '<a href="#" rel="tooltip" '
                 . 'title="Exibe se o usuário tiver permissão" data-placement="left">'
-                . '<i class="icon-info-sign"></i></a>'
+                . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
         $mainElements[] = 'resource';
 
         $this->addElement('radio', 'visible', array(
             'label'        => 'Status',
-            'label_class'  => 'inline',
+            'inline'       => true,
             'value'        => 1,
             'separator'    => '',
             'multiOptions' => array(
@@ -87,7 +84,6 @@ class Layout_Form_Nav extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('text', 'class', array(
             'label'     => 'Classe CSS',
             'belongsTo' => 'attribs',
-            'class'     => 'input-block-level',
             'filters'   => array(
                 'StringTrim',
                 'StripTags'
@@ -97,7 +93,6 @@ class Layout_Form_Nav extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('text', 'accesskey', array(
             'label'      => 'Atalho',
             'belongsTo'  => 'attribs',
-            'class'      => 'input-mini',
             'maxlength'  => 1,
             'prepend'    => 'Alt + Shift + ',
             'filters'    => array(
@@ -118,7 +113,7 @@ class Layout_Form_Nav extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addElement('radio', 'target', array(
             'label'        => 'Abrir',
-            'label_class'  => 'inline',
+            'inline'       => true,
             'value'        => '_self',
             'separator'    => '',
             'belongsTo'    => 'attribs',
@@ -147,25 +142,34 @@ class Layout_Form_Nav extends Twitter_Bootstrap_Form_Horizontal
     {
 //        $this->addElement('submit', 'save', array(
 //            'label'       => 'Salvar',
-//            'class'       => 'btn-large',
+//            'class'       => 'btn-lg',
 //            'ignore'      => true,
-//            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+//            'buttonType'  => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
 //        ));
 //
 //        $this->addElement('submit', 'apply', array(
 //            'label'      => 'Aplicar',
-//            'class'      => 'btn-large',
+//            'class'      => 'btn-lg',
 //            'ignore'     => true,
-//            'buttonType' => Twitter_Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
+//            'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
 //        ));
 //
 //        $this->addElement('submit', 'cancel', array(
 //            'label'  => 'Cancelar',
-//            'class'  => 'btn-large',
+//            'class'  => 'btn-lg',
 //            'ignore' => true
 //        ));
 //
-//        $this->addFormActions(array('save', 'apply', 'cancel'));
+//        $this->addDisplayGroup(array('save', 'apply', 'cancel'), 'buttons', array(
+//            'decorators' => array(
+//                'FormElements', 
+//                array('HtmlTag', array(
+//                    'class' => 'col-sm-offset-2', 
+//                    'tag'   => 'div',
+//                    'style' => 'clear:both'
+//                ))
+//            ),
+//        ));
     }
 
     public function init()

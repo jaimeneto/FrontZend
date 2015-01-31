@@ -11,7 +11,7 @@
 /**
  * Formulário de Login
  */
-class Acl_Form_Login extends Twitter_Bootstrap_Form_Horizontal
+class Acl_Form_Login extends Bootstrap_Form_Horizontal
 {  
     public function init()
     {
@@ -20,20 +20,24 @@ class Acl_Form_Login extends Twitter_Bootstrap_Form_Horizontal
         
         $this->addElement('text', 'username', array(
             'label'    => 'Usuário',
+            'size'     => Bootstrap_Form_Element_Text::SIZE_LARGE,
             'required' => true
         ));
 
         $this->addElement('password', 'password', array(
             'label'    => 'Senha',
+            'size'     => Bootstrap_Form_Element_Text::SIZE_LARGE,
             'required' => true
         ));
 
         $this->initCaptcha();
 
         $this->addElement('submit', 'btn_login', array(
-            'label'  => 'Entrar',
-            'ignore' => true,
-            'class'  => 'btn btn-primary btn-large'
+            'label'      => 'Entrar',
+            'ignore'     => true,
+            'size'       => Bootstrap_Form_Element_SUBMIT::BUTTON_SIZE_LARGE,
+            'buttonType' => Bootstrap_Form_Element_SUBMIT::BUTTON_PRIMARY,
+            'class'      => 'center-block'
         ));
     }
     

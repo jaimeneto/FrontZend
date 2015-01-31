@@ -17,7 +17,6 @@ class Layout_Form_Block_Separator extends Layout_Form_Block
         $this->addElement('text', 'title', array(
             'label'      => 'Título',
             'maxlength'  => 60,
-            'class'      => 'input-block-level',
             'filters'    => array(
                 'StripTags',
                 'StringTrim'
@@ -34,7 +33,7 @@ class Layout_Form_Block_Separator extends Layout_Form_Block
             ),
             'append' => '<a href="#" rel="tooltip" data-placement="left" '
                       . 'title="Apenas para referência">'
-                      . '<i class="icon-info-sign"></i></a>'
+                      . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
     }
 

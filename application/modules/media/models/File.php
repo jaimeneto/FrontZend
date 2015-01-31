@@ -53,6 +53,19 @@ class Media_Model_File extends FrontZend_Module_Model_Abstract
         return (object) array('width' => $imageSize[0], 'height' => $imageSize[1]);
     }
     
+    public function getExtension()
+    {
+        return pathinfo($this->path, PATHINFO_EXTENSION);
+    }
+
+    public function setFilename($newName)
+    {
+        $newFileName = explode('/', $this->path);
+        array_pop($newFileName);
+        $newFileName[] = $newName . '.' . $this->getExtension();
+        $this->path = implode('/', $newFileName);
+    }
+    
     /**
      *
      * @param String $path 

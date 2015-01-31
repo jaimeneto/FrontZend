@@ -22,39 +22,15 @@ class Layout_NavController extends Zend_Controller_Action
 
     public function manageAction()
     {
+        $this->view->headTitle()->append('Gerenciar menus');
+        
         $this->view->headTitle()->append('Menus');
 
-        $navPages = FrontZend_Container::get('LayoutNav')->fetchAll(null,
-                        array('id_parent', 'order ASC'));
-
-        $navConfigs = $this->_getNavTree($navPages);
+        $layoutNav = FrontZend_Container::get('LayoutNav');
+        $navPages = $layoutNav->fetchAll(null, array('id_parent', 'order ASC'));
+        $navConfigs = $layoutNav->getNavTree($navPages);
 
         $this->view->navConfigs = $navConfigs;
-    }
-
-    protected function _getNavTree($navPages, $parent=null)
-    {
-        $navConfigs = array();
-        foreach($navPages as $navPage) {
-            if ($navPage->id_parent == $parent) {
-                $idNav = "layout_nav_{$navPage->id}";
-                $navConfigs[$idNav] = (object) $navPage->toArray();
-                $navConfigs[$idNav]->id = $navPage->id;
-                if ($navPage->attribs) {
-                    $navPageAttribs = Zend_Json::decode($navPage->attribs);
-                    foreach($navPageAttribs as $attr => $val) {
-                        $navConfigs[$idNav]->$attr = $val;
-                    }
-                    unset($navConfigs[$idNav]->attribs);
-                }
-                $pages = $this->_getNavTree(clone $navPages, $navPage->id);
-                if ($pages) {
-                    $navConfigs[$idNav]->pages = $pages;
-                }
-            }
-        }
-
-        return $navConfigs;
     }
 
     public function ajaxAddAction()

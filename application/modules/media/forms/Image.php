@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Media_Form_Image extends Twitter_Bootstrap_Form_Horizontal
+class Media_Form_Image extends Bootstrap_Form_Horizontal
 {
     protected $_edit = false;
 
@@ -16,7 +16,7 @@ class Media_Form_Image extends Twitter_Bootstrap_Form_Horizontal
     {
         $this->setAttrib('id', strtolower(__CLASS__));
 
-        $this->addPrefixPath('Twitter_Bootstrap_Form', 'Twitter/Bootstrap/Form');
+        $this->addPrefixPath('Bootstrap_Form', 'Bootstrap/Form');
 
         if (isset($options['edit']) && $options['edit']) {
             $this->_edit = true;
@@ -34,18 +34,16 @@ class Media_Form_Image extends Twitter_Bootstrap_Form_Horizontal
     {
         $this->addElement('text', 'credits', array(
             'label'    => 'Créditos',
-            'class'    => 'input-block-level'
+            'size'     => Bootstrap_Form_Element_Text::SIZE_SMALL
         ));
 
         $this->addElement('textarea', 'info', array(
             'label' => 'Informações',
-            'class' => 'input-block-level',
             'rows'  => 2
         ));
 
         $this->addElement('text', 'keywords', array(
-            'label' => 'Palavras-chave',
-            'class' => 'input-block-level'
+            'label' => 'Palavras-chave'
         ));
 
         $this->addElement('hidden', 'id_file');
@@ -59,7 +57,7 @@ class Media_Form_Image extends Twitter_Bootstrap_Form_Horizontal
                     'FormElements',
                     array('HtmlTag', array(
                         'tag'   => 'div',
-                        'class' => 'tab-pane form-horizontal active',
+                        'class' => 'tab-pane active',
                         'id'    => 'main_elements'
                     ))
                 )
@@ -69,31 +67,31 @@ class Media_Form_Image extends Twitter_Bootstrap_Form_Horizontal
 
     public function initInfo()
     {
-        $this->addElement('UneditableTextfield', 'creator_name', array(
-            'label'  => 'Cadastrador por',
-            'class'  => 'input-block-level',
-            'ignore' => true
+        $this->addElement('StaticText', 'creator_name', array(
+            'label'    => 'Cadastrador por',
+            'class'    => 'form-control',
+            'disabled' => true
         ));
         $groupElements[] = 'creator_name';
 
-        $this->addElement('UneditableTextfield', 'original_name', array(
-            'label'  => 'Nome original',
-            'class'  => 'input-block-level',
-            'ignore' => true
+        $this->addElement('StaticText', 'original_name', array(
+            'label'    => 'Nome original',
+            'class'    => 'form-control',
+            'disabled' => true
         ));
         $groupElements[] = 'original_name';
 
-        $this->addElement('UneditableTextfield', 'date_created', array(
-            'label'  => 'Data da criação',
-            'class'  => 'input-block-level',
-            'ignore' => true
+        $this->addElement('StaticText', 'date_created', array(
+            'label'    => 'Data da criação',
+            'class'    => 'form-control',
+            'disabled' => true
         ));
         $groupElements[] = 'date_created';
 
-        $this->addElement('UneditableTextfield', 'date_updated', array(
-            'label'  => 'Última atualização',
-            'class'  => 'input-block-level',
-            'ignore' => true
+        $this->addElement('StaticText', 'date_updated', array(
+            'label'    => 'Última atualização',
+            'class'    => 'form-control',
+            'disabled' => true
         ));
         $groupElements[] = 'date_updated';
 
@@ -104,7 +102,7 @@ class Media_Form_Image extends Twitter_Bootstrap_Form_Horizontal
                     'FormElements',
                     array('HtmlTag', array(
                         'tag'   => 'div',
-                        'class' => 'tab-pane form-horizontal',
+                        'class' => 'tab-pane',
                         'id'    => 'media_info'
                     ))
                 )
@@ -115,31 +113,41 @@ class Media_Form_Image extends Twitter_Bootstrap_Form_Horizontal
     public function initButtons()
     {
         $this->addElement('submit', 'save', array(
-            'label'       => 'Salvar',
-            'class'       => 'btn-large',
-            'ignore'      => true,
-            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+            'label'      => 'Salvar',
+            'ignore'     => true,
+            'size'       => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
         ));
 
         $this->addElement('submit', 'apply', array(
             'label'      => 'Aplicar',
-            'class'      => 'btn-large',
             'ignore'     => true,
-            'buttonType' => Twitter_Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
+            'size'       => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
         ));
 
         $this->addElement('submit', 'cancel', array(
-            'label'  => 'Cancelar',
-            'class'  => 'btn-large',
-            'ignore' => true
+            'label'      => 'Cancelar',
+            'ignore'     => true,
+            'size'       => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_DEFAULT
         ));
 
-        $this->addFormActions(array('save', 'apply', 'cancel'));
+        $this->addDisplayGroup(array('save', 'apply', 'cancel'), 'buttons', array(
+            'decorators' => array(
+                'FormElements', 
+                array('HtmlTag', array(
+                    'class' => 'col-sm-offset-2', 
+                    'tag'   => 'div',
+                    'style' => 'clear:both'
+                ))
+            ),
+        ));
     }
 
     public function init()
     {
-        $this->setAttrib('class', 'tab-content');
+        $this->setAttrib('class', $this->getAttrib('class') . ' tab-content');
 
         $model = new Media_Model_File();
         $if = $model->getInputFilter();

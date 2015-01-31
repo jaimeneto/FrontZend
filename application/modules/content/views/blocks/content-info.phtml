@@ -16,7 +16,7 @@ $infoLabels = array(
     white-space: inherit;
 }
 </style>
-<div class="block block-content-info <?php echo $this->cssVisibility($this->block); ?>">
+<div <?php echo $this->htmlTagAttribs($this->block); ?>>
     <table class="table table-condensed">
         <tbody>
             <?php foreach($this->maindata as $field):

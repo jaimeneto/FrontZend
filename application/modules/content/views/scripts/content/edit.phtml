@@ -1,54 +1,62 @@
-<fieldset>
-    <legend>
-        Editar conteúdo
-        <div class="btn-group pull-right">
-            <a class="btn" href="<?php echo $this->baseUrl($this->form->getValue('slug')); ?>" target="_blank">
-                <i class="icon-globe"></i> Visualizar
-            </a>
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                <i class="icon-wrench"></i> Opções
-                <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu">
-                <li>
-                    <a href="<?php echo $this->adminBaseUrl("content/content/"
-                        . "config-page/id/{$this->form->getValue('id_content')}");
-                        ?>"><i class="icon-wrench"></i> Configurar página específica deste conteúdo</a>
-                </li>
-                <li>
-                    <a href="<?php echo $this->adminBaseUrl("content/content-type/"
-                        . "config-page/id/{$this->form->getValue('id_content_type')}");
-                        ?>"><i class="icon-wrench"></i> Configurar página do tipo de conteúdo</a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                    <a href="<?php echo $this->adminBaseUrl("content/content-type/"
-                        . "edit/id/{$this->form->getValue('id_content_type')}");
-                        ?>"><i class="icon-edit"></i> Editar tipo de conteúdo</a>
-                </li>
-            </ul>
-        </div>
-    </legend>
+<div class="page-header">
+    <div class="btn-group pull-right">
+        <a class="btn btn-default" href="<?php echo $this->baseUrl($this->form->getValue('slug')); ?>" target="_blank">
+            <span class="glyphicon glyphicon-globe"></span> Visualizar
+        </a>
+        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+            <span class="glyphicon glyphicon-wrench"></span> Opções
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="<?php echo $this->adminBaseUrl("content/content/"
+                    . "config-page/id/{$this->form->getValue('id_content')}");
+                    ?>"><span class="glyphicon glyphicon-wrench"></span> Configurar página específica deste item</a>
+            </li>
+            <li>
+                <a href="<?php echo $this->adminBaseUrl("content/content-type/"
+                    . "config-page/id/{$this->form->getValue('id_content_type')}");
+                    ?>"><span class="glyphicon glyphicon-wrench"></span> Configurar página do tipo de conteúdo</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a href="<?php echo $this->adminBaseUrl("content/content-type/"
+                    . "edit/id/{$this->form->getValue('id_content_type')}");
+                    ?>"><span class="glyphicon glyphicon-edit"></span> Editar tipo de conteúdo</a>
+            </li>
+        </ul>
+    </div>
+        
+    <h1>
+        <span class="glyphicon glyphicon-file"></span> 
+        Conteúdo
+        <small>Itens</small>
+    </h1>    
+</div>
 
-    <?php echo $this->alerts(); ?>
+<?php echo $this->alerts(); ?>
 
-    <?php
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Editar item</h3>
+        <?php
         $displayGroups = $this->form->getDisplayGroups();
         if($displayGroups):
-    ?>
-    <ul class="nav nav-tabs">
-        <?php foreach($displayGroups as $displayGroup): ?>
-        <?php if($displayGroup->getLegend()): ?>
-        <li<?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : ''; ?>>
-            <a href="#<?php echo $displayGroup->getName(); ?>" data-toggle="tab">
-                <?php echo $displayGroup->getLegend(); ?>
-            </a>
-        </li>
+        ?>
+        <ul class="nav nav-tabs pull-right">
+            <?php foreach($displayGroups as $displayGroup): ?>
+            <?php if($displayGroup->getLegend()): ?>
+            <li role="presentation" <?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : ''; ?>>
+                <a href="#<?php echo $displayGroup->getName(); ?>" data-toggle="tab">
+                    <?php echo $displayGroup->getLegend(); ?>
+                </a>
+            </li>
+            <?php endif; ?>
+            <?php endforeach; ?>
+        </ul>
         <?php endif; ?>
-        <?php endforeach; ?>
-    </ul>
-    <?php endif; ?>
-
-    <?php echo $this->form; ?>
-    
-</fieldset>
+    </div>
+    <div class="panel-body">
+        <?php echo $this->form; ?>
+    </div>
+</div>

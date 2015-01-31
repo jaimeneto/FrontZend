@@ -69,21 +69,9 @@ class Content_Model_ContentType extends FrontZend_Module_Model_Abstract
         if ($idContentType) {
             $options = array(
                 'where' => array('id_content_type = ?' => $idContentType),
-                'order' => array('datatype', 'order')
+                'order' => array('order')
             );
-            $metafields = FrontZend_Container::get('Metafield')->findAll($options);
-
-            $metafieldsArray = array(
-                'field'        => array(),
-                'relationship' => array(),
-                'file'         => array()
-            );
-
-            foreach($metafields as $metafield) {
-                $metafieldsArray[$metafield->datatype][$metafield->fieldname] = $metafield;
-            }
-
-            return (object) $metafieldsArray;
+            return FrontZend_Container::get('Metafield')->findAll($options);
         }
     }
 
@@ -167,6 +155,11 @@ class Content_Model_ContentType extends FrontZend_Module_Model_Abstract
                 ),
             ),
         );
+    }
+    
+    public function __toString()
+    {
+        return $this->type;
     }
     
 }

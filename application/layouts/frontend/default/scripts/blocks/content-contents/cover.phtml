@@ -19,8 +19,7 @@ if($this->contents):
         </fieldset>
     <?php endif; ?>
 
-    <div class="block block-content-contents block-content-contents-cover <?php
-            echo $this->cssVisibility($this->block); ?>">
+    <div <?php echo $this->htmlTagAttribs($this->block, array('class' => 'block-content-contents-cover')); ?>>
         <ul class="thumbnails" id="content_list">
 
             <?php foreach($this->contents as $content): ?>

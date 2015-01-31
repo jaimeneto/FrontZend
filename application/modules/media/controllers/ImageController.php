@@ -34,31 +34,68 @@ class Media_ImageController extends Zend_Controller_Action
 
         $files = FrontZend_Container::get('File')->fetchFromPath($path);
 
-        $this->view->dirs     = $dirs;
-        $this->view->files    = $files;
+        $this->view->dirs = $dirs;
+        $this->view->files = $files;
+        $this->view->path = $path;
     }   
 
     public function editAction()
     {
-	    $id = $this->_getParam('id');
+        $id = $this->_getParam('id');
 
         if (!$id) {
             $this->getHelper('alerts')->addError('Id inválido');
-            $this->_helper->redirector('manage', null, null, array(
-                'target' => $target));
+            $this->getHelper('Redirector')->gotoUrlAndExit(
+                    ADMIN_ROUTE . "/media/image/manage/target/{$target}");
         }
 
         $file = FrontZend_Container::get('File')->findById($id);
 
+        $basePath = '';
+        if ($file) {
+            $basePath = explode('/', $file->path);
+            array_pop($basePath);
+            $basePath = '/path/' . implode('|', $basePath);
+        }
+        
+        if ($this->_getParam('cancel')) {
+            $this->getHelper('Redirector')
+                 ->gotoUrlAndExit(ADMIN_ROUTE . "/media/image/manage{$basePath}");
+        }
+        
         if (!$file) {
             $this->getHelper('alerts')->addError('Arquivo inválido');
-            $this->_helper->redirector('manage');
+            $this->getHelper('Redirector')
+                 ->gotoUrlAndExit(ADMIN_ROUTE . '/media/image');
         }
 
         $form = new Media_Form_Image(array('edit' => true));
         $form->setAction($this->view->url());
         $form->populate($file->toArray());
 
+        if ($this->_request->isPost()) {
+            $newFileName = Zend_Date::now()->get('yyyyMMddHHmmss');
+            $path = $file->getRealPath();
+            $file->setFilename($newFileName);
+            if (rename(str_replace('.', '_tmp.', $path), $file->getRealPath())) {
+                try {
+                    FrontZend_Container::get('File')->save($file);
+                    unlink($path);
+                    $this->getHelper('alerts')->addSuccess('Arquivo modificado com sucesso');
+                    
+                    if ($this->_request->getPost('save')) {
+                        $this->getHelper('Redirector')->gotoUrlAndExit(
+                            ADMIN_ROUTE . "/media/image/manage{$basePath}");
+                    }
+                } catch(Exception $e) {
+                    $this->getHelper('alerts')->addError('Erro ao tentar salvar o arquivo');
+                    rename($file->getRealPath(), $path);
+                }
+            } else {
+                $this->getHelper('alerts')->addError('Erro ao tentar renomear o arquivo');
+            }
+        }
+        
         $this->view->form = $form;
         $this->view->file = $file;
     }
@@ -135,6 +172,18 @@ class Media_ImageController extends Zend_Controller_Action
                 switch($option) {
                     case 'auto':
                         $args['overflow'] = 'visible';
+                        
+                        if (!isset($args['width'])) {
+                            $args['width'] = $image->img['width']
+                                           * $args['height']
+                                           / $image->img['height'];
+                        }
+                        if (!isset($args['height'])) {
+                            $args['height'] = $image->img['height']
+                                            * $args['width']
+                                            / $image->img['width'];
+                        }
+                        
                         $image->photo($args);
                         break;
                     case 'distort':
@@ -278,8 +327,7 @@ class Media_ImageController extends Zend_Controller_Action
             $this->_helper->json($result);
         }
 
-        $tbFile = new Media_Model_DbTable_File();
-        $file = $tbFile->createRow();
+        $file = FrontZend_Container::get('File')->createRow();
 
         $originalName = $uploader->getUploadName();
         $uploadedFilePath = $uploadDir . DIRECTORY_SEPARATOR . $originalName;

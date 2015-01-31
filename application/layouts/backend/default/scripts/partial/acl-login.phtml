@@ -6,16 +6,19 @@
 #acl_form_login label,
 #acl_form_login #username,
 #acl_form_login #password {
-    padding: 10px 5px;
     font-size: 17.5px;
 }
 </style>
 
-<fieldset>
-    <legend>Login</legend>
+<div class="col-sm-12">
 
-    <?php echo $this->alerts(); ?>
+    <fieldset>
+        <legend>Login</legend>
 
-    <?php echo $this->loginForm; ?>
+        <?php echo $this->alerts(); ?>
 
-</fieldset>
+        <?php echo $this->loginForm; ?>
+
+    </fieldset>
+    
+</div>

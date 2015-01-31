@@ -97,7 +97,7 @@ class Content_View_Helper_FormFiles extends Zend_View_Helper_FormElement
                 . ' class="btn btn-select-image"'
                 . ' type="button" value="Escolher imagem..." ' 
                 . $endTag
-                . '<ul class="thumbnails'
+                . '<ul class="list-unstyled thumbnails'
                     . ($multiple ? '' : ' single') 
                     . ($multiple && $sortable ? ' sortable-list' : '')
                     . '">'
@@ -116,13 +116,13 @@ class Content_View_Helper_FormFiles extends Zend_View_Helper_FormElement
                                                 array('id' => $optId))
 
                       . ($multiple && $sortable
-                          ? '<i class="icon-move"></i>'
+                          ? '<span class="glyphicon glyphicon-move"></span>'
                           : '')
 
                       . '<a id="remove_' . $optId. '" '
                       . 'class="pull-right file-remove" '
                       . 'href="#files_' . $optId . '" title="Remover">'
-                      . '<i class="icon-remove"></i>'
+                      . '<span class="glyphicon glyphicon-remove"></span>'
                       . '</a>'
 
                       . '<div id="' . $optId. '_preview" '

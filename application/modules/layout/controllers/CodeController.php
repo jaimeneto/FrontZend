@@ -12,6 +12,8 @@ class Layout_CodeController extends FrontZend_Module_Controller_Abstract
 {
     public function listAction()
     {
+        $this->view->headTitle()->append('Editor de layout');
+        
         $theme = Acl_Model_Auth::getTheme();
         $path = str_replace('|', '/', $this->_getParam('path', $theme));
         $layout = substr($path, 0, strpos($path, '/'));

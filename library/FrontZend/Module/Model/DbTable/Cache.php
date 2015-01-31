@@ -183,7 +183,9 @@ class FrontZend_Module_Model_DbTable_Cache extends Zend_Cache_Core
         $cacheId = $this->makeId($id);
         if ($this->test($cacheId)) {
             $data = $this->load($cacheId);
-            $data->setTable($this->_cachedEntity);
+            if ($data) {
+                $data->setTable($this->_cachedEntity);
+            }
         } else {
             $tags = $this->_tags;
             $tags[] = $cacheId;

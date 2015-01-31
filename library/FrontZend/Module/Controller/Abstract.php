@@ -52,7 +52,22 @@ abstract class FrontZend_Module_Controller_Abstract
         $form = new $formFilterClass();
         $form->setAction($this->view->url());
 
-        $filters = $this->_getParam('filter');
+        $request = $this->getRequest();
+        $filters = $request->getParam('filter', array());
+
+        $order = $this->getParam('order');
+        if ($order) {
+            $filters['order'] = $order;
+        }
+        
+        $ns = new Zend_Session_Namespace($formFilterClass);
+        if ($filters && $form->isValid($filters)) {
+            $ns->unsetAll();
+            $ns->filters = $filters;
+        } elseif (isset($ns->filters)) {
+            $filters = $ns->filters;
+        }
+
         if ($filters) {
             $form->populate($filters);
         }
@@ -68,8 +83,8 @@ abstract class FrontZend_Module_Controller_Abstract
             $this->view->moduleName = $moduleName;
             $this->view->controllerName = $controllerName;
             $this->getHelper('ViewRenderer')->setNoController();
-            $this->view->addScriptPath(realpath(dirname(__FILE__) . '/../'
-                . 'views/scripts/abstract/'));
+            $this->view->addScriptPath(realpath(APPLICATION_PATH 
+                . '/modules/core/views/scripts/abstract'));
         }
     }
 
@@ -142,8 +157,8 @@ abstract class FrontZend_Module_Controller_Abstract
                     . "scripts/{$controllerName}/add.phtml")) {
             $this->view->controllerName = $controllerName;
             $this->getHelper('ViewRenderer')->setNoController();
-            $this->view->addScriptPath(realpath(dirname(__FILE__)
-                    . '/../views/scripts/abstract/'));
+            $this->view->addScriptPath(realpath(APPLICATION_PATH 
+                . '/modules/core/views/scripts/abstract'));
         }
     }
 
@@ -214,8 +229,8 @@ abstract class FrontZend_Module_Controller_Abstract
                     . "scripts/{$controllerName}/edit.phtml")) {
             $this->view->controllerName = $controllerName;
             $this->getHelper('ViewRenderer')->setNoController();
-            $this->view->addScriptPath(realpath(dirname(__FILE__)
-                    . '/../views/scripts/abstract/'));
+            $this->view->addScriptPath(realpath(APPLICATION_PATH 
+                . '/modules/core/views/scripts/abstract'));
         }
     }
 
@@ -244,7 +259,7 @@ abstract class FrontZend_Module_Controller_Abstract
         if ($data) {
             try {
                 if(isset($data['delete'])) {
-                    if (Container::get($containerAlias)->deleteById($id)) {
+                    if (FrontZend_Container::get($containerAlias)->deleteById($id)) {
                         $this->getHelper('alerts')
                              ->addSuccess('Item excluído com sucesso');
                         $this->getHelper('Redirector')->gotoUrlAndExit(
@@ -258,7 +273,7 @@ abstract class FrontZend_Module_Controller_Abstract
                 } else if(isset($data['trash'])) {
                     $content = FrontZend_Container::get($containerAlias)->findById($id);
                     $content->status = 'D';
-                    if (Container::get($containerAlias)->save($content)) {
+                    if (FrontZend_Container::get($containerAlias)->save($content)) {
                         $this->getHelper('alerts')
                              ->addSuccess('Item enviado para a lixeira com sucesso');
                         $this->getHelper('Redirector')->gotoUrlAndExit(

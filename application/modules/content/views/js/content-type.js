@@ -15,7 +15,7 @@ function initMetaFields()
     $('ul.sortable').sortable({
         axis: "y",
         forcePlaceholderSize: true,
-        handle: ".accordion-heading",
+        handle: ".panel-heading",
         placeholder: "accordion-group sortable-placeholder"
     });
 
@@ -32,7 +32,7 @@ function initMetaFields()
 
     $('.meta-field-rating-half-flag').unbind('change');
     $('.meta-field-rating-half-flag').change(function(){
-        var metaConfigs = $(this).parents('.controls');
+        var metaConfigs = $(this).parents('.checkbox').parent();
         if ($(this).is(':checked')) {
             metaConfigs.find('.meta-field-rating-multioptions-half-off').slideUp();
             metaConfigs.find('.meta-field-rating-multioptions-half-on').slideDown();
@@ -47,8 +47,8 @@ function initMetaFields()
 
 function Content_ContentType_AjaxAddMetafield()
 {
-    $('#add_meta_field_btn, #add_meta_relationship_btn, #add_meta_file_btn').unbind('click');
-    $('#add_meta_field_btn, #add_meta_relationship_btn, #add_meta_file_btn').click(function(){
+    $('#add_meta_field_btn').unbind('click');
+    $('#add_meta_field_btn').click(function(){
         var metaElementsId = $(this).parents('.meta-elements').attr('id');
         var datatype       = $(this).attr('id').replace('add_meta_', '').replace('_btn', '');
         var fieldtype      = $('input[name="add_meta_' + datatype + '_type"]:checked').val();
@@ -69,7 +69,7 @@ function Content_ContentType_AjaxAddMetafield()
                 dataType: 'json',
                 success: function(json){
                     if (json.status == 1) {
-                        $('#' + metaElementsId + ' ul').append('<li class="accordion-group">'
+                        $('#' + metaElementsId + ' ul').append('<li class="panel panel-default">'
                                 + json.content
                                 + '</li>');
 

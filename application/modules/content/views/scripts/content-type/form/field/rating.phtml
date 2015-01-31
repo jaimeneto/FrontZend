@@ -1,0 +1,69 @@
+<div class="meta-field-rating-options form-group">
+    <label for="meta-field-<?php echo $this->metafield->fieldname ?>-multiOptions"
+           class="col-md-2 control-label">Opções</label>
+    <div class="col-md-9">
+        <div class="checkbox">
+            <label for="meta-field-<?php echo $this->metafield->fieldname ?>-half">
+                <?php echo $this->formCheckbox("meta[{$this->metafield->fieldname}][half]", null,
+                    $this->metafield->getOption('half')
+                        ? array('checked' => 'checked', 'class' => 'meta-field-rating-half-flag')
+                        : array('class' => 'meta-field-rating-half-flag')) ?>
+                Permitir selecionar meia-estrela
+            </label>
+        </div>
+            
+        <?php  $half = $this->metafield->getOption('half') ? $this->metafield->getOption('half') : 0;
+
+            $defaultMetaOptions = array(
+                0 => array(
+                    '1.0' => 'Ruim',
+                    '2.0' => 'Razoável',
+                    '3.0' => 'Bom',
+                    '4.0' => 'Muito Bom',
+                    '5.0' => 'Excelente',
+                ),
+                1 => array(
+                    '0.5' => 'Péssimo',
+                    '1.0' => 'Muito Ruim',
+                    '1.5' => 'Ruim',
+                    '2.0' => 'Ruinzinho',
+                    '2.5' => 'Razoável',
+                    '3.0' => 'Bonzinho',
+                    '3.5' => 'Bom',
+                    '4.0' => 'Muito Bom',
+                    '4.5' => 'Excelente',
+                    '5.0' => 'Fantástico'
+                )
+            );
+
+            foreach($defaultMetaOptions as $halfOpt => $dmo):
+        ?>
+        <div class="meta-field-rating-multioptions-half-<?php echo $halfOpt ? 'on' : 'off' ?>"
+            <?php echo $halfOpt != $half ? ' style="display:none"' : '' ?>>
+
+            <?php foreach($dmo as $k => $v):
+                $multiOptions = $this->metafield->getOption('multiOptions'); ?>
+
+            <div class="rating-option">
+                <div class="rating-option input-group">
+                    <span class="rating-<?php echo str_replace('.','',$k); ?> input-group-addon">
+                        <?php for($i=0; $i<5; $i++): ?>
+                            <?php if ($i < $k && $i + 0.5 == $k): ?>
+                                <span class="glyphicon glyphicon-star half1"
+                                ></span><span class="glyphicon glyphicon-star-empty half2"></span>
+                            <?php else: ?>
+                                <span class="glyphicon glyphicon-star<?php echo $i>=$k ? '-empty' : ''; ?>"></span>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+                    </span>
+                    <?php echo $this->formText("meta[{$this->metafield->fieldname}][multiOptions][$halfOpt][{$k}]",
+                       (isset($multiOptions[$halfOpt][$k]) && $multiOptions[$halfOpt][$k])
+                            ? $multiOptions[$halfOpt][$k] : $v,
+                            array('class' => 'form-control')); ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</div>

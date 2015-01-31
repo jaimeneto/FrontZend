@@ -18,7 +18,6 @@ class Content_Form_Block_Images extends Layout_Form_Block
         $this->addElement('text', 'title', array(
             'label'      => 'Título',
             'maxlength'  => 60,
-            'class'      => 'input-block-level',
             'filters'    => array(
                 'StripTags',
                 'StringTrim'
@@ -35,7 +34,7 @@ class Content_Form_Block_Images extends Layout_Form_Block
             ),
             'append' => '<a href="#" rel="tooltip" ' 
                 . 'title="Apenas para referência" data-placement="left">'
-                . '<i class="icon-info-sign"></i></a>'
+                . '<span class="glyphicon glyphicon-info-sign"></span></a>'
         ));
 
         // image
@@ -50,15 +49,16 @@ class Content_Form_Block_Images extends Layout_Form_Block
             $fields = array();
             if ($contentType) {
                 $metafields = $contentType->getMetafields();
-                if ($metafields->file) {
-                    foreach($metafields->file as $key => $field) {
-                        $fields[$key] = $field->getOption('label');
+                foreach($metafields as $field) {
+                    if ($field->datatype == 'file') {
+                        $fields[$field->id_metafield] 
+                                = $field->getOption('label');
                     }
                 }
             }
 
             if ($fields) {
-                $this->addElement('radio', 'image', array(
+                $this->addElement('radio', 'field', array(
                     'label'        => 'Campo',
                     'multiOptions' => $fields
                 ));
@@ -78,36 +78,9 @@ class Content_Form_Block_Images extends Layout_Form_Block
         ));
         
         $this->addElement('checkbox', 'fill', array(
-            'input_label'  => 'Preencher imagem'
+            'label'  => 'Preencher imagem'
         ));
 
-        //template
-        $multiOptions = array(
-            '' => '',
-        );
-        $theme = Acl_Model_Auth::getTheme();
-        if (is_dir(APPLICATION_PATH . '/layouts/frontend/' . $theme .
-            '/scripts/blocks/content-images')) {
-            $dir = new DirectoryIterator(APPLICATION_PATH . '/layouts/frontend/'
-                 . $theme . '/scripts/blocks/content-images');
-            foreach($dir as $file) if($file->isFile()) {
-                $multiOptions[$theme][$file->getFilename()] = $file->getFilename();
-            }
-        }
-
-        $dir = new DirectoryIterator(APPLICATION_PATH . '/modules/content/views'
-                 . '/blocks/content-images');
-        foreach($dir as $file) if($file->isFile()) {
-            if (!isset($multiOptions[$theme][$file->getFilename()])) {
-                $multiOptions['standard'][$file->getFilename()] = $file->getFilename();
-            }
-        }
-
-        $this->addElement('select', 'template', array(
-            'label'        => 'Modelo',
-            'class'        => 'input-block-level',
-            'multiOptions' => $multiOptions
-        ));
     }
 
 }

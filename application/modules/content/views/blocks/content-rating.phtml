@@ -7,16 +7,16 @@
 }
 </style>
 
-<div class="block block-content-rating <?php echo $this->cssVisibility($this->block); ?>">
+<div <?php echo $this->htmlTagAttribs($this->block); ?>>
     <div class="rating">
-        <span class="label">
+        <span class="rating-stars">
             <?php foreach($this->multiOptions as $rating => $ratingDescription): ?>
-                <i class="<?php echo ($rating <= $this->contentRating) ? 'icon-star': 'icon-star-empty'; ?>"
-                     ><?php //echo $rating; ?></i>
+                <span class="glyphicon <?php echo ($rating <= $this->contentRating) ? 'glyphicon-star': 'glyphicon-star-empty'; ?>"
+                     ><?php //echo $rating; ?></span>
             <?php endforeach; ?>
         </span>
 
-        <span class="label label-inverse" title="<?php echo $this->multiOptions[$this->contentRating]; ?>"
+        <span class="rating-description label label-default" title="<?php echo $this->multiOptions[$this->contentRating]; ?>"
               ><?php echo isset($this->multiOptions[$this->contentRating])
                   ? $this->multiOptions[$this->contentRating] : '';
         ?></span>

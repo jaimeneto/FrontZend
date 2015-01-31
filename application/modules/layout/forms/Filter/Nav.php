@@ -15,13 +15,11 @@ class Layout_Form_Filter_Nav extends FrontZend_Module_Form_Filter_Abstract
     {
         $term = $this->addElement('text', 'term', array(
             'label' => 'Buscar',
-            'class' => 'input-block-level',
             'belongsTo' => 'filter'
         ));
 
         $this->addElement('select', 'order', array(
             'label'        => 'Ordernar por',
-            'class'        => 'input-block-level',
             'belongsTo'    => 'filter',
             'value'        => 'order',
             'multiOptions' => array(

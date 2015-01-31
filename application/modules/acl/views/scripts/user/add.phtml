@@ -1,8 +1,18 @@
-<fieldset>
-    <legend>Cadastrar usuário</legend>
+<div class="page-header">
+    <h1>
+        <span class="glyphicon glyphicon-lock"></span> 
+        Acesso
+        <small>Usuários</small>
+    </h1>    
+</div>
 
-    <?php echo $this->alerts() ?>
+<?php echo $this->alerts(); ?>
 
-    <?php echo $this->form; ?>
-    
-</fieldset>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Cadastrar usuário</h3>
+    </div>
+    <div class="panel-body">
+        <?php echo $this->form; ?>        
+    </div>    
+</div>

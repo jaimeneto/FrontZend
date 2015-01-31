@@ -1,26 +1,42 @@
-<fieldset>
-    <legend>Gerenciamento de Imagens</legend>
+<div class="page-header">
+    <h1>
+        <span class="glyphicon glyphicon-image"></span> 
+        Arquivos
+        <small>Imagens</small>
+    </h1>
+</div>
 
-    <?php echo $this->alerts(); ?>
+<?php echo $this->alerts(); ?>
 
-    <div class="span3 well sidebar-nav" id="dirs">
-        <?php echo $this->navigation($this->dirs)->menu()->setUlClass('nav nav-list treeview'); ?>
-    </div><!--/span-->
-
-    <div class="span9" id="files">
-
-        <ul class="thumbnails">
-            <?php foreach($this->files as $image): ?>
-            <li class="span2">
-                <a href="<?php echo $this->adminBaseUrl('media/image/edit/id/'
-                    . $image->id); ?>" class="thumbnail">
-                    <img src="<?php echo $this->thumb($image, 150, 150, true); ?>"
-                         alt="<?php echo $this->escape($image->original_name); ?>" />
-                </a>
-            </li>
-            <?php endforeach; ?>
-        </ul>
-
+<div class="row">
+    <div class="col-sm-3">
+        <div class="panel panel-default sidebar-nav" id="dirs">
+            <?php echo $this->navigation($this->dirs)->menu()->setUlClass('nav nav-list treeview'); ?>
+        </div>
     </div>
 
-</fieldset>
+    <div class="col-sm-9">
+        <?php if ($this->files->count() > 0): ?>
+        <div class="panel panel-default sidebar-nav" id="files">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <?php echo $this->path; ?>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row thumbnails">
+                    <?php foreach($this->files as $image): ?>
+                    <div class="col-xs-6 col-md-3">
+                        <a href="<?php echo $this->adminBaseUrl('media/image/edit/id/'
+                            . $image->id); ?>" class="thumbnail">
+                            <img src="<?php echo $this->thumb($image, 150, 150, true); ?>"
+                                 alt="<?php echo $this->escape($image->original_name); ?>" />
+                        </a>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>

@@ -1,21 +1,104 @@
-body {
-    padding-top: 60px;
-}
-@media (max-width: 980px) {
-    body {
-      padding-top: 0;
-    }
+html, body {
+    height: 100%;
+    font-size: 13px;
 }
 
-.navbar-inverse .brand {
-    color: #FFFFFF;
+.clear {
+    clear: both;
 }
 
-body.backend .brand {
+main {
+    padding-top: 100px;
+    padding-bottom: 140px;
+    position: relative;
+    min-height: 100%;
+    background: url("../img/bg-grid.png") repeat scroll 0px 0px #E9E9E9;
+}
+
+body.backend .navbar-brand {
     background: url("../img/frontzend-white.png") no-repeat center center transparent;
-    width: 105px;
-    height: 30px;
+    width: 130px;
+    height: 50px;
     padding: 5px 20px;
+    text-indent: -1000px;
+}
+
+.navbar {
+    background: none repeat scroll 0% 0% #292929;
+    filter: none;
+    border-bottom: 1px solid #121212;
+    border-radius: 0;
+}
+
+.breadcrumbs {
+    position: fixed;
+    top: 51px;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    
+    border-top: 1px solid #595959;
+    margin-bottom: 2.5em;
+    background-color: #3B3B3B;
+    background-image: linear-gradient(to bottom, #414141, #323232);
+    background-repeat: repeat-x;
+    border-bottom: 1px solid #000;
+}
+.breadcrumb, .breadcrumbs ul {
+    margin-bottom: 0;
+    background: transparent;
+    padding: 8px 1px;
+}
+.breadcrumbs a {
+    color: #9D9D9D;
+}
+.breadcrumbs a:hover, .breadcrumbs a:focus {
+    text-decoration: none;
+    color: #FFF;
+}
+
+.page-header {
+    margin: 10px 0;
+    border: 0;  
+}
+.page-header h1 {
+    font-size: 24px;
+    margin: 0;
+}
+.page-header h1 span.glyphicon {
+    font-size: smaller;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
+}
+footer .extra {
+    border-top: 1px solid #000;
+    padding: 5px 0;
+    font-size: 11px;
+    color: #BBB;
+    background: none repeat scroll 0% 0% #1A1A1A;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+}
+footer .copyright {
+    margin-top: 0;
+    border-top: 1px solid #000;
+    padding: 15px 0;
+    background: none repeat scroll 0% 0% #111;
+    box-shadow: 0 1px 0 #292929 inset;
+}
+footer a {
+    color: #9D9D9D;
+}
+footer a:hover, footer a:focus {
+    color: #FFF;
+    text-decoration: none;
 }
 
 td, th {
@@ -23,17 +106,143 @@ td, th {
     overflow: hidden;
     max-width: 150px;
     cursor: default;
-}
-
-table.xdebug-error th {
-    white-space: normal;
-}
-
-th a, th a:hover {
-    color: #333;
     text-decoration: none;
 }
 
+.table-horizontal {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.table-horizontal .table {
+    margin-bottom: 0;
+}
+
+.table-bordered thead tr {
+    background: -moz-linear-gradient(center top , #EEE 0%, #DADADA 100%) repeat scroll 0% 0% transparent;
+}
+.table-bordered thead tr th,
+.table-bordered thead tr th a,
+.table-bordered thead tr th a:hover, 
+.table-bordered thead tr th a:focus {
+    color: #444;
+    text-decoration: none;
+}
+
+.table-bordered > thead > tr > th {
+    border-right: 1px solid #CCC;
+    border-left: 1px solid #F1F1F1;
+    box-shadow: 0px 1px 0px #FFF inset;
+}
+.table-bordered > thead > tr > th:first-child {
+    border-left-color: #ddd;
+}
+.table-bordered > tbody > tr:first-child > td {
+    border-top-color: #CCC;
+}
+.table-bordered > thead > tr:last-child > th {
+    border-bottom: 1px solid #CCC;
+}
+
+.panel .panel-heading {
+    position: relative;
+}
+.panel .panel-heading .nav-tabs {
+    position: absolute;
+    right: 5px;
+    bottom: -1px;
+}
+.panel .panel-heading .nav-tabs > li > a {
+    line-height: 10px
+}
+
+.tab-pane.form-horizontal {
+    padding-top: 15px;
+}
+
+.form-horizontal .buttons {
+    background-color: #F5F5F5;
+    border-top: 1px solid #DDD;
+    padding: 10px 15px 15px;
+}
+
+.input-20 {
+    width: 20%;
+    display: inline;
+}
+.input-10 {
+    width: 10%;
+    display: inline;
+}
+
+table.xdebug-error { width: 100%; clear: both; }
+table.xdebug-error th { white-space: normal; }
+
+.table .glyphicon, #layout_body .glyphicon, .modal .glyphicon {
+    color: #333;
+}
+.glyphicon.inactive {
+    color: #FEFEFE;
+}
+
+table.treetable span.indenter {
+    padding-right: 19px;
+}
+
+table.treetable tr span.indenter a {
+    background-image: url("../../../../../lib/bootstrap/img/glyphicons-halflings.png");
+    background-position: -456px -72px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 14px;
+    line-height: 14px;
+    margin-top: 1px;
+    margin-right: 3px;
+    vertical-align: text-top;
+    width: 14px;
+}
+table.treetable tr.collapsed span.indenter a {
+    background-position: -456px -72px;
+}
+table.treetable tr.expanded span.indenter a {
+    background-position: -313px -119px;
+}
+
+.modal-body .tab-pane {
+    display: none;
+}
+.modal-body .tab-pane.active {
+    display: block;
+}
+
+.icon-loading {
+    color: transparent !important;
+    background-image: url("../img/icon-loading.png");
+    background-position: center center;
+}
+
+#filters .form-horizontal .control-label {
+    padding-top: 7px;
+    margin-bottom: 0px;
+    text-align: left;
+    overflow: hidden;
+    height: 30px;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.bootstrap-form-element-multicheckbox .checkbox-inline, 
+.bootstrap-form-element-radio .radio-inline, 
+.content-form-meta-field-select .checkbox-inline, 
+.content-form-meta-field-select .radio-inline,
+.content-form-meta-relationship-list .checkbox-inline,
+.content-form-meta-relationship-list .radio-inline {
+    width: 25%;
+    margin: 0;
+    padding-right: 20px;
+}
+
+/*
 .dropup .caret {
     margin-top: 8px;
 }
@@ -56,10 +265,6 @@ fieldset .btn {
 .icon-custom.icon-star-half {
     background-position: 0 0;
 }
-.icon-loading {
-    background-image: url("../img/icon-loading.png");
-    background-position: center center;
-}
 
 .sortable li {
     background-color: #FFF;
@@ -79,25 +284,6 @@ fieldset .btn {
     margin-bottom: 0;
 }
 
-table.treetable tr span.indenter a {
-    background-image: url("../../../../../lib/bootstrap/img/glyphicons-halflings.png");
-    background-position: -456px -72px;
-    background-repeat: no-repeat;
-    display: inline-block;
-    height: 14px;
-    line-height: 14px;
-    margin-top: 1px;
-    margin-right: 3px;
-    vertical-align: text-top;
-    width: 14px;
-}
-table.treetable tr.collapsed span.indenter a {
-    background-position: -456px -72px;
-}
-table.treetable tr.expanded span.indenter a {
-    background-position: -313px -119px;
-}
-
 fieldset form fieldset {
     border: 1px solid #E5E5E5;
     padding: 20px;
@@ -115,13 +301,6 @@ fieldset form fieldset legend + .control-group {
 }
 
 
-.modal-body .tab-pane {
-    display: none;
-}
-.modal-body .tab-pane.active {
-    display: block;
-}
-
 .radio, .checkbox {
     padding-right: 20px;
 }
@@ -129,5 +308,13 @@ fieldset form fieldset legend + .control-group {
 .controls.richtext {
     border:1px solid #ccc;
     border-radius: 5px;
+    overflow: hidden;
+}
+*/
+
+span.mceEditor {
+    display: block;
+    border: 1px solid #CCC;
+    border-radius: 4px;
     overflow: hidden;
 }

@@ -1,3 +1,3 @@
-<div class="block block-layout-nav <?php echo $this->block ? $this->cssVisibility($this->block) : ''; ?>">
-    <?php echo $this->navigation()->navbar($this->nav); ?>
+<div <?php echo $this->htmlTagAttribs($this->block); ?>>
+    <?php echo $this->navigation()->menu()->renderNavbar($this->nav); ?>
 </div>

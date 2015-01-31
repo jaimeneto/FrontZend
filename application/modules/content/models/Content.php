@@ -151,9 +151,15 @@ class Content_Model_Content extends FrontZend_Module_Model_Abstract
         $contentMetafields = $this->getMetafields();
         if ($contentMetafields) {
             foreach($contentMetafields as $contentMetafield) {
-                $metafield = $contentMetafield->getMetafield();
-                if ($metafield->fieldname == $fieldname) {
-                    return $contentMetafield;
+                if (is_numeric($fieldname)) {
+                    if ($contentMetafield->id_metafield == $fieldname) {
+                        return $contentMetafield;
+                    }
+                } else {
+                    $metafield = $contentMetafield->getMetafield();
+                    if ($metafield->fieldname == $fieldname) {
+                        return $contentMetafield;
+                    }
                 }
             }
         }
@@ -284,9 +290,18 @@ class Content_Model_Content extends FrontZend_Module_Model_Abstract
             $contentMetafields = $this->getMetafields();
             foreach($contentMetafields as $contentMetafield) {
                 $metafield = $contentMetafield->getMetafield();
+                if (!$metafield) {
+                    // If the metafield was deleted from database!!!
+                    continue;
+                }
                 if ($metafield->getOption('multiple')) {
-                    $contentArray['meta'][$metafield->fieldname][]
-                        = $contentMetafield->id_metafield;
+                    if ($metafield->datatype == 'field') {
+                        $contentArray['meta'][$metafield->fieldname]
+                            = explode(',',$contentMetafield->value);
+                    } else {
+                        $contentArray['meta'][$metafield->fieldname][]
+                            = $contentMetafield->id_metafield;
+                    }
                 } else {
                     $contentArray['meta'][$metafield->fieldname]
                         = $contentMetafield->value;
@@ -491,6 +506,11 @@ class Content_Model_Content extends FrontZend_Module_Model_Abstract
                 ),
             ),
         );
+    }
+    
+    public function __toString()
+    {
+        return $this->title;
     }
     
 }

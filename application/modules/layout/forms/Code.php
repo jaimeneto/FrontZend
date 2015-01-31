@@ -8,17 +8,15 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Layout_Form_Code extends Twitter_Bootstrap_Form_Vertical
+class Layout_Form_Code extends Bootstrap_Form_Vertical
 {
     public function __construct($options = null)
     {
         $this->setAttrib('id', strtolower(__CLASS__));
 
-//        $this->addPrefixPath('FrontZend_Form', 'FrontZend/Form');
-//        $this->addPrefixPath('Twitter_Bootstrap_Form', 'Twitter/Bootstrap/Form');
-
-        $this->initElements();
         parent::__construct($options);
+        
+        $this->initElements();
         $this->initButtons();
     }
 
@@ -27,7 +25,6 @@ class Layout_Form_Code extends Twitter_Bootstrap_Form_Vertical
         $this->addElement('hidden', 'path');
 
         $this->addElement('textarea', 'code', array(
-            'class' => 'input-block-level',
             'rows'  => 20
         ));
     }
@@ -36,18 +33,27 @@ class Layout_Form_Code extends Twitter_Bootstrap_Form_Vertical
     {
         $this->addElement('submit', 'save', array(
             'label'       => 'Salvar',
-            'class'       => 'btn-large',
             'ignore'      => true,
-            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+            'size'        => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'buttonType'  => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
         ));
 
         $this->addElement('submit', 'cancel', array(
-            'label'  => 'Cancelar',
-            'class'  => 'btn-large',
-            'ignore' => true
+            'label'         => 'Cancelar',
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_DEFAULT,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'ignore'        => true
         ));
 
-        $this->addFormActions(array('save', 'cancel'));
+        $this->addDisplayGroup(array('save', 'cancel'), 'buttons', array(
+            'decorators' => array(
+                'FormElements', 
+                array('HtmlTag', array(
+                    'tag'   => 'div',
+                    'style' => 'clear:both; margin-top: 20px;'
+                ))
+            ),
+        ));
     }
 
     public function populate(array $values)

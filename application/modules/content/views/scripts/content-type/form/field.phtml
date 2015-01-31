@@ -1,0 +1,53 @@
+<a class="panel-heading" role="tab" id="heading_<?php echo $this->metafield->fieldname; ?>"
+    data-toggle="collapse" data-parent="#accordion_fields" aria-expanded="true" 
+    href="#meta_fields_<?php echo $this->metafield->fieldname ?>-element"
+    aria-controls="meta_fields_<?php echo $this->metafield->fieldname ?>-element">
+        <h3 class="panel-title">
+            <?php echo $this->metafield->getOption('label'); ?>
+            <div class="pull-right text-muted">
+                <?php echo $this->metafield->getFieldtype(); ?>
+            </div>
+        </h3>
+</a>
+<div id="meta_fields_<?php echo $this->metafield->fieldname; ?>-element" role="tabpanel"
+     class="panel-collapse collapse" aria-labelledby="heading_<?php echo $this->metafield->fieldname; ?>">
+    <div class="panel-body">
+
+        <div class="pull-right">
+            <a href="#" class="remove-meta"
+               id="meta-<?php echo $this->metafield->fieldname; ?>-remove"
+                title="Excluir"><span class="glyphicon glyphicon-remove"></span></a>
+        </div>
+
+        <?php echo $this->formHidden("meta[{$this->metafield->fieldname}][datatype]",
+            $this->metafield->datatype); ?>
+        
+        <?php echo $this->formHidden("meta[{$this->metafield->fieldname}][type]",
+            $this->metafield->getOption('type')); ?>
+
+        <div class="form-group">
+            <label for="meta_fields-<?php echo $this->metafield->fieldname ?>-label"
+                   class="col-sm-2 control-label">Rótulo</label>
+            <div class="col-sm-9">
+                <?php echo $this->formText("meta[{$this->metafield->fieldname}][label]",
+                    $this->metafield->getOption('label'), array('class' => 'form-control')); 
+                ?>
+            </div>
+        </div>
+            
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-9">
+                <div class="checkbox">
+                    <label for="meta-<?php echo $this->metafield->fieldname ?>-required">
+                        <?php echo $this->formCheckbox("meta[{$this->metafield->fieldname}][required]", null,
+                                $this->metafield->getOption('required')
+                                ? array('checked' => 'checked') : ''); ?>
+                        Campo obrigatório
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <?php echo $this->render("content-type/form/{$this->metafield->datatype}/{$this->metafield->getOption('type')}.phtml") ?>
+    </div>
+</div>

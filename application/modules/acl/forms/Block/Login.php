@@ -19,6 +19,6 @@ class Acl_Form_Block_Login extends Layout_Form_Block_Title
             '<a href="#" rel="tooltip" data-placement="left" '
             . 'title="Apenas para referência. ' 
             . 'O título do conteúdo será exibido">'
-            . '<i class="icon-info-sign"></i></a>');
+            . '<span class="glyphicon glyphicon-info-sign"></span></a>');
     }
 }

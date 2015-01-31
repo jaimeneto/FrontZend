@@ -8,6 +8,11 @@
     min-height: 350px;
 }
 
+#youtube_search_results {
+    clear: both;
+    min-height: 150px;
+}
+
 ul.youtube.thumbnails li {
     height: 170px;
     overflow: hidden;
@@ -21,11 +26,10 @@ ul.youtube.thumbnails li p.title {
     margin-left: -15px;
 }
 
-#image_preview {
-    margin-bottom: 20px;
-    text-align: center;
-    padding: 20px;
+#image_preview .panel-heading .btn-group {
+    margin: -8px -13px 0 0;
 }
+
 #image_preview img {
     border: 1px solid #E5E5E5;
 }
@@ -67,10 +71,11 @@ ul.youtube.thumbnails li p.title {
 }
 #dirs .treeview > li {
     white-space: nowrap;
+    overflow: hidden;
 }
 #dirs .treeview > li > a {
     line-height: 14px;
-    padding: 0 0 0 18px;
+    padding: 0 0 0 3px;
 }
 #dirs .treeview > li.active > a {
     background-color: transparent;
@@ -103,4 +108,18 @@ ul.youtube.thumbnails li p.title {
 #dirs .treeview > li > a:focus {
     background-color: transparent;
     text-decoration: underline;
+}
+
+#media_form_image .tab-pane {
+    margin-bottom: 20px;
+}
+#media_form_image .tab-pane .panel-group {
+    margin-bottom: 5px;
+}
+#media_form_image .tab-pane .panel-group #image_adjustments .panel-body {
+    padding-left:40px;padding-right:40px;
+}
+
+form .btn-youtube-search {
+    margin-bottom: 10px;
 }

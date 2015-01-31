@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Content_Form_ContentType extends Twitter_Bootstrap_Form_Horizontal
+class Content_Form_ContentType extends Bootstrap_Form_Horizontal
 {
     protected $_meta = array();
 
@@ -22,25 +22,25 @@ class Content_Form_ContentType extends Twitter_Bootstrap_Form_Horizontal
             $this->_edit = true;
         }
         
-        $this->initElements();
         parent::__construct($options);
+        
+        $this->initElements();
         $this->initButtons();
     }
 
     public function initElements()
     {
         if ($this->_edit) {
-            $this->addElement('text', 'parent', array(
+            $this->addElement('StaticText', 'parent', array(
                 'label'    => 'Tipo pai',
-                'class'    => 'input-xlarge',
-                'disabled' => 'disabled',
-                'ignore'   => true
+                'class'    => 'form-control',
+                'disabled' => true
             ));
 
-            $this->addElement('text', 'id_content_type', array(
+            $this->addElement('StaticText', 'id_content_type', array(
                 'label'    => 'Identificação',
-                'class'    => 'input-xlarge',
-                'disabled' => 'disabled'
+                'class'    => 'form-control',
+                'disabled' => true
             ));
         } else {
             $tbContentType = new Content_Model_DbTable_ContentType();
@@ -53,50 +53,56 @@ class Content_Form_ContentType extends Twitter_Bootstrap_Form_Horizontal
             $this->addElement('select', 'id_parent', array(
                 'label'        => 'Tipo pai',
                 'required'     => true,
-                'class'        => 'input-xlarge',
                 'multiOptions' => $multiOptions
             ));
 
             $this->addElement('text', 'id_content_type', array(
-                'label' => 'Identificação',
-                'class' => 'input-xlarge'
+                'label' => 'Identificação'
             ));
         }
 
         $this->addElement('text', 'type', array(
-            'label' => 'Nome',
-            'class' => 'input-xlarge'
+            'label' => 'Nome'
         ));
 
         $this->addElement('text', 'plural', array(
-            'label' => 'Plural',
-            'class' => 'input-xlarge'
+            'label' => 'Plural'
         ));
     }
 
     public function initButtons()
     {
         $this->addElement('submit', 'save', array(
-            'label'       => 'Salvar',
-            'class'       => 'btn-large',
-            'ignore'      => true,
-            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+            'label'         => 'Salvar',
+            'ignore'        => true,
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'apply', array(
-            'label'      => 'Aplicar',
-            'class'      => 'btn-large',
-            'ignore'     => true,
-            'buttonType' => Twitter_Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
+            'label'         => 'Aplicar',
+            'ignore'        => true,
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_SUCCESS,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'cancel', array(
-            'label'  => 'Cancelar',
-            'class'  => 'btn-large',
-            'ignore' => true
+            'label'         => 'Cancelar',
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_DEFAULT,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'ignore'        => true
         ));
 
-        $this->addFormActions(array('save', 'apply', 'cancel'));
+        $this->addDisplayGroup(array('save', 'apply', 'cancel'), 'buttons', array(
+            'decorators' => array(
+                'FormElements', 
+                array('HtmlTag', array(
+                    'class' => 'col-sm-offset-2', 
+                    'tag'   => 'div',
+                    'style' => 'clear:both'
+                ))
+            ),
+        ));
     }
 
     public function init()
@@ -149,20 +155,8 @@ class Content_Form_ContentType extends Twitter_Bootstrap_Form_Horizontal
                 'fieldname', array('id_content_type = ?' => $idContentType)
             );
 
-        if (!isset($this->_meta['field'])) {
-            $this->_meta['field'] = array();
-        }
-        if (!isset($this->_meta['relationship'])) {
-            $this->_meta['relationship'] = array();
-        }
-        if (!isset($this->_meta['file'])) {
-            $this->_meta['file'] = array();
-        }
+        $metaFields = array_keys($this->_meta);
         
-        $metaFields = array_merge(array_keys($this->_meta['field']),
-                      array_keys($this->_meta['relationship']),
-                      array_keys($this->_meta['file']));
-
         $deleteMetafields = array_diff($currentMetafields, $metaFields);
 
         $results = array(
@@ -180,52 +174,54 @@ class Content_Form_ContentType extends Twitter_Bootstrap_Form_Horizontal
                 }
             }
         }
-
-        foreach($this->_meta as $datatype => $metafields) {
-            $order = 1;
-            foreach($metafields as $fieldname => $options) {
-                if ($options['type'] == 'select') {
-                    $multiOptionsArray = explode(PHP_EOL, 
-                            $options['multiOptions']);
-                    $options['multiOptions'] = array();
-                    foreach($multiOptionsArray as $opt) {
-                        $keyVal = explode(':',$opt);
-                        $options['multiOptions'][$keyVal[0]] = trim($keyVal[1]);
-                    }
+        
+        $order = 1;
+        foreach($this->_meta as $fieldname => $options) {
+            $datatype = $options['datatype'];
+            unset($options['datatype']);
+            
+            if ($options['type'] == 'select') {
+                $multiOptionsArray = explode(PHP_EOL, 
+                        $options['multiOptions']);
+                $options['multiOptions'] = array();
+                foreach($multiOptionsArray as $opt) {
+                    $keyVal = explode(':',$opt);
+                    $options['multiOptions'][$keyVal[0]] = trim($keyVal[1]);
                 }
+            }
 
-                $updateData = array(
-                    'options' => Zend_Json::encode($options),
-                    'order'   => $order++
+            $updateData = array(
+                'options' => Zend_Json::encode($options),
+                'order'   => $order++
+            );
+
+            if (in_array($fieldname, $currentMetafields)) {
+                $metafield = FrontZend_Container::get('Metafield')->findOne(array(
+                    'where' => array(
+                        'id_content_type = ?'   => $idContentType,
+                        'fieldname = ?'         => $fieldname
+                    )
+                ));
+
+                $metafield->setFromArray($updateData);
+
+                if (FrontZend_Container::get('Metafield')->save($metafield)) {
+                    $results['updates']++;
+                }
+            } else {
+                $updateData['datatype'] = $datatype;
+                $metafield = FrontZend_Container::get('Metafield')->createRow(
+                    $updateData + array(
+                        'id_content_type'   => $idContentType,
+                        'fieldname'         => $fieldname
+                    )
                 );
-
-                if (in_array($fieldname, $currentMetafields)) {
-                    $metafield = FrontZend_Container::get('Metafield')->findOne(array(
-                        'where' => array(
-                            'id_content_type = ?'   => $idContentType,
-                            'fieldname = ?'         => $fieldname
-                        )
-                    ));
-
-                    $metafield->setFromArray($updateData);
-
-                    if (FrontZend_Container::get('Metafield')->save($metafield)) {
-                        $results['updates']++;
-                    }
-                } else {
-                    $updateData['datatype'] = $datatype;
-                    $metafield = FrontZend_Container::get('Metafield')->createRow(
-                        $updateData + array(
-                            'id_content_type'   => $idContentType,
-                            'fieldname'         => $fieldname
-                        )
-                    );
-                    if (FrontZend_Container::get('Metafield')->save($metafield)) {
-                        $results['inserts']++;
-                    }
+                if (FrontZend_Container::get('Metafield')->save($metafield)) {
+                    $results['inserts']++;
                 }
             }
         }
+
         return $results['inserts'] + $results['updates'] + $results['deletes'];
     }
 

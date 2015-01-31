@@ -6,8 +6,8 @@ $youtube = $this->content->getMetafield($field);
 
 if ($youtube && $youtube->value): ?>
 
-<div class="block block-content-youtube block-content-youtube-screen <?php echo $this->cssVisibility($this->block); ?>"
-     id="content_<?php echo $field; ?>">
+<div <?php echo $this->htmlTagAttribs($this->block, array(
+    'class' => 'block-content-youtube-screen', 'id' => 'content_' . $field)); ?>>
 
     <?php echo $this->youtubeVideo($youtube->value, $width, $height); ?>
 

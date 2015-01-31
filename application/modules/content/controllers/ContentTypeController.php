@@ -10,8 +10,25 @@
 
 class Content_ContentTypeController extends FrontZend_Module_Controller_Abstract
 {
+    
+    public function listAction()
+    {
+        $this->view->headTitle()->append('Tipos de conteúdo');
+        
+        parent::listAction();
+    }
+    
+    public function addAction()
+    {
+        $this->view->headTitle()->append('Cadastrar tipo de conteúdo');
+        
+        parent::addAction();
+    }
+    
     public function editAction()
     {
+        $this->view->headTitle()->append('Editar tipo de conteúdo');
+        
         if ($this->_getParam('cancel')) {
             $this->getHelper('Redirector')->gotoUrlAndExit(
                     ADMIN_ROUTE . '/content/content-type');
@@ -57,14 +74,13 @@ class Content_ContentTypeController extends FrontZend_Module_Controller_Abstract
             if ($form->isValid($data)) {
                 try {
                     if ($form->persistData()) {
-                        $msg = 'Informações do tipo de conteúdo alteradas'
-                             . ' com sucesso';
+                        $msg = 'Tipo de conteúdo alterado com sucesso';
                         $this->getHelper('alerts')->addSuccess($msg);
                         $successes++;
                     }
                 } catch (Exception $e) {
-                    $msg = 'Erro ao tentar alterar informações de tipo de '
-                         . 'conteúdo: ' . $e->getMessage();
+                    $msg = 'Erro ao tentar alterar tipo de conteúdo: ' 
+                         . $e->getMessage();
                     $this->getHelper('alerts')->addError($msg);
                     $errors++;
                 }
@@ -73,8 +89,10 @@ class Content_ContentTypeController extends FrontZend_Module_Controller_Abstract
             // Salva configurações dos campos extras, relacionamentos e arquivos
             if (isset($data['meta'])) {
                 if ($form->persistMeta()) {
-                    $msg = 'Meta campos, relacionamentos e arquivos '
-                         . 'atualizados com sucesso';
+                    if (!$successes) {
+                        $msg = 'Meta campos, relacionamentos e arquivos '
+                             . 'atualizados com sucesso';
+                    }
                     $this->getHelper('alerts')->addSuccess($msg);
                 }
             }
@@ -84,6 +102,13 @@ class Content_ContentTypeController extends FrontZend_Module_Controller_Abstract
         $this->view->form = $form;
     }
 
+    public function removeAction()
+    {
+        $this->view->headTitle()->append('Excluir tipo de conteúdo');
+        
+        parent::removeAction();
+    }
+    
     public function configPageAction()
     {
         $id = $this->_getParam('id');

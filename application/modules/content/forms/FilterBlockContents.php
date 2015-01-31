@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Content_Form_FilterBlockContents extends Twitter_Bootstrap_Form_Horizontal
+class Content_Form_FilterBlockContents extends Bootstrap_Form_Horizontal
 {
     protected $_types = array();
 
@@ -32,7 +32,6 @@ class Content_Form_FilterBlockContents extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addElement('text', 'title', array(
             'label'     => 'Título',
-            'class'     => 'input-block-level',
             'belongsTo' => 'filters'
         ));
 

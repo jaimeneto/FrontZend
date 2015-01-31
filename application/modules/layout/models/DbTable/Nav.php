@@ -152,5 +152,65 @@ class Layout_Model_DbTable_Nav extends FrontZend_Module_Model_DbTable_Abstract
         return $result;
     }
 
-}
+    public function getNavTree($navPages, $parent=null)
+    {
+        $navConfigs = array();
+        foreach($navPages as $navPage) {
+            if ($navPage->id_parent == $parent) {
+                $idNav = "layout_nav_{$navPage->id}";
+                $navConfigs[$idNav] = (object) $navPage->toArray();
+                $navConfigs[$idNav]->id = $navPage->id;
+                if ($navPage->attribs) {
+                    $navPageAttribs = Zend_Json::decode($navPage->attribs);
+                    foreach($navPageAttribs as $attr => $val) {
+                        $navConfigs[$idNav]->$attr = $val;
+                    }
+                    unset($navConfigs[$idNav]->attribs);
+                }
+                $pages = $this->getNavTree(clone $navPages, $navPage->id);
+                if ($pages) {
+                    $navConfigs[$idNav]->pages = $pages;
+                }
+            }
+        }
 
+        return $navConfigs;
+    }
+    
+    private function getContainerPages($navPages, $parent=null)
+    {
+        $navConfigs = array();
+        foreach($navPages as $navPage) {
+            if ($navPage->id_parent == $parent) {
+                $idNav = "layout_nav_{$navPage->id}";
+                $navConfigs[$idNav] = $navPage->toArray();
+                $navConfigs[$idNav]['id'] = $idNav;
+                unset($navConfigs[$idNav]['id_layout_nav']);
+                if ($navPage->attribs) {
+                    $navPageAttribs = Zend_Json::decode($navPage->attribs);
+                    foreach($navPageAttribs as $attr => $val) {
+                        $navConfigs[$idNav][$attr] = $val;
+                        unset($navConfigs[$idNav]['attribs']);
+                    }
+                }
+                $pages = $this->getContainerPages(clone $navPages, $navPage->id);
+                if ($pages) {
+                    $navConfigs[$idNav]['pages'] = $pages;
+                }
+            }
+        }
+
+        return $navConfigs;
+    }
+    
+    public function generateContainer()
+    {
+        $navPages = $this->fetchAll(null, array('id_parent', 'order ASC'));
+        $containerPages = $this->getContainerPages($navPages);
+        
+        $container = new Zend_Navigation($containerPages);
+        
+        return $container;
+    }
+    
+}

@@ -8,7 +8,7 @@
  * @copyright  Copyright (c) 2013 (http://frontzend.jaimeneto.com)
  */
 
-class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
+class Content_Form_Content extends Bootstrap_Form_Horizontal
 {
     protected $_contentType = null;
     protected $_metafields = array();
@@ -18,18 +18,17 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
         $this->setAttrib('id', strtolower(__CLASS__));
 
         $this->addPrefixPath('FrontZend_Form', 'FrontZend/Form');
-        $this->addPrefixPath('Twitter_Bootstrap_Form', 'Twitter/Bootstrap/Form');
-
-        $this->initElements();
-        if (isset($options['contentType']) && $options['contentType']) {
-            $this->_contentType = $options['contentType'];
-            unset($options['contentType']);
-            $this->initMetafieldElements();
-        }
-        $this->initInfo();
+        $this->addPrefixPath('Bootstrap_Form', 'Bootstrap/Form');
 
         parent::__construct($options);
 
+        if (isset($options['contentType']) && $options['contentType']) {
+            $this->_contentType = $options['contentType'];
+            unset($options['contentType']);
+        }
+        
+        $this->initElements();
+        $this->initInfo();
         $this->initButtons();
     }
 
@@ -45,27 +44,23 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
         );
         $this->addElement('select', 'id_content_type', array(
             'label'        => 'Tipo de conteúdo',
-            'class'        => 'input-block-level',
             'multiOptions' => $contentTypes,
         ));
         $groupElements[] = 'id_content_type';
 
         $this->addElement('text', 'title', array(
             'label' => 'Título',
-            'class' => 'input-block-level',
         ));
         $groupElements[] = 'title';
 
         $this->addElement('text', 'slug', array(
             'label' => 'Slug',
-            'class' => 'input-block-level',
             'prepend' => SITE_URL . '/'
         ));
         $groupElements[] = 'slug';
 
-        $this->addElement('datetime', 'dt_published', array(
+        $this->addElement('selectDatetime', 'dt_published', array(
             'label'  => 'Data de publicação',
-            'class'  => 'input-block-level',
             'format' => 'yyyy-MM-dd HH:mm:ss',
             'value'  => Zend_Date::now(),
         ));
@@ -73,14 +68,12 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
 
         $this->addElement('textarea', 'text', array(
             'label' => 'Texto',
-            'class' => 'input-block-level',
             'rows'  => 15
         ));
         $groupElements[] = 'text';
 
         $this->addElement('textarea', 'excerpt', array(
             'label' => 'Resumo',
-            'class' => 'input-block-level',
             'rows'  => 4
         ));
         $groupElements[] = 'excerpt';
@@ -88,16 +81,17 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
         $this->addElement('hidden', 'id_content');
         $groupElements[] = 'id_content';
 
+        $groupElements = $this->initMetafieldElements($groupElements);
+        
         $this->addElement('text', 'keywords', array(
             'label'   => 'Palavras-chave',
-            'class'   => 'input-block-level',
-            'prepend' => '<i class="icon-tags"></i>'
+            'prepend' => '<span class="glyphicon glyphicon-tags"></span>'
         ));
         $groupElements[] = 'keywords';
 
         $this->addElement('radio', 'status', array(
             'label'        => 'Status',
-            'label_class'  => 'inline',
+            'inline'       => true,
             'value'        => 'I',
             'separator'    => '',
             'multiOptions' => array(
@@ -116,6 +110,7 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
                     'FormElements', array(
                         'HtmlTag', array(
                             'tag'   => 'div',
+                            'role'  => 'tabpanel',
                             'class' => 'tab-pane active form-horizontal',
                             'id'    => 'main_elements'
                         )
@@ -125,8 +120,12 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
         );
     }
 
-    public function initMetafieldElements()
+    public function initMetafieldElements($groupElements)
     {
+        if (!$this->_contentType) {
+            return;
+        }
+        
         $metaTypes = array(
             'field'        => array(
                 'field'     => 'type',
@@ -156,64 +155,54 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
                 )
             );
 
-            $groupElements = array();
-            if($metafields) {
+            if ($metafields) {
                 foreach($metafields as $metafield) {
                     $metaOptions = $metafield->getOptions();
                     $metaOptions['belongsTo'] = 'meta';
                     $metaElement = 'Content_Form_Meta_' . ucfirst($datatype)
                         . '_' . ucfirst($metaOptions[$options['field']]);
-                    $this->addElement(new $metaElement($metafield->fieldname,
-                        $metaOptions));
-                    $groupElements[] = $metafield->fieldname;
+                    $element = new $metaElement($metafield->fieldname,
+                        $metaOptions);
+                    $element->setDecorators($this->_elementDecorators);
+                    $this->addElement($element);
                     $this->_metafields[$metafield->fieldname] = $metafield;
+                    $groupElements[] = $metafield->fieldname;
                 }
             }
-
-            if ($groupElements) {
-                $this->addDisplayGroup(
-                    $groupElements, $options['displayId'], array(
-                        'legend'     => $options['legend'],
-                        'decorators' => array(
-                            'FormElements',
-                            array('HtmlTag', array(
-                                    'tag'   => 'div',
-                                    'class' => 'tab-pane form-horizontal',
-                                    'id'    => $options['displayId']
-                                ))
-                        )
-                    )
-                );
-            }
         }
+        return $groupElements;
     }
 
     public function initInfo()
     {
-        $this->addElement('UneditableTextfield', 'creator_name', array(
-            'label'  => 'Cadastrado por',
-            'class'  => 'input-block-level',
-            'ignore' => true
+        $this->addElement('StaticText', 'creator_name', array(
+            'label'    => 'Cadastrado por',
+            'class'    => 'form-control',
+            'disabled' => true,
+            'ignore'   => true
         ));
         $groupElements[] = 'creator_name';
 
-        $this->addElement('UneditableTextfield', 'date_created', array(
+        $this->addElement('StaticText', 'date_created', array(
             'label'  => 'Data da criação',
-            'class'  => 'input-block-level',
+            'class'  => 'form-control',
+            'disabled' => true,
             'ignore' => true
         ));
         $groupElements[] = 'date_created';
 
-        $this->addElement('UneditableTextfield', 'date_updated', array(
+        $this->addElement('StaticText', 'date_updated', array(
             'label'  => 'Última atualização',
-            'class'  => 'input-block-level',
+            'class'  => 'form-control',
+            'disabled' => true,
             'ignore' => true
         ));
         $groupElements[] = 'date_updated';
 
-        $this->addElement('UneditableTextfield', 'count_comments', array(
+        $this->addElement('StaticText', 'count_comments', array(
             'label'  => 'Comentários',
-            'class'  => 'input-block-level',
+            'class'  => 'form-control',
+            'disabled' => true,
             'ignore' => true
         ));
         $groupElements[] = 'count_comments';
@@ -225,6 +214,7 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
                     'FormElements',
                     array('HtmlTag', array(
                             'tag'   => 'div',
+                            'role'  => 'tabpanel',
                             'class' => 'tab-pane form-horizontal',
                             'id'    => 'content_info'
                         ))
@@ -236,26 +226,36 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
     public function initButtons()
     {
         $this->addElement('submit', 'save', array(
-            'label'       => 'Salvar',
-            'class'       => 'btn-large',
-            'ignore'      => true,
-            'buttonType'  => Twitter_Bootstrap_Form_Element_Submit::BUTTON_PRIMARY
+            'label'         => 'Salvar',
+            'ignore'        => true,
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'apply', array(
-            'label'      => 'Aplicar',
-            'class'      => 'btn-large',
-            'ignore'     => true,
-            'buttonType' => Twitter_Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
+            'label'         => 'Aplicar',
+            'ignore'        => true,
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_SUCCESS,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
         ));
 
         $this->addElement('submit', 'cancel', array(
-            'label'  => 'Cancelar',
-            'class'  => 'btn-large',
-            'ignore' => true
+            'label'         => 'Cancelar',
+            'buttonType'    => Bootstrap_Form_Element_Submit::BUTTON_DEFAULT,
+            'size'          => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'ignore'        => true
         ));
 
-        $this->addFormActions(array('save', 'apply', 'cancel'));
+        $this->addDisplayGroup(array('save', 'apply', 'cancel'), 'buttons', array(
+            'decorators' => array(
+                'FormElements', 
+                array('HtmlTag', array(
+                    'class' => 'col-sm-offset-2', 
+                    'tag'   => 'div',
+                    'style' => 'clear:both'
+                ))
+            ),
+        ));
     }
 
     public function init()
@@ -336,45 +336,58 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
             if ($result) {
                 $saves++;
             }
-
+            
             if ($content->id && $this->_metafields) {
                 foreach($this->_metafields as $fieldname => $metafield) {
-                    if (isset($values['meta'][$fieldname])) {
-                        switch($metafield->datatype) {
-                        case 'field':
-                            $contentMetafield = $content->getMetafield($fieldname);
-                            $tbContentMetafield = FrontZend_Container::get('ContentMetafield');
-                            if (!$contentMetafield) {
-                                $contentMetafield = $tbContentMetafield->createRow();
-                                $contentMetafield->id_metafield = $metafield->id;
-                                $contentMetafield->id_content = $content->id;
-                            }
-                            $contentMetafield->value = $values['meta'][$fieldname];
+                    switch($metafield->datatype) {
+                    case 'field':
+                        $contentMetafield = $content->getMetafield($fieldname);
+                        $tbContentMetafield = FrontZend_Container::get('ContentMetafield');
+                        if (!$contentMetafield) {
+                            $contentMetafield = $tbContentMetafield->createRow();
+                            $contentMetafield->id_metafield = $metafield->id;
+                            $contentMetafield->id_content = $content->id;
+                        } elseif (!isset($values['meta'][$fieldname])
+                            && $contentMetafield->value) {
+                                if ($tbContentMetafield->deleteById($contentMetafield->id)) {
+                                    $saves++;
+                                }
+                            break;
+                        }
+                        
+                        if ($values['meta'][$fieldname]) {
+                            $contentMetafield->value = is_array($values['meta'][$fieldname])
+                                    ? implode(',',$values['meta'][$fieldname])
+                                    : $values['meta'][$fieldname];
                             if ($tbContentMetafield->save($contentMetafield)) {
                                 $saves++;
                             }
-                            break;
+                        }
+                        break;
 
-                        case 'relationship':
+                    case 'relationship':
+                        if (!isset($values['meta'][$fieldname])) {
+                            $values['meta'][$fieldname] = array();
+                        }
+                        
+                        switch($metafield->getOption('type')) {
+                        case 'users':
+                            $contentUsers = $content->getUsers($fieldname);
+                            $currContentUsers = array();
+                            foreach($contentUsers as $contentUser) {
+                                $currContentUsers[$contentUser->id_content_user] =
+                                    $contentUser->id_user;
+                            }
 
-                            switch($metafield->getOption('type')) {
-                            case 'users':
-                                $contentUsers = $content->getUsers($fieldname);
-                                $currContentUsers = array();
-                                foreach($contentUsers as $contentUser) {
-                                    $currContentUsers[$contentUser->id_content_user] =
-                                        $contentUser->id_user;
-                                }
+                            $insert = array_diff(
+                                    (array) $values['meta'][$fieldname],
+                                    $currContentUsers
+                                );
 
-                                $insert = array_diff(
-                                        (array) $values['meta'][$fieldname],
-                                        $currContentUsers
-                                    );
-
-                                $delete = array_diff(
-                                        $currContentUsers,
-                                        (array) $values['meta'][$fieldname]
-                                    );
+                            $delete = array_diff(
+                                    $currContentUsers,
+                                    (array) $values['meta'][$fieldname]
+                                );
 
 //                                pr(array(
 //                                    'current' => $currContentUsers,
@@ -382,136 +395,66 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
 //                                    'insert'  => $insert,
 //                                    'delete'  => $delete),1);
 
-                                $tbContentUser = FrontZend_Container::get('ContentUser');
+                            $tbContentUser = FrontZend_Container::get('ContentUser');
 
-                                if ($insert) foreach($insert as $id_user) {
-                                    if ($tbContentUser->insert(array(
-                                            'id_content' => $content->id,
-                                            'id_user'    => $id_user,
-                                            'rel_type'   => $fieldname
-                                        ))) $saves++;
+                            if ($insert) foreach($insert as $id_user) {
+                                if ($tbContentUser->insert(array(
+                                        'id_content' => $content->id,
+                                        'id_user'    => $id_user,
+                                        'rel_type'   => $fieldname
+                                    ))) $saves++;
+                            }
+
+                            if ($delete) {
+                                if ($tbContentUser->delete(
+                                    'id_content_user IN (' .
+                                        implode(',', array_keys($delete)) .
+                                    ')'
+                                )) {
+                                    $saves++;
                                 }
-
-                                if ($delete) {
-                                    if ($tbContentUser->delete(
-                                        'id_content_user IN (' .
-                                            implode(',', array_keys($delete)) .
-                                        ')'
-                                    )) {
-                                        $saves++;
-                                    }
-                                }
-                                break;
-
-                            case 'contents':
-                                $contentRelationships = $content->getRelationships($fieldname);
-                                $currContentRelationships = array();
-                                foreach($contentRelationships as $contentRelationship) {
-                                    $currContentRelationships[$contentRelationship->id_content_relationship] =
-                                        ($contentRelationship->id_content_a == $content->id
-                                            ? $contentRelationship->id_content_b
-                                            : $contentRelationship->id_content_a);
-                                }
-
-                                $insert = array_diff(
-                                        (array) $values['meta'][$fieldname],
-                                        $currContentRelationships
-                                    );
-
-                                $delete = array_diff(
-                                        $currContentRelationships,
-                                        (array) $values['meta'][$fieldname]
-                                    );
-
-//                                pr(array(
-//                                    'current' => $currContentRelationships,
-//                                    'values'  => (array) $values['meta'][$fieldname],
-//                                    'insert'  => $insert,
-//                                    'delete'  => $delete),1);
-
-                                $tbContentRelationship = FrontZend_Container::get('ContentRelationship');
-
-                                if ($insert) foreach($insert as $id_content) {
-                                    if ($tbContentRelationship->insert(array(
-                                            'id_content_a' => $content->id,
-                                            'id_content_b' => $id_content,
-                                            'rel_type'     => $fieldname
-                                        ))) $saves++;
-                                }
-
-                                if ($delete) {
-                                    if ($tbContentRelationship->delete(
-                                        'id_content_relationship IN (' .
-                                            implode(',', array_keys($delete)) .
-                                        ')'
-                                    )) {
-                                        $saves++;
-                                    }
-                                }
-                                break;
                             }
                             break;
 
-                        case 'file':
-                            $contentFiles = $content->getFiles($fieldname);
-                            $currContentFiles = array();
-                            foreach($contentFiles as $contentFile) {
-                                $currContentFiles[$contentFile->id_content_file] =
-                                    $contentFile->id_file;
+                        case 'contents':
+                            $contentRelationships = $content->getRelationships($fieldname);
+                            $currContentRelationships = array();
+                            foreach($contentRelationships as $contentRelationship) {
+                                $currContentRelationships[$contentRelationship->id_content_relationship] =
+                                    ($contentRelationship->id_content_a == $content->id
+                                        ? $contentRelationship->id_content_b
+                                        : $contentRelationship->id_content_a);
                             }
 
                             $insert = array_diff(
                                     (array) $values['meta'][$fieldname],
-                                    $currContentFiles
-                                );
-
-                            $update = array_diff_assoc(
-                                    (array) $values['meta'][$fieldname],
-                                    array_values($currContentFiles)
+                                    $currContentRelationships
                                 );
 
                             $delete = array_diff(
-                                    $currContentFiles,
+                                    $currContentRelationships,
                                     (array) $values['meta'][$fieldname]
                                 );
 
 //                            pr(array(
-//                                'current' => $currContentFiles,
+//                                'current' => $currContentRelationships,
 //                                'values'  => (array) $values['meta'][$fieldname],
-//                                'current_values' => array_values($currContentFiles),
 //                                'insert'  => $insert,
-//                                'update'  => $update,
 //                                'delete'  => $delete),1);
-                            
-                            
-                            $tbContentFile = FrontZend_Container::get('ContentFile');
 
-                            if ($insert) {
-                                foreach($insert as $order => $id_file) {
-                                    if ($tbContentFile->insert(array(
-                                            'id_content'   => $content->id,
-                                            'id_file'      => $id_file,
-                                            'description'  => $fieldname,
-                                            'order'        => $order + 1
-                                        ))) $saves++;
-                                }
-                            }
+                            $tbContentRelationship = FrontZend_Container::get('ContentRelationship');
 
-                            if ($update) {
-                                foreach($update as $order => $id_file) {
-                                    if ($tbContentFile->update(
-                                        array('order' => $order + 1),
-                                        array(
-                                            'id_content = ?'   => $content->id,
-                                            'id_file = ?'      => $id_file,
-                                            'description = ?'  => $fieldname
-                                        ))) $saves++;
-                                }
+                            if ($insert) foreach($insert as $id_content) {
+                                if ($tbContentRelationship->insert(array(
+                                        'id_content_a' => $content->id,
+                                        'id_content_b' => $id_content,
+                                        'rel_type'     => $fieldname
+                                    ))) $saves++;
                             }
 
                             if ($delete) {
-                                if ($tbContentFile->delete(
-                                    'id_content_file IN (' .
+                                if ($tbContentRelationship->delete(
+                                    'id_content_relationship IN (' .
                                         implode(',', array_keys($delete)) .
                                     ')'
                                 )) {
@@ -520,6 +463,79 @@ class Content_Form_Content extends Twitter_Bootstrap_Form_Horizontal
                             }
                             break;
                         }
+                        break;
+
+                    case 'file':
+                        if (!isset($values['meta'][$fieldname])) {
+                            $values['meta'][$fieldname] = array();
+                        }
+                        
+                        $contentFiles = $content->getFiles($fieldname);
+                        $currContentFiles = array();
+                        foreach($contentFiles as $contentFile) {
+                            $currContentFiles[$contentFile->id_content_file] =
+                                $contentFile->id_file;
+                        }
+
+                        $insert = array_diff(
+                                (array) $values['meta'][$fieldname],
+                                $currContentFiles
+                            );
+
+                        $update = array_diff_assoc(
+                                (array) $values['meta'][$fieldname],
+                                array_values($currContentFiles)
+                            );
+
+                        $delete = array_diff(
+                                $currContentFiles,
+                                (array) $values['meta'][$fieldname]
+                            );
+
+//                            pr(array(
+//                                'current' => $currContentFiles,
+//                                'values'  => (array) $values['meta'][$fieldname],
+//                                'current_values' => array_values($currContentFiles),
+//                                'insert'  => $insert,
+//                                'update'  => $update,
+//                                'delete'  => $delete),1);
+
+
+                        $tbContentFile = FrontZend_Container::get('ContentFile');
+
+                        if ($insert) {
+                            foreach($insert as $order => $id_file) {
+                                if ($tbContentFile->insert(array(
+                                        'id_content'   => $content->id,
+                                        'id_file'      => $id_file,
+                                        'description'  => $fieldname,
+                                        'order'        => $order + 1
+                                    ))) $saves++;
+                            }
+                        }
+
+                        if ($update) {
+                            foreach($update as $order => $id_file) {
+                                if ($tbContentFile->update(
+                                    array('order' => $order + 1),
+                                    array(
+                                        'id_content = ?'   => $content->id,
+                                        'id_file = ?'      => $id_file,
+                                        'description = ?'  => $fieldname
+                                    ))) $saves++;
+                            }
+                        }
+
+                        if ($delete) {
+                            if ($tbContentFile->delete(
+                                'id_content_file IN (' .
+                                    implode(',', array_keys($delete)) .
+                                ')'
+                            )) {
+                                $saves++;
+                            }
+                        }
+                        break;
                     }
                 }
             }

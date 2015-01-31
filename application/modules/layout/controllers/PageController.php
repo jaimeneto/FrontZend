@@ -15,9 +15,9 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
 
     public function listAction()
     {        
-        parent::listAction();
-        
         $this->view->headTitle()->append('Páginas');
+        
+        parent::listAction();
     }
 
     protected function _getForm()
@@ -49,26 +49,28 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
 
     public function addAction()
     {
-        parent::addAction();
-
         $this->view->headTitle()->append('Cadastrar página');
+        
+        parent::addAction();
     }
 
     public function editAction()
     {
-        parent::editAction();
-
         $this->view->headTitle()->append('Editar página');
+        
+        parent::editAction();
     }
 
     public function configAction()
     {
+        $this->view->headTitle()->append('Configurar página');
+        
         $id = $this->_getParam('id');
 
         if (!$id) {
             $this->getHelper('alerts')->addError('Id inválido');
             $this->getHelper('Redirector')
-                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page/list');
+                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page');
         }
 
         $page = FrontZend_Container::get('LayoutPage')->findById($id);
@@ -76,19 +78,21 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
         if (!$page) {
             $this->getHelper('alerts')->addError('Página inválida');
                 $this->getHelper('Redirector')
-                     ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page/list');
+                     ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page');
         }
 
         $pages = FrontZend_Container::get('LayoutPage')->findAll(array('order' => 'page'));
         $navConfig = array();
-        $navConfig[] = array(
+        $navConfig['special'] = array(
+            'id'    => 'special',
             'label' => 'Especial',
             'uri'   => '#',
-            'class' => 'nav-header'
+            'class' => 'disabled',
+            'pages' => array()
         );
         foreach($pages as $p) {
             if ($p->special) {
-                $navConfig[] = array(
+                $navConfig['special']['pages'][] = array(
                     'label'      => $p->page,
                     'module'     => 'layout',
                     'controller' => 'page',
@@ -100,14 +104,16 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
                 );
             }
         }
-        $navConfig[] = array(
+        $navConfig['content_type'] = array(
+            'id'    => 'content_type',
             'label' => 'Tipo de conteúdo',
             'uri'   => '#',
-            'class' => 'nav-header'
+            'class' => 'disabled',
+            'pages' => array()
         );
         foreach($pages as $p) {
             if ($p->id_content_type) {
-                $navConfig[] = array(
+                $navConfig['content_type']['pages'][] = array(
                     'label'      => $p->page,
                     'module'     => 'layout',
                     'controller' => 'page',
@@ -119,14 +125,16 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
                 );
             }
         }
-        $navConfig[] = array(
+        $navConfig['content'] = array(
+            'id'    => 'content',
             'label' => 'Conteúdo',
             'uri'   => '#',
-            'class' => 'nav-header'
+            'class' => 'disabled',
+            'pages' => array()
         );
         foreach($pages as $p) {
             if ($p->id_content) {
-                $navConfig[] = array(
+                $navConfig['content']['pages'][] = array(
                     'label'      => $p->page,
                     'module'     => 'layout',
                     'controller' => 'page',
@@ -158,18 +166,21 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
         $this->view->page = $page;
         $this->view->pagesNav = $pagesNav;
         $this->view->blocks = $blocks;
-        
-        $this->view->headTitle()->append('Configurar página');
     }
 
     public function updateAction()
     {
+        if ($this->_getParam('cancel')) {
+            $this->getHelper('Redirector')
+                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page');
+        }
+        
         $data = $this->_request->getPost();
-
+        
         if (!$data) {
             $this->getHelper('alerts')->addError('Página inválida');
             $this->getHelper('Redirector')
-                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page/list');
+                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page');
         }
 
         $id = $data['id_layout_page'];
@@ -177,7 +188,7 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
         if (!$id) {
             $this->getHelper('alerts')->addError('Id inválido');
             $this->getHelper('Redirector')
-                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page/list');
+                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page');
         }
 
         $updates = 0;
@@ -213,7 +224,7 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
                                 $column->visible = 1;
                                 $column->id_wrapper = $idArea;
                             }
-                            $column->setOptions(array('class' => $dataColumn['class']));
+                            $column->setOption('class', $dataColumn['class']);
                             $column->order = $columnOrder++;
 
                             $idColumn = FrontZend_Container::get('LayoutBlock')->save($column);
@@ -256,8 +267,6 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
             }
         }
 
-        FrontZend_Container::get('LayoutBlock')->deleteEmptyAreas();
-
         if ($updates) {
             $this->getHelper('alerts')
                  ->addSuccess('Página atualizada com sucesso');
@@ -272,12 +281,18 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
 
     public function removeAction()
     {
+        $this->view->headTitle()->append('Excluir página');
+        
+        if ($this->_getParam('cancel')) {
+            $this->_redirect(ADMIN_ROUTE . '/layout/page');
+        }
+        
         $id = $this->_getParam('id');
 
         if (!$id) {
             $this->getHelper('alerts')->addError('Id inválido');
             $this->getHelper('Redirector')
-                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page/list');
+                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page');
         }
 
         $page = FrontZend_Container::get('LayoutPage')->findById($id);
@@ -285,24 +300,28 @@ class Layout_PageController extends FrontZend_Module_Controller_Abstract
         if (!$page) {
             $this->getHelper('alerts')->addError('Página inválida');
             $this->getHelper('Redirector')
-                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page/list');
+                 ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page');
         }
 
-        try {
-            if ($page->delete()) {
+        $data = $this->_request->getPost();
+        if ($data) {
+            try {
+                if ($page->delete()) {
+                    $this->getHelper('alerts')
+                         ->addSuccess('Página excluída com sucesso');
+                    $this->getHelper('Redirector')
+                        ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page');
+                } else {
+                    $this->getHelper('alerts')
+                         ->addError('Erro ao tentar excluír página');
+                }
+            } catch(Exception $e) {
                 $this->getHelper('alerts')
-                     ->addSuccess('Página excluída com sucesso');
-            } else {
-                $this->getHelper('alerts')
-                     ->addError('Erro ao tentar excluír página');
+                     ->addError('Erro ao tentar excluir página: ' . $e->getMessage());
             }
-        } catch(Exception $e) {
-            $this->getHelper('alerts')
-                 ->addError('Erro ao tentar excluir página: ' . $e->getMessage());
         }
-
-        $this->getHelper('Redirector')
-             ->gotoUrlAndExit(ADMIN_ROUTE . '/layout/page/list');
+        
+        $this->view->page = $page;
     }
 
 }
