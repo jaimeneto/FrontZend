@@ -21,13 +21,10 @@ function initMetaFields()
 
     Content_ContentType_RemoveMetafield();
 
-    $('.meta-fields-label').unbind('change');
-    $('.meta-fields-label').change(function(){
-        var name = $(this).attr('id').replace('-label', '')
-            .replace('meta-field-', '')
-            .replace('meta-relationship-', '')
-            .replace('meta-file-', '');
-        $('a[href="#meta_fields_' + name + '-element"]').html($(this).val());
+    $('.meta-label').unbind('change');
+    $('.meta-label').change(function(){
+        var name = $(this).attr('id').replace('-label', '').replace('meta-', '');
+        $('#heading_' + name + ' .panel-title span').html($(this).val());
     });
 
     $('.meta-field-rating-half-flag').unbind('change');
@@ -49,10 +46,9 @@ function Content_ContentType_AjaxAddMetafield()
 {
     $('#add_meta_field_btn').unbind('click');
     $('#add_meta_field_btn').click(function(){
-        var metaElementsId = $(this).parents('.meta-elements').attr('id');
-        var datatype       = $(this).attr('id').replace('add_meta_', '').replace('_btn', '');
-        var fieldtype      = $('input[name="add_meta_' + datatype + '_type"]:checked').val();
-        var name           = $('#add_meta_' + datatype + '_name').val();
+        var fieldtype = $('input[name="add_meta_field_type"]:checked').val();
+        var datatype  = $('input[name="add_meta_field_type"]:checked').attr('rel');
+        var name      = $('#add_meta_field_name').val();
 
         if ($('#meta_fields_' + name + '-element').length > 0) {
             alert('Esse nome de campo já está sendo usado: ' + name);
@@ -62,21 +58,19 @@ function Content_ContentType_AjaxAddMetafield()
                 url: adminBaseUrl + '/content/content-type/ajax-add-metafield',
                 data: {
                     type: $('#id_content_type').val(),
-                    datatype: datatype,
                     fieldtype: fieldtype,
+                    datatype: datatype,
                     name: name
                 },
                 dataType: 'json',
                 success: function(json){
                     if (json.status == 1) {
-                        $('#' + metaElementsId + ' ul').append('<li class="panel panel-default">'
+                        $('#main_elements ul').append('<li class="panel panel-default">'
                                 + json.content
                                 + '</li>');
 
-                        $('#' + metaElementsId + ' #add_meta_' + datatype + '_name').val('');
-                        $('#' + metaElementsId + ' input[name=add_meta_field_type]').attr('checked', false);
-                        $('#' + metaElementsId + ' input[name=add_meta_file_type]').attr('checked', false);
-                        $('#' + metaElementsId + ' input[name=add_meta_relationship_type]').attr('checked', false);
+                        $('#add_meta_field_name').val('');
+                        $('input[name=add_meta_field_type]').prop('checked', false);
                         initMetaFields();
                     } else {
                         alert(json.msg);
@@ -113,8 +107,8 @@ function initMetaConfigMultiOptions()
 
 function Content_ContentType_RemoveMetafield()
 {
-    $('.remove-meta-field').unbind('click');
-    $('.remove-meta-field').click(function(){
+    $('.remove-meta').unbind('click');
+    $('.remove-meta').click(function(){
         if (confirm("Tem certeza de que quer excluir este campo?\n(Só será excluído realmente ao salvar o formulário)")) {
             $(this).parents('li').slideUp('slow', function(){
                 $(this).remove();

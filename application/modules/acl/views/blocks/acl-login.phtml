@@ -11,7 +11,7 @@
 }
 </style>
 
-<fieldset <?php echo $this->htmlTagAttribs($this->block); ?>>
+<div <?php echo $this->htmlTagAttribs($this->block); ?>>
 
     <?php if(Zend_Auth::getInstance()->hasIdentity()): ?>
     
@@ -26,4 +26,4 @@
         <?php echo $this->loginForm; ?>
     <?php endif; ?>
 
-</fieldset>
+</div>

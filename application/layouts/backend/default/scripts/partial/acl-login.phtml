@@ -10,15 +10,14 @@
 }
 </style>
 
-<div class="col-sm-12">
+<div class="page-header">
+    <h1>Login</h1>
+</div>
 
-    <fieldset>
-        <legend>Login</legend>
+<?php echo $this->alerts(); ?>
 
-        <?php echo $this->alerts(); ?>
-
+<div class="panel">
+    <div class="panel-body">
         <?php echo $this->loginForm; ?>
-
-    </fieldset>
-    
+    </div>
 </div>

@@ -189,7 +189,7 @@ class Content_ContentTypeController extends FrontZend_Module_Controller_Abstract
         $this->view->metafield    = $metafield;
         $this->view->collapsed    = false;
 
-        $template = "content-type/form/config/{$datatype}.phtml";
+        $template = "content-type/form/field.phtml";
         $this->_helper->json(array(
             'status'  => 1,
             'content' => $this->view->render($template),

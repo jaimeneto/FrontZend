@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="meta-file-<?php echo $this->metafield->fieldname ?>-width"
+    <label for="meta-<?php echo $this->metafield->fieldname ?>-width"
            class="col-sm-2 control-label">Largura padrão</label>
     <div class="col-sm-3">
         <div class="input-group">
@@ -9,7 +9,7 @@
         </div>
     </div>
 
-    <label for="meta-file-<?php echo $this->metafield->fieldname ?>-height"
+    <label for="meta-<?php echo $this->metafield->fieldname ?>-height"
            class="col-sm-2 control-label">Altura padrão</label>
     <div class="col-sm-3">
         <div class="input-group">
@@ -23,7 +23,7 @@
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-9">
         <div class="checkbox">
-            <label for="meta-file-<?php echo $this->metafield->fieldname ?>-multiple">
+            <label for="meta-<?php echo $this->metafield->fieldname ?>-multiple">
                 <?php echo $this->formCheckbox("meta[{$this->metafield->fieldname}][multiple]", null,
                         $this->metafield->getOption('multiple') ? array('checked' => 'checked') : '') ?>
                 Permitir adicionar várias imagens
@@ -31,7 +31,7 @@
         </div>
 
         <div class="checkbox">
-            <label for="meta-file-<?php echo $this->metafield->fieldname ?>-sortable">
+            <label for="meta-<?php echo $this->metafield->fieldname ?>-sortable">
                 <?php echo $this->formCheckbox("meta[{$this->metafield->fieldname}][sortable]", null,
                         $this->metafield->getOption('sortable') ? array('checked' => 'checked') : '') ?>
                 Permitir alterar a ordem das imagens

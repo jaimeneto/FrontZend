@@ -3,7 +3,7 @@ $multiOptions = FrontZend_Container::get('ContentType')->fetchPairs('plural');
 ?>
 
 <div class="form-group">
-    <label for="meta-relationship-<?php echo $this->metafield->fieldname; ?>-related"
+    <label for="meta-<?php echo $this->metafield->fieldname; ?>-related"
            class="col-sm-2 control-label">Relacionado com</label>
     <div class="col-sm-9">
         <?php
@@ -15,7 +15,7 @@ $multiOptions = FrontZend_Container::get('ContentType')->fetchPairs('plural');
 </div>
 
 <div class="form-group">
-    <label for="meta-relationship-<?php echo $this->metafield->fieldname; ?>-display"
+    <label for="meta-<?php echo $this->metafield->fieldname; ?>-display"
            class="col-sm-2 control-label">Exibição</label>
     <div class="col-sm-9">
         <?php
@@ -31,7 +31,7 @@ $multiOptions = FrontZend_Container::get('ContentType')->fetchPairs('plural');
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-9">
         <div class="checkbox">
-            <label for="meta-relationship-<?php echo $this->metafield->fieldname; ?>-multiple">
+            <label for="meta-<?php echo $this->metafield->fieldname; ?>-multiple">
                 <?php echo $this->formCheckbox("meta[{$this->metafield->fieldname}][multiple]", null,
                         $this->metafield->getOption('multiple')
                         ? array('checked' => 'checked', ) : ''); ?>

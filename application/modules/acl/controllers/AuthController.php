@@ -23,6 +23,8 @@ class Acl_AuthController extends Zend_Controller_Action
         if(Acl_Model_Auth::isLoggedIn()){
             $this->getHelper('Redirector')->gotoUrlAndExit('');
         }
+        
+        $this->getHelper('layout')->setLayout('login');
 
         $request = $this->getRequest();
         $loginForm = new Acl_Form_Login();

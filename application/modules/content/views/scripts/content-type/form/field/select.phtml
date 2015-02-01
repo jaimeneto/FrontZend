@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="meta-field-<?php echo $this->metafield->fieldname ?>-multiOptions"
+    <label for="meta-<?php echo $this->metafield->fieldname ?>-multiOptions"
            class="col-sm-2 control-label">Opções</label>
     <div class="col-sm-9">
         <?php
@@ -29,7 +29,7 @@
 </div>
 
 <div class="form-group">
-    <label for="meta-field-<?php echo $this->metafield->fieldname ?>-display"
+    <label for="meta-<?php echo $this->metafield->fieldname ?>-display"
            class="col-sm-2 control-label">Exibição</label>
     <div class="col-sm-9">
         <?php echo $this->formSelect("meta[{$this->metafield->fieldname}][display]",
@@ -53,7 +53,7 @@
 </div>
 
 <div class="form-group">
-    <label for="meta-field-<?php echo $this->metafield->fieldname ?>-value"
+    <label for="meta-<?php echo $this->metafield->fieldname ?>-value"
            class="col-sm-2 control-label">Valor padrão</label>
     <div class="col-sm-9">
         <?php echo $this->formSelect("meta[{$this->metafield->fieldname}][value]",

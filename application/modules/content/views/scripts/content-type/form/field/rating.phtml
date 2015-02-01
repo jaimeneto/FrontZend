@@ -1,9 +1,9 @@
 <div class="meta-field-rating-options form-group">
-    <label for="meta-field-<?php echo $this->metafield->fieldname ?>-multiOptions"
+    <label for="meta-<?php echo $this->metafield->fieldname ?>-multiOptions"
            class="col-md-2 control-label">Opções</label>
     <div class="col-md-9">
         <div class="checkbox">
-            <label for="meta-field-<?php echo $this->metafield->fieldname ?>-half">
+            <label for="meta-<?php echo $this->metafield->fieldname ?>-half">
                 <?php echo $this->formCheckbox("meta[{$this->metafield->fieldname}][half]", null,
                     $this->metafield->getOption('half')
                         ? array('checked' => 'checked', 'class' => 'meta-field-rating-half-flag')

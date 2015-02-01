@@ -1,65 +1,73 @@
-<div class="span3">
-    <div class="well">
-        <h2>Conteúdo</h2>
-        <ul class="unstyled">
-            <?php
-            foreach($this->contentTypes as $contentType):
-                $children = $contentType->getChildren();
-            ?>
-            <li>
-                <strong>
-                    <a href="<?php echo $this->adminBaseUrl('content/content'
-                        . '?filter[id_content_type]=' . $contentType->id); ?>">
-                        <?php echo $this->escape($contentType->plural); ?>
-                    </a>
-                </strong>
+<div class="col-md-3">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Conteúdo</h2>
+        </div>
+        <div class="panel-body">
+            <ul class="list-unstyled">
+                <?php
+                foreach($this->contentTypes as $contentType):
+                    $children = $contentType->getChildren();
+                ?>
+                <li>
+                    <strong>
+                        <a href="<?php echo $this->adminBaseUrl('content/content'
+                            . '?filter[id_content_type]=' . $contentType->id); ?>">
+                            <?php echo $this->escape($contentType->plural); ?>
+                        </a>
+                    </strong>
 
-                <span class="badge pull-right">
-                    <?php echo $contentType->countContents(); ?>
-                </span>
+                    <span class="badge pull-right">
+                        <?php echo $contentType->countContents(); ?>
+                    </span>
 
-                <?php if($children): ?>
-                <ul>
-                    <?php foreach($children as $childType): ?>
-                    <li>
-                        <strong>
-                            <a href="<?php echo $this->adminBaseUrl('content/'
-                                . 'content?filter[id_content_type]='
-                                . $childType->id); ?>">
-                                <?php echo $this->escape($childType->plural); ?>
-                            </a>
-                        </strong>
-                        <span class="badge badge-info pull-right">
-                            <?php echo $childType->countContents(); ?>
-                        </span>
-                    </li>
-                    <?php endforeach; ?>
-                </ul>
-                <?php endif; ?>
-            </li>
-            <?php endforeach; ?>
-        </ul>
+                    <?php if($children): ?>
+                    <ul>
+                        <?php foreach($children as $childType): ?>
+                        <li>
+                            <strong>
+                                <a href="<?php echo $this->adminBaseUrl('content/'
+                                    . 'content?filter[id_content_type]='
+                                    . $childType->id); ?>">
+                                    <?php echo $this->escape($childType->plural); ?>
+                                </a>
+                            </strong>
+                            <span class="badge badge-info pull-right">
+                                <?php echo $childType->countContents(); ?>
+                            </span>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <?php endif; ?>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
     </div>
 
-    <div class="well">
-        <h2>Usuários</h2>
-        <ul class="unstyled">
-            <?php foreach($this->roles as $role):
-            if($role->id != 'guest'): ?>
-            <li>
-                <strong><?php echo $this->escape($role->role); ?></strong>
-                <span class="badge badge-info pull-right">
-                    <?php echo $role->countUsers(); ?>
-                </span>
-            </li>
-            <?php endif;
-            endforeach; ?>
-        </ul>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">Usuários</h2>
+        </div>
+        <div class="panel-body">
+            <ul class="list-unstyled">
+                <?php foreach($this->roles as $role):
+                if($role->id != 'guest'): ?>
+                <li>
+                    <strong><?php echo $this->escape($role->role); ?></strong>
+                    <span class="badge badge-info pull-right">
+                        <?php echo $role->countUsers(); ?>
+                    </span>
+                </li>
+                <?php endif;
+                endforeach; ?>
+            </ul>
+        </div>
     </div>
 </div>
 
-<div class="span9">
-    <div class="hero-unit">
+<div class="col-md-9">
+    <div class="jumbotron">
         <h1>Bem vindo ao FrontZend!</h1>
         <p>
             Este é um sistema de gerencimento de conteúdo desenvolvido com foco na
@@ -68,12 +76,11 @@
             aumentando a produtividade e tornando a tarefa de criar e manter
             sites mais objetiva e prazerosa.
         </p>
-        <p><a class="btn btn-primary btn-large" href="http://frontzend.jaimeneto.com">Saiba mais »</a></p>
+        <p><a class="btn btn-primary btn-lg" href="http://frontzend.jaimeneto.com">Saiba mais »</a></p>
     </div>
-    <div class="row-fluid">
-        <div class="span4">
-            <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-zf.png'); ?>" />
-            <br /><br />
+    <div class="row">
+        <div class="col-md-4">
+            <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-zf-lg.png'); ?>" />
             <p>
                 Toda a estrutura do FrontZend foi feita usando como base o Zend Framework,
                 o que permitiu deixá-la organizada, robusta e muito flexível. As funcionalidades
@@ -82,20 +89,19 @@
             </p>
             <p><a href="http://www.zendframework.com/manual/1.12/en/manual.html" class="btn" target="_blank">zendframework.com »</a></p>
         </div>
-        <div class="span4">
-            <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-bootstrap.jpg'); ?>" />
-            <br /><br />
+        <div class="col-md-4">
+            <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-bootstrap-lg.png'); ?>" />
             <p>
-                Seguindo a tendência atual da internet, utilizamos o Twitter Bootstrap para
-                a criação dos layouts feitos para o FrontZend, pois com ele, o é simples fazer
-                um site fácil de dar manutenção e que funcione em diversas plataformas,
-                seja celular, tablet ou desktop.
+                Seguindo a tendência atual da internet, utilizamos o Bootstrap para
+                a criação dos layouts feitos para o FrontZend, uma vez que ele simplifica 
+                a construção de layouts para sites, além de permitir que sejam responsivos, 
+                funcionando em diversas plataformas, seja smartphones, tablets, notebookes 
+                ou desktops.
             </p>
-            <p><a href="http://getbootstrap.com/2.3.2" class="btn" target="_blank">getbootstrap.com »</a></p>
+            <p><a href="http://getbootstrap.com" class="btn" target="_blank">getbootstrap.com »</a></p>
         </div>
-        <div class="span4">
-            <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-jquery.png'); ?>" />
-            <br /><br />
+        <div class="col-md-4">
+            <img src="<?php echo $this->baseUrl('cache/layouts/backend/default/img/logo-jquery-lg.png'); ?>" />
             <p>
                 Devido a sua sintaxe simplificada, e seus diversos plugins disponíveis na
                 internet, o jQuery já é tão popular entre os programadores

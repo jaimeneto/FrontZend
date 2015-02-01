@@ -209,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `fz_content_type` (
 
 INSERT INTO `fz_content_type` (`id_content_type`, `type`, `plural`, `id_parent`) VALUES
 ('category', 'Categoria', 'Categorias', NULL),
-('content', 'Conteúdo', 'Conteúdos', NULL),
+('content', 'Item', 'Itens', NULL),
 ('section', 'Seção', 'Seções', NULL);
 
 -- --------------------------------------------------------

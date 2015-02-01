@@ -111,7 +111,7 @@ class Content_Form_Content extends Bootstrap_Form_Horizontal
                         'HtmlTag', array(
                             'tag'   => 'div',
                             'role'  => 'tabpanel',
-                            'class' => 'tab-pane active form-horizontal',
+                            'class' => 'tab-pane active',
                             'id'    => 'main_elements'
                         )
                     )
@@ -163,6 +163,7 @@ class Content_Form_Content extends Bootstrap_Form_Horizontal
                         . '_' . ucfirst($metaOptions[$options['field']]);
                     $element = new $metaElement($metafield->fieldname,
                         $metaOptions);
+                    $element->setPluginLoader($this->getPluginLoader(self::DECORATOR), self::DECORATOR);
                     $element->setDecorators($this->_elementDecorators);
                     $this->addElement($element);
                     $this->_metafields[$metafield->fieldname] = $metafield;
@@ -215,7 +216,7 @@ class Content_Form_Content extends Bootstrap_Form_Horizontal
                     array('HtmlTag', array(
                             'tag'   => 'div',
                             'role'  => 'tabpanel',
-                            'class' => 'tab-pane form-horizontal',
+                            'class' => 'tab-pane',
                             'id'    => 'content_info'
                         ))
                 )
@@ -260,8 +261,8 @@ class Content_Form_Content extends Bootstrap_Form_Horizontal
 
     public function init()
     {
-        $this->setAttrib('class', 'tab-content');
-
+        $this->setAttrib('class', 'form-horizontal tab-content');
+        
         $model = new Content_Model_Content();
         $if = $model->getInputFilter();
         foreach ($if as $name => $options) {

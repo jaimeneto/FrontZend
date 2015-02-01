@@ -2,12 +2,12 @@
     data-toggle="collapse" data-parent="#accordion_fields" aria-expanded="true" 
     href="#meta_fields_<?php echo $this->metafield->fieldname ?>-element"
     aria-controls="meta_fields_<?php echo $this->metafield->fieldname ?>-element">
-        <h3 class="panel-title">
-            <?php echo $this->metafield->getOption('label'); ?>
+        <div class="panel-title">
+            <span><?php echo $this->metafield->getOption('label'); ?></span>
             <div class="pull-right text-muted">
                 <?php echo $this->metafield->getFieldtype(); ?>
             </div>
-        </h3>
+        </div>
 </a>
 <div id="meta_fields_<?php echo $this->metafield->fieldname; ?>-element" role="tabpanel"
      class="panel-collapse collapse" aria-labelledby="heading_<?php echo $this->metafield->fieldname; ?>">
@@ -30,7 +30,7 @@
                    class="col-sm-2 control-label">Rótulo</label>
             <div class="col-sm-9">
                 <?php echo $this->formText("meta[{$this->metafield->fieldname}][label]",
-                    $this->metafield->getOption('label'), array('class' => 'form-control')); 
+                    $this->metafield->getOption('label'), array('class' => 'form-control meta-label')); 
                 ?>
             </div>
         </div>

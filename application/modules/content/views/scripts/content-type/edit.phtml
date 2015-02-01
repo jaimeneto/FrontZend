@@ -21,6 +21,7 @@
     <div class="col-md-9">
         <form method="<?php echo $this->form->getMethod(); ?>" class="form-horizontal"
                       accept-charset="" action="<?php echo $this->form->getAction(); ?>">
+            <?php echo $this->formHidden('id_content_type', $this->form->getValue('id_content_type')); ?>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Editar tipo de conteúdo: <?php echo $this->escape($this->contentType); ?></h3>
@@ -29,7 +30,7 @@
                             <a href="#main_elements" data-toggle="tab">Dados gerais</a>
                         </li>
                         <li>
-                            <a href="#content_info" data-toggle="tab">Informacoes</a>
+                            <a href="#content_info" data-toggle="tab">Informações</a>
                         </li>
                     </ul>
                 </div>
@@ -42,7 +43,7 @@
                                 $metafields = $this->contentType->getMetafields();
 
                                 if($metafields):
-                                    foreach($metafields as $metafield):
+                                    foreach($metafields as $metafield): 
                                 ?>
                                 <li class="panel panel-default">
 
@@ -100,11 +101,18 @@
 
                     <div class="form-group">
                         <label for="add_meta_field_type">Tipo de campo</label>
-                        <?php echo $this->formRadio('add_meta_field_type', null, null,
-                            Content_Model_Metafield::getFieldtypes('field') +
-                            Content_Model_Metafield::getFieldtypes('relationship') +
-                            Content_Model_Metafield::getFieldtypes('file')
-                            , ''); ?>
+                        <?php $datatypes = array('field', 'relationship', 'file');
+                        foreach($datatypes as $datatype):
+                            $fieldtypes = Content_Model_Metafield::getFieldtypes($datatype);
+                            foreach($fieldtypes as $k => $fieldtype): ?>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="add_meta_field_type" rel="<?php echo $datatype; ?>" value="<?php echo $k; ?>" />
+                                <?php echo $this->escape($fieldtype); ?>
+                            </label>
+                        </div>
+                        <?php endforeach; 
+                        endforeach; ?>
                     </div>
                     
                     <div class="form-group text-center">
