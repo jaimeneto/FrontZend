@@ -34,9 +34,14 @@ class Media_ImageController extends Zend_Controller_Action
 
         $files = FrontZend_Container::get('File')->fetchFromPath($path);
 
+        $form = new Media_Form_Directory();
+        $form->setAction($this->view->adminBaseUrl('media/image/create-dir'));
+        $form->populate(array('path' => $path));
+        
         $this->view->dirs = $dirs;
         $this->view->files = $files;
         $this->view->path = $path;
+        $this->view->form = $form;
     }   
 
     public function editAction()
@@ -60,11 +65,12 @@ class Media_ImageController extends Zend_Controller_Action
         
         if ($this->_getParam('cancel')) {
             $this->getHelper('Redirector')
-                 ->gotoUrlAndExit(ADMIN_ROUTE . "/media/image/manage{$basePath}");
+                 ->gotoUrlAndExit(ADMIN_ROUTE 
+                         . "/media/image/manage{$basePath}");
         }
         
         if (!$file) {
-            $this->getHelper('alerts')->addError('Arquivo inválido');
+            $this->getHelper('alerts')->addError('Imagem inválido');
             $this->getHelper('Redirector')
                  ->gotoUrlAndExit(ADMIN_ROUTE . '/media/image');
         }
@@ -77,35 +83,106 @@ class Media_ImageController extends Zend_Controller_Action
             $newFileName = Zend_Date::now()->get('yyyyMMddHHmmss');
             $path = $file->getRealPath();
             $file->setFilename($newFileName);
-            if (rename(str_replace('.', '_tmp.', $path), $file->getRealPath())) {
+            if (rename(str_replace('.', '_tmp.', $path), $file->getRealPath())){
                 try {
+                    if ($this->_request->getPost('save_new')) {
+                        $now = Zend_Date::now()->get('yyyy-MM-dd HH:mm:ss');
+                        $id_user = Zend_Auth::getInstance()->getIdentity()
+                                                           ->id_user;
+                        $newFile = FrontZend_Container::get('File')->createRow(
+                            array(
+                                'path'          => $file->path,
+                                'type'          => 'img',
+                                'file'          => $newFileName,
+                                'original_name' => $file->original_name,
+                                'credits'       => $file->credits,
+                                'info'          => $file->info,
+                                'keywords'      => $file->keywords,
+                                'id_original'   => $file->id_original 
+                                                        ? $file->id_original 
+                                                        : $file->id_file,
+                                'dt_created'    => $now,
+                                'dt_updated'    => $now,
+                                'id_user'       => $id_user
+                            ));
+                        $newId = FrontZend_Container::get('File')
+                                ->save($newFile);
+                        
+                        $this->getHelper('alerts')
+                                ->addSuccess('Nova imagem criada com sucesso');
+                        $this->getHelper('Redirector')->gotoUrlAndExit(
+                            ADMIN_ROUTE . '/media/image/edit/id/' . $newId);
+                    }
+                    
                     FrontZend_Container::get('File')->save($file);
                     unlink($path);
-                    $this->getHelper('alerts')->addSuccess('Arquivo modificado com sucesso');
+                    $this->getHelper('alerts')
+                            ->addSuccess('Imagem alterada com sucesso');
                     
                     if ($this->_request->getPost('save')) {
                         $this->getHelper('Redirector')->gotoUrlAndExit(
                             ADMIN_ROUTE . "/media/image/manage{$basePath}");
                     }
                 } catch(Exception $e) {
-                    $this->getHelper('alerts')->addError('Erro ao tentar salvar o arquivo');
+                    $this->getHelper('alerts')
+                            ->addError('Erro ao tentar salvar image');
                     rename($file->getRealPath(), $path);
                 }
             } else {
-                $this->getHelper('alerts')->addError('Erro ao tentar renomear o arquivo');
+                $this->getHelper('alerts')
+                        ->addError('Erro ao tentar renomear o arquivo');
             }
         }
         
         $this->view->form = $form;
         $this->view->file = $file;
     }
-
+    
+    public function createDirAction()
+    {
+        $post = $this->getRequest()->getPost();
+        
+        $form = new Media_Form_Directory();
+        if ($form->isValid($post)) {
+            try {
+                $form->persistData();
+                $this->getHelper('alerts')
+                        ->addSuccess('Pasta criada com sucesso');
+            } catch(Exception $e) {
+                $this->getHelper('alerts')
+                        ->addError('Erro ao tentar criar pasta');
+                $this->getHelper('alerts')
+                        ->addError($e->getMessage());
+            }
+        }
+        $basePath = '/path/' . str_replace('/', '|', $post['path']);
+        $this->getHelper('Redirector')->gotoUrlAndExit(
+                ADMIN_ROUTE . "/media/image/manage{$basePath}");
+    }
+    
+    public function removeDirAction()
+    {
+        $path = $this->_getParam('path');
+        
+        $dir = str_replace('|', '/', $path);
+        
+        if (FrontZend_Container::get('File')->removeDir($dir)) {
+            $this->getHelper('alerts')
+                        ->addSuccess('Pasta excluída com sucesso');
+        }
+        
+        $redirectPath = substr($path, 0, strrpos($path, '|'));        
+        $this->getHelper('Redirector')->gotoUrlAndExit(
+                ADMIN_ROUTE . "/media/image/manage/path/{$redirectPath}");
+    }
+    
     private function _directoryTree($path, $currentPath=null)
     {
         $di = new DirectoryIterator($path);
         $dirs = array();
         foreach($di as $dir) {
-            if($dir->isDir() && !$dir->isDot() && substr($dir->getFilename(),0,1) != '.') {
+            if($dir->isDir() && !$dir->isDot() 
+                    && substr($dir->getFilename(),0,1) != '.') {
                 $dirPath = str_replace(
                     Media_Model_File::getFullPath() . DIRECTORY_SEPARATOR, '',
                     $dir->getPathname()
@@ -120,8 +197,10 @@ class Media_ImageController extends Zend_Controller_Action
                 $dirs[$dir->getFilename()] = array(
                     'label'  => $dir->getFilename(),
                     'uri'    => $uri,
-                    'active' => $dirPath == str_replace('/', DIRECTORY_SEPARATOR, $currentPath),
-                    'pages'  => $this->_directoryTree($dir->getPathname(), $currentPath)
+                    'active' => $dirPath == 
+                        str_replace('/', DIRECTORY_SEPARATOR, $currentPath),
+                    'pages'  => 
+                        $this->_directoryTree($dir->getPathname(), $currentPath)
                 );
             }
         }
@@ -152,7 +231,8 @@ class Media_ImageController extends Zend_Controller_Action
         }
 
         $realPath = $file->getRealPath();
-        $tmpRealPath = substr($realPath, 0, -4) . '_tmp' . substr($realPath, -4);
+        $tmpRealPath = 
+                substr($realPath, 0, -4) . '_tmp' . substr($realPath, -4);
 
         $debug = array();
 
@@ -248,7 +328,8 @@ class Media_ImageController extends Zend_Controller_Action
                         if ($v) {
                             if ($method == 'filter') {
                                 if ($a == 'colorize') {
-                                    $image->$method($a, $v['red'], $v['green'], $v['blue'], $v['alpha']);
+                                    $image->$method($a, $v['red'], $v['green'], 
+                                                    $v['blue'], $v['alpha']);
                                 } else {
                                     $image->$method($a, $v);
                                 }
@@ -380,7 +461,8 @@ class Media_ImageController extends Zend_Controller_Action
         $this->_helper->json(array(
             'success' => $result['success'],
             'id'      => $file->id_file,
-            'content' => $this->view->render("image/ajax-upload/{$template}.phtml")
+            'content' => 
+                $this->view->render("image/ajax-upload/{$template}.phtml")
         ));
     }
 
@@ -403,4 +485,26 @@ class Media_ImageController extends Zend_Controller_Action
         ));
     }
 
+    public function ajaxRemoveAction()
+    {
+        $id = $this->_getParam('id');
+        
+        if (!$id) {
+            $this->_helper->json(array(
+                'status' => 0,
+                'msg'    => 'Id inválido'
+            ));
+        }
+        
+        if (!FrontZend_Container::get('File')->deleteById($id)) {
+            $this->_helper->json(array(
+                'status' => 0,
+                'msg'    => 'Não foi possível excluir a imagem'
+            ));
+        }
+        $this->_helper->json(array(
+            'status'  => 1
+        ));
+    }
+    
 }

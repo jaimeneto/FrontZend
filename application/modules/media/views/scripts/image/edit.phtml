@@ -1,21 +1,9 @@
+<?php 
+    $relatedContent = $this->file->getRelatedContent(); 
+    $relatedFiles = $this->file->getRelatedFiles();
+?>
+
 <div class="page-header">
-    <?php
-        $displayGroups = $this->form->getDisplayGroups();
-        if($displayGroups):
-    ?>
-    <ul class="nav nav-pills pull-right">
-        <?php foreach($displayGroups as $displayGroup): ?>
-        <?php if($displayGroup->getLegend()): ?>
-        <li<?php echo $displayGroup->getName() == 'main_elements' ? ' class="active"' : ''; ?>>
-            <a href="#<?php echo $displayGroup->getName(); ?>" data-toggle="tab">
-                <?php echo $displayGroup->getLegend(); ?>
-            </a>
-        </li>
-        <?php endif; ?>
-        <?php endforeach; ?>
-    </ul>
-    <?php endif; ?>
-    
     <h1>
         <span class="glyphicon glyphicon-image"></span> 
         Arquivos
@@ -33,313 +21,412 @@
         class="<?php echo $this->form->getAttrib('class'); ?>"
         enctype="<?php echo $this->form->getAttrib('enctype'); ?>">
 
-                <?php foreach($this->form->getDisplayGroups() as $displayGroup): ?>
-                <div id="<?php echo $displayGroup->getName(); ?>" class="tab-pane
-                    <?php echo $displayGroup->getName() == 'main_elements' ? ' active' : 'form-horizontal'; ?>">
+        <div class="col-sm-4">
+            <div class="panel panel-default">
+                <div class="panel-body">
 
-                    <?php if ($displayGroup->getName() == 'main_elements' &&
-                              $this->form->getElement('id_file')->getValue()): ?>
-
-                    <div class="col-sm-4">
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                         <div class="panel panel-default">
-                            <div class="panel-body">
-
-                                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="heading_image_data">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#image_data" aria-expanded="true" aria-controls="image_data">
-                                                    Dados da imagem
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="image_data" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_image_data">
-                                            <div class="panel-body">
-                                                <?php foreach($displayGroup->getElements() as $element):
-                                                    echo $element;
-                                                    if ($element->getName() == 'credits'): ?>
-                                                        <div class="checkbox">
-                                                            <label for="modify-write">
-                                                                <?php echo $this->formCheckbox('modify[write]'); ?>
-                                                                Exibir marca d'água
-                                                            </label>
-                                                        </div>
-                                                    <?php endif;
-                                                endforeach; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="heading_image_filters">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#image_filters" aria-expanded="true" aria-controls="image_filters">
-                                                    Filtros
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="image_filters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_image_filters">
-                                            <div class="panel-body">
-                                                <div class="checkbox">
-                                                    <label for="modify-flip-v">
-                                                        <?php echo $this->formCheckbox('modify[flip][v]'); ?>
-                                                        Inverter na vertical
-                                                    </label>
-                                                </div>
-
-                                                <div class="checkbox">
-                                                    <label for="modify-flip-h">
-                                                        <?php echo $this->formCheckbox('modify[flip][h]'); ?>
-                                                        Inverter na horizontal
-                                                    </label>
-                                                </div>
-
-                                                <div class="checkbox">
-                                                    <label for="modify-effect-drawing">
-                                                        <?php echo $this->formCheckbox('modify[effect][drawing]'); ?>
-                                                        Desenho
-                                                    </label>
-                                                </div>
-
-                                                <div class="checkbox">
-                                                    <label for="modify-effect-sepia">
-                                                        <?php echo $this->formCheckbox('modify[effect][sepia]'); ?>
-                                                        Sépia
-                                                    </label>
-                                                </div>
-
-                                                <div class="checkbox">
-                                                    <label for="modify-filter-negate">
-                                                        <?php echo $this->formCheckbox('modify[filter][negate]'); ?>
-                                                        Negativo
-                                                    </label>
-                                                </div>
-
-                                                <div class="checkbox">
-                                                    <label for="modify-filter-grayscale">
-                                                        <?php echo $this->formCheckbox('modify[filter][grayscale]'); ?>
-                                                        Escala de cinza
-                                                    </label>
-                                                </div>
-
-                                                <div class="checkbox">
-                                                    <label for="modify-filter-smooth">
-                                                        <?php echo $this->formCheckbox('modify[filter][smooth]'); ?>
-                                                        Suavizar
-                                                    </label>
-                                                </div>
-
-                                                <div class="checkbox">
-                                                    <label for="modify-filter-emboss">
-                                                        <?php echo $this->formCheckbox('modify[filter][emboss]'); ?>
-                                                        Realçar
-                                                    </label>
-                                                </div>
-
-                                                <div class="checkbox">
-                                                    <label for="modify-filter-edgedetect">
-                                                        <?php echo $this->formCheckbox('modify[filter][edgedetect]'); ?>
-                                                        Destacar bordas
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="heading_image_adjustments">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#image_adjustments" aria-expanded="true" aria-controls="image_adjustments">
-                                                    Ajustes
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="image_adjustments" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_image_adjustments">
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label for="modify-filter-brightness">Iluminação</label>
-                                                    <?php $multiOptions = array();
-                                                    for($i = -255; $i <= 255; $i++) $multiOptions[$i] = $i;
-                                                    echo $this->formSelect('modify[filter][brightness]', 0,
-                                                        array('class' => 'form-control'), $multiOptions); ?>
-                                                </div>                   
-
-                                                <div class="form-group">
-                                                    <label for="modify-filter-contrast">Contraste</label>
-                                                    <?php $multiOptions = array();
-                                                    for($i = -100; $i <= 100; $i++) $multiOptions[$i] = $i;
-                                                    echo $this->formSelect('modify[filter][contrast]', 0,
-                                                        array('class' => 'form-control'), $multiOptions); ?>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="modify-filter-gaussian-blur">Borrar</label>
-                                                    <?php $multiOptions = array();
-                                                    for($i = 0; $i <= 100; $i++) $multiOptions[$i] = $i;
-                                                    echo $this->formSelect('modify[filter][gaussian-blur]', 0,
-                                                        array('class' => 'form-control'), $multiOptions); ?>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="modify-filter-selective-blur">Desfocar</label>
-                                                    <?php $multiOptions = array();
-                                                    for($i = 0; $i <= 100; $i++) $multiOptions[$i] = $i;
-                                                    echo $this->formSelect('modify[filter][selective-blur]', 0,
-                                                        array('class' => 'form-control'), $multiOptions); ?>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="modify-filter-mean-removal">Esboço</label>
-                                                    <?php $multiOptions = array();
-                                                    for($i = 0; $i <= 10; $i++) $multiOptions[$i] = $i;
-                                                    echo $this->formSelect('modify[filter][mean-removal]', 0,
-                                                    array('class' => 'form-control'), $multiOptions); ?>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="modify-filter-pixelate">Pontilhar</label>
-                                                    <?php $multiOptions = array();
-                                                    for($i = 0; $i <= 10; $i++) $multiOptions[$i] = $i;
-                                                    echo $this->formSelect('modify[filter][pixelate]', 0,
-                                                        array('class' => 'form-control'), $multiOptions); ?>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="modify-filter-colorize">Ajuste de cores (RGBA)</label>
-                                                    <div class="filter-colorize">
-                                                        <?php $multiOptions = array();
-                                                        for($i = -255; $i <= 255; $i++) $multiOptions[$i] = $i; ?>
-
-                                                        <?php echo $this->formSelect('modify[filter][colorize][red]', 0,
-                                                            array('class' => 'form-control'), $multiOptions) . ' ';
-
-                                                        echo $this->formSelect('modify[filter][colorize][green]', 0,
-                                                            array('class' => 'form-control'), $multiOptions) . ' ';
-
-                                                        echo $this->formSelect('modify[filter][colorize][blue]', 0,
-                                                            array('class' => 'form-control'), $multiOptions) . ' ';
-
-                                                        $multiOptions = array();
-                                                        for($i = 0; $i <= 127; $i++) $multiOptions[$i] = $i;
-                                                        echo $this->formSelect('modify[filter][colorize][alpha]', 0,
-                                                            array('class' => 'form-control'), $multiOptions);
-                                                        ?>
-                                                    </div>
-                                                </div><!--.form-group -->
-                                            </div><!--.panel-body -->
-                                        </div><!--.panel-collapse -->
-                                    </div><!--.panel -->
-
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading" role="tab" id="heading_image_resize">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#image_resize" aria-expanded="true" aria-controls="image_resize">
-                                                    Redimensionar
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="image_resize" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_image_resize">
-                                            <div class="panel-body">
-                                                <div class="row">
-                                                    <div class="col-sm-5">
-                                                        <?php echo $this->formText('modify[resize][width]', 
-                                                            null, array('class' => 'form-control', 'placeholder' => 'Largura')); ?>
-                                                    </div>
-                                                    <div class="col-sm-1 text-center">x</div>
-                                                    <div class="col-sm-5">
-                                                        <?php echo $this->formText('modify[resize][height]', 
-                                                            null, array('class' => 'form-control', 'placeholder' => 'Altura')); ?>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <div class="checkbox">
-                                                        <label for="modify-resize-avatar">
-                                                            <?php echo $this->formRadio('modify[resize][option]', 'auto', null, array(
-                                                                'auto'    => 'Manter proporções',
-                                                                'distort' => 'Preencher espaços (distorcer)',
-                                                                'avatar'  => 'Preencher espaços (cortar)',
-                                                                'fill'    => 'Preencher espaços com branco'
-                                                            )); ?>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <?php echo $this->formReset('revert_original', 
-                                'Reverter alterações',
-                                array('class' => 'btn btn-warning col-sm-12')); ?>
-
-                            </div><!--.panel-body -->
-
-                            <div class="panel-footer text-center">
-                                <?php echo $this->form->getElement('save')->setDecorators(array('ViewHelper')); ?>
-                                <?php echo $this->form->getElement('apply')->setDecorators(array('ViewHelper')); ?>
-                                <?php echo $this->form->getElement('cancel')->setDecorators(array('ViewHelper')); ?>
+                            <div class="panel-heading" role="tab" id="heading_image_data">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#image_data" aria-expanded="true" aria-controls="image_data">
+                                        Dados da imagem
+                                    </a>
+                                </h4>
                             </div>
-                        </div><!--.panel -->
-                    </div>
-
-                    <div class="col-sm-8" id="image_preview">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <div class="btn-group pull-right" data-toggle="buttons">
-                                    <label class="btn btn-default">
-                                        <input type="checkbox" autocomplete="off" id="toggle_original"> Ver original
-                                    </label>
+                            <div id="image_data" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_image_data">
+                                <div class="panel-body">
+                                    <?php 
+                                    $mainElements = $this->form->getDisplayGroup('main_elements')->getElements();
+                                    foreach($mainElements as $element):
+                                        echo $element;
+                                        if ($element->getName() == 'credits'): ?>
+                                            <div class="checkbox">
+                                                <label for="modify-write">
+                                                    <?php echo $this->formCheckbox('modify[write]'); ?>
+                                                    Exibir marca d'água
+                                                </label>
+                                            </div>
+                                        <?php endif;
+                                    endforeach; ?>
                                 </div>
-                                <h3 class="panel-title">Editar imagem</h3>
                             </div>
-
-                            <div class="panel-body text-center" id="modified_image">
-                                <img src="<?php echo $this->baseUrl($this->file->getPath()); ?>"
-                                 alt="<?php echo $this->escape($this->file->original_name) ?>" />
-                                <div class="size">Dimensões: 
-                                    <span class="width"><?php echo $this->file->getImageSize()->width; ?></span>
-                                    x <span class="height"><?php echo $this->file->getImageSize()->height; ?></span>
-                                </div>
-                            </div><!--.panel-body -->
-
-                            <div class="panel-body text-center" id="original_image" style="display:none">
-                                <img src="<?php echo $this->baseUrl($this->file->getPath()); ?>"
-                                 alt="<?php echo $this->escape($this->file->original_name) ?>" />
-                                <div class="size">Dimensões: 
-                                    <span class="width"><?php echo $this->file->getImageSize()->width; ?></span>
-                                    x <span class="height"><?php echo $this->file->getImageSize()->height; ?></span>
-                                </div>
-                            </div><!--.panel-body -->
-
-                        </div><!--.panel -->
-                    </div>
-
-                    <?php else: ?>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Informações</h3>
                         </div>
-                        <div class="panel-body">
-                            <?php foreach($displayGroup->getElements() as $element): ?>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label"><?php echo $element->getLabel(); ?></label>
-                                    <div class="col-sm-10">
-                                        <?php echo $element->setDecorators(array('ViewHelper')); ?>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="heading_image_filters">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#image_filters" aria-expanded="true" aria-controls="image_filters">
+                                        Filtros
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="image_filters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_image_filters">
+                                <div class="panel-body">
+                                    <div class="checkbox">
+                                        <label for="modify-flip-v">
+                                            <?php echo $this->formCheckbox('modify[flip][v]'); ?>
+                                            Inverter na vertical
+                                        </label>
+                                    </div>
+
+                                    <div class="checkbox">
+                                        <label for="modify-flip-h">
+                                            <?php echo $this->formCheckbox('modify[flip][h]'); ?>
+                                            Inverter na horizontal
+                                        </label>
+                                    </div>
+
+                                    <div class="checkbox">
+                                        <label for="modify-effect-drawing">
+                                            <?php echo $this->formCheckbox('modify[effect][drawing]'); ?>
+                                            Desenho
+                                        </label>
+                                    </div>
+
+                                    <div class="checkbox">
+                                        <label for="modify-effect-sepia">
+                                            <?php echo $this->formCheckbox('modify[effect][sepia]'); ?>
+                                            Sépia
+                                        </label>
+                                    </div>
+
+                                    <div class="checkbox">
+                                        <label for="modify-filter-negate">
+                                            <?php echo $this->formCheckbox('modify[filter][negate]'); ?>
+                                            Negativo
+                                        </label>
+                                    </div>
+
+                                    <div class="checkbox">
+                                        <label for="modify-filter-grayscale">
+                                            <?php echo $this->formCheckbox('modify[filter][grayscale]'); ?>
+                                            Escala de cinza
+                                        </label>
+                                    </div>
+
+                                    <div class="checkbox">
+                                        <label for="modify-filter-smooth">
+                                            <?php echo $this->formCheckbox('modify[filter][smooth]'); ?>
+                                            Suavizar
+                                        </label>
+                                    </div>
+
+                                    <div class="checkbox">
+                                        <label for="modify-filter-emboss">
+                                            <?php echo $this->formCheckbox('modify[filter][emboss]'); ?>
+                                            Realçar
+                                        </label>
+                                    </div>
+
+                                    <div class="checkbox">
+                                        <label for="modify-filter-edgedetect">
+                                            <?php echo $this->formCheckbox('modify[filter][edgedetect]'); ?>
+                                            Destacar bordas
+                                        </label>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="heading_image_adjustments">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#image_adjustments" aria-expanded="true" aria-controls="image_adjustments">
+                                        Ajustes
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="image_adjustments" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_image_adjustments">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="modify-filter-brightness">Iluminação</label>
+                                        <?php $multiOptions = array();
+                                        for($i = -255; $i <= 255; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][brightness]', 0,
+                                            array('class' => 'form-control'), $multiOptions); ?>
+                                    </div>                   
+
+                                    <div class="form-group">
+                                        <label for="modify-filter-contrast">Contraste</label>
+                                        <?php $multiOptions = array();
+                                        for($i = -100; $i <= 100; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][contrast]', 0,
+                                            array('class' => 'form-control'), $multiOptions); ?>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="modify-filter-gaussian-blur">Borrar</label>
+                                        <?php $multiOptions = array();
+                                        for($i = 0; $i <= 100; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][gaussian-blur]', 0,
+                                            array('class' => 'form-control'), $multiOptions); ?>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="modify-filter-selective-blur">Desfocar</label>
+                                        <?php $multiOptions = array();
+                                        for($i = 0; $i <= 100; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][selective-blur]', 0,
+                                            array('class' => 'form-control'), $multiOptions); ?>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="modify-filter-mean-removal">Esboço</label>
+                                        <?php $multiOptions = array();
+                                        for($i = 0; $i <= 10; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][mean-removal]', 0,
+                                        array('class' => 'form-control'), $multiOptions); ?>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="modify-filter-pixelate">Pontilhar</label>
+                                        <?php $multiOptions = array();
+                                        for($i = 0; $i <= 10; $i++) $multiOptions[$i] = $i;
+                                        echo $this->formSelect('modify[filter][pixelate]', 0,
+                                            array('class' => 'form-control'), $multiOptions); ?>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="modify-filter-colorize">Ajuste de cores (RGBA)</label>
+                                        <div class="filter-colorize">
+                                            <?php $multiOptions = array();
+                                            for($i = -255; $i <= 255; $i++) $multiOptions[$i] = $i; ?>
+
+                                            <?php echo $this->formSelect('modify[filter][colorize][red]', 0,
+                                                array('class' => 'form-control'), $multiOptions) . ' ';
+
+                                            echo $this->formSelect('modify[filter][colorize][green]', 0,
+                                                array('class' => 'form-control'), $multiOptions) . ' ';
+
+                                            echo $this->formSelect('modify[filter][colorize][blue]', 0,
+                                                array('class' => 'form-control'), $multiOptions) . ' ';
+
+                                            $multiOptions = array();
+                                            for($i = 0; $i <= 127; $i++) $multiOptions[$i] = $i;
+                                            echo $this->formSelect('modify[filter][colorize][alpha]', 0,
+                                                array('class' => 'form-control'), $multiOptions);
+                                            ?>
+                                        </div>
+                                    </div><!--.form-group -->
+                                </div><!--.panel-body -->
+                            </div><!--.panel-collapse -->
+                        </div><!--.panel -->
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading" role="tab" id="heading_image_resize">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#image_resize" aria-expanded="true" aria-controls="image_resize">
+                                        Redimensionar
+                                    </a>
+                                </h4>
+                            </div>
+                            <div id="image_resize" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading_image_resize">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <?php echo $this->formText('modify[resize][width]', 
+                                                null, array('class' => 'form-control', 'placeholder' => 'Largura')); ?>
+                                        </div>
+                                        <div class="col-sm-1 text-center">x</div>
+                                        <div class="col-sm-5">
+                                            <?php echo $this->formText('modify[resize][height]', 
+                                                null, array('class' => 'form-control', 'placeholder' => 'Altura')); ?>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label for="modify-resize-avatar">
+                                                <?php echo $this->formRadio('modify[resize][option]', 'auto', null, array(
+                                                    'auto'    => 'Manter proporções',
+                                                    'distort' => 'Preencher espaços (distorcer)',
+                                                    'avatar'  => 'Preencher espaços (cortar)',
+                                                    'fill'    => 'Preencher espaços com branco'
+                                                )); ?>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!--.panel-body -->
+
+                <div class="panel-footer text-center">
+                    <?php echo $this->form->getElement('save')->setDecorators(array('ViewHelper')); ?>
+                    <?php echo $this->form->getElement('apply')->setDecorators(array('ViewHelper')); ?>
+                    <?php echo $this->form->getElement('save_new')->setDecorators(array('ViewHelper')); ?>
+                    <?php echo $this->form->getElement('revert_original')->setDecorators(array('ViewHelper')); ?>
+                    <?php echo $this->form->getElement('cancel')->setDecorators(array('ViewHelper')); ?>
+                </div>
+            </div><!--.panel -->
+        </div>
+        
+        <div class="col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ul class="nav nav-tabs pull-right">
+                        <li id="tab_modified_image" style="display:none">
+                            <a href="#modified_image" data-toggle="tab">Alterar imagem</a>
+                        </li>
+                        <li id="tab_original_image" class="active"><a href="#original_image" data-toggle="tab">Imagem original</a></li>
+                        <li><a href="#related_files" data-toggle="tab">Variações (<?php echo count($relatedFiles); ?>)</a></li>
+                        <li><a href="#related_content" data-toggle="tab">Conteúdo relacionado (<?php echo count($relatedContent); ?>)</a></li>
+                        <li><a href="#media_info" data-toggle="tab">Informações</a></li>
+                    </ul>
+                    <h3 class="panel-title">&nbsp;</h3>
+                </div>
+                <div class="tab-content force-height">
+                    <div role="tabpanel" class="panel-body tab-pane active" id="modified_image">
+                        <div id="image_preview" class="text-center">
+                            <img src="<?php echo $this->baseUrl($this->file->getPath()); ?>"
+                             alt="<?php echo $this->escape($this->file->original_name) ?>" />
+                            <div class="size">Dimensões: 
+                                <span class="width"><?php echo $this->file->getImageSize()->width; ?></span>
+                                x <span class="height"><?php echo $this->file->getImageSize()->height; ?></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="panel-body tab-pane" id="original_image">
+                        <div id="image_preview" class="text-center">
+                            <img src="<?php echo $this->baseUrl($this->file->getPath()); ?>"
+                             alt="<?php echo $this->escape($this->file->original_name) ?>" />
+                            <div class="size">Dimensões: 
+                                <span class="width"><?php echo $this->file->getImageSize()->width; ?></span>
+                                x <span class="height"><?php echo $this->file->getImageSize()->height; ?></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane" id="related_files">
+                        <br>
+                        <?php if (count($relatedFiles) > 0): ?>
+                        <div class="thumbnails">
+                            <?php foreach($relatedFiles as $image): ?>
+                            <div class="col-xs-4 col-md-3" id="file_<?php echo $image->id; ?>">
+                                <?php if ($image->countRelatedContent() == 0): ?>
+                                <a id="remove_<?php echo $image->id; ?>" title="Remover"
+                                   class="file-remove" href="#file_<?php echo $image->id; ?>">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                </a>
+                                <?php endif; ?>
+                                <a href="<?php echo $this->adminBaseUrl('media/image/edit/id/'
+                                    . $image->id); ?>" class="thumbnail">
+                                    <img src="<?php echo $this->thumb($image, 150, 150, true); ?>"
+                                         alt="<?php echo $this->escape($image->original_name); ?>" />
+                                </a>
+                            </div>
                             <?php endforeach; ?>
                         </div>
+                        <?php else: ?>
+                        <p class="text-center">
+                            <br><br><br><br>
+                            Nenhuma variação dessa imagem foi encontrada. <br><br>
+                            Para salvar variações, utilize os modificadores de imagem e clique em "Salvar nova".</p>
+                        <?php endif; ?>
+                        <div class="clearfix"></div>
+                    </div>
+                    
+                    <div role="tabpanel" class="tab-pane" id="related_content">
+                        <?php 
+                            $status = array(
+                                'A' => 'Ativo',
+                                'I' => 'Inativo',
+                                'L' => 'Trancado',
+                                'D' => 'Excluído',
+                            );
+                            $rowClass = array(
+                                'A' => '',
+                                'I' => ' class="warning"',
+                                'L' => ' class="info"',
+                                'D' => ' class="danger"',
+                            ); 
+                        ?>
+                        <div class="table-horizontal">
+                            <br>
+                            <table class="table table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Campo</th>
+                                        <th>Status</th>
+                                        <th>
+                                            <span class="visible-md visible-lg">Publicação</span>
+                                            <span class="hidden-md hidden-lg">Public.</span>
+                                        </th>
+                                        <th width="50"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if ($relatedContent): 
+                                    foreach ($relatedContent as $contentFile): 
+                                        $content = $contentFile->getContent(); ?>
+                                        <tr<?php echo $content->status == 'A' &&
+                                              $content->getDatePublished()->compare(Zend_Date::now()) == 1
+                                              ? $rowClass['I'] : $rowClass[$content->status]; ?>>
+                                            <td title="<?php echo $this->escape($content->title); ?> (<?php echo $this->escape($content->getType()->type); ?>)">
+                                                <?php echo $this->escape($content->title); ?>
+                                                (<?php echo $this->escape($content->getType()->type); ?>)
+                                            </td>
+                                            <td title="<?php echo $this->escape($contentFile->getMetafield()->getOption('label')); ?>">
+                                                <?php echo $this->escape($contentFile->getMetafield()->getOption('label')); ?>
+                                                <?php if ($contentFile->getMetafield()->getOption('muliple')): ?>
+                                                <span title="Ordem">(<?php echo $contentFile->order; ?>)</span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td title="<?php echo $status[$content->status]; ?>">
+                                                <?php echo $status[$content->status]; ?>
+                                            </td>
+                                            <td title="<?php echo $content->getDatePublished()->get('dd/MM/yyyy HH:mm:ss'); ?>">
+                                                <span class="visible-md visible-lg"><?php echo $content->getDatePublished()->get('dd/MM/yyyy HH:mm'); ?></span>
+                                                <span class="hidden-md hidden-lg"><?php echo $content->getDatePublished()->get('dd/MM/yy'); ?></span>
+                                            </td>
+                                            <td class="actions">
+                                                <a href="<?php echo $this->baseUrl($content->slug); ?>" target="_blank"
+                                                   title="Visualizar" rel="tooltip"><span class="glyphicon glyphicon-globe"></span></a>
+
+                                                <a href="<?php echo $this->adminBaseUrl("content/content/edit/id/{$content->id}"); ?>"
+                                                   title="Editar" rel="tooltip"><span class="glyphicon glyphicon-edit"></span></a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; 
+                                    endif; ?>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="5" class="text-center">
+                                            <?php if (count($relatedContent) == 0): ?>
+                                                Nenhum item está relacionado a esta imagem.
+                                            <?php elseif (count($relatedContent) == 1): ?>
+                                                Um item está relacionado a esta imagem.
+                                            <?php else: ?>
+                                                <?php echo count($relatedContent); ?> itens estão relacionados a esta imagem.
+                                            <?php endif; ?>   
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
 
-                    <?php endif; ?>
-                </div><!-- .tab-pane -->
-                <?php endforeach; ?>
+                    <div role="tabpanel" class="panel-body tab-pane" id="media_info">
+                        <?php $mediaInfo = $this->form->getDisplayGroup('media_info')->getElements();
+                        foreach($mediaInfo as $element): ?>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><?php echo $element->getLabel(); ?></label>
+                                <div class="col-sm-9">
+                                    <?php echo $element->setDecorators(array('ViewHelper')); ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div><!--.tab-content -->
 
-            </form>
-
+            </div><!--.panel -->
         </div>
 
-    </div>
+    </form>
 
 </div>

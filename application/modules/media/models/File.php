@@ -168,7 +168,38 @@ class Media_Model_File extends FrontZend_Module_Model_Abstract
               . substr($path, strrpos($path, '.'));
         return str_replace('/', DIRECTORY_SEPARATOR, self::getFullThumbsPath($path));
     }
-
+    
+    public function getRelatedFiles()
+    {
+        $idFile = $this->id_original ? $this->id_original : $this->getId();
+        if ($idFile) {
+            return FrontZend_Container::get('File')
+                        ->fetchRelatedFiles($idFile, $this->getId());
+        }
+    }
+    
+    /**
+     *
+     * @return array
+     */
+    public function getRelatedContent()
+    {
+        $idFile = $this->getId();
+        if ($idFile) {
+            return FrontZend_Container::get('ContentFile')
+                        ->fetchByFile($idFile);
+        }
+    }
+    
+    /**
+     * 
+     * @return integer
+     */
+    public function countRelatedContent()
+    {
+        return count($this->getRelatedContent());
+    }
+    
     public function getInputFilter()
     {
         return array(            

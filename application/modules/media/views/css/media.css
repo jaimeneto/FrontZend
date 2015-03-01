@@ -3,9 +3,26 @@
     margin-right: 20px;
 }
 
+.force-height {
+    min-height: 300px;
+}
+
 #dirs ul.nav-list,
 #files ul.thumbnails {
     min-height: 350px;
+}
+
+#files .file-remove, 
+#related_files .file-remove {
+    position: absolute;
+    right: 15px;
+    color: #333;
+    margin-right: 2px;
+}
+
+#files .thumbnail img,
+#related_files .thumbnail img {
+    width: 100%;
 }
 
 #youtube_search_results {
@@ -53,10 +70,6 @@ ul.youtube.thumbnails li p.title {
 }
 #slider-colorize-blue .ui-widget-header {
     background: blue;
-}
-
-#revert_original {
-    margin-bottom: 20px;
 }
 
 #dirs {
@@ -122,4 +135,16 @@ ul.youtube.thumbnails li p.title {
 
 form .btn-youtube-search {
     margin-bottom: 10px;
+}
+
+#remove_dir {
+    position: relative;
+    font-size: 13px;
+}
+#remove_dir .glyphicon-remove {
+    position: absolute;
+    color: white;
+    font-size: 8px;
+    right: 1px;
+    top: 6px;
 }

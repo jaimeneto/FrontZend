@@ -20,6 +20,8 @@ $(document).ready(function(){
             sliderObj.slider('value', 0);
         });
         Media_Image_AjaxModify();
+        $('#tab_original_image a').tab('show');
+        $('#tab_modified_image').hide();
     });
 
     $('#toggle_original').change(function(){
@@ -27,9 +29,46 @@ $(document).ready(function(){
         $('#modified_image, #original_image').toggle();
     })
 
-    initSliders();
+    $('#files .file-remove, #related_files .file-remove').click(function(event){
+        event.preventDefault();
+        if (confirm('Deseja excluir esta imagem?')) {
+            var fileId = $(this).attr('id').replace('remove_', '');
+            Media_Image_AjaxRemove(fileId);
+        }
+    });
 
+    $('#remove_dir').click(function(ev){
+        if (!confirm('Deseja realmente excluir pasta e todo seu conteúdo?')) {
+            ev.preventDefault();
+        }
+    })
+
+    initSliders();
 });
+
+function Media_Image_AjaxRemove(fileId) {
+    $.ajax({
+        type: 'POST',
+        url: adminBaseUrl + '/media/image/ajax-remove',
+        data: {
+            id: fileId
+        },
+        dataType: 'json',
+        success: function(json){
+            if (json.status == 1) {
+                $('#file_' + fileId).fadeOut('slow', function() {
+                    $(this).remove();
+                });
+            }
+            if (json.log) console.log(json.log);
+            if (json.msg) alert(json.msg);
+        },
+
+        error: function(msg) {
+            alert(msg);
+        }
+    });
+}
 
 function Media_Youtube_AjaxSearch() {
     initYoutubeRemoveClick();
@@ -256,6 +295,8 @@ function youtubeVideo(idVideo, width, height, style) {
 function Media_Image_AjaxModify() {
 
     var data = $('#media_form_image').serialize();
+    $('#tab_modified_image').show();
+    $('#tab_modified_image a').tab('show');
 
     $.ajax({
         type: 'POST',

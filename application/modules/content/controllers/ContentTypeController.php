@@ -164,7 +164,7 @@ class Content_ContentTypeController extends FrontZend_Module_Controller_Abstract
         $contentType = FrontZend_Container::get('ContentType')->findById($idContentType);
         
         $filterSlug = new FrontZend_Filter_Slug();
-        $fieldname = $filterSlug->filter($name);
+        $fieldname = $filterSlug->filter(str_replace(' ', '', $name));
 
         $metafields = $contentType->getMetafields();
 

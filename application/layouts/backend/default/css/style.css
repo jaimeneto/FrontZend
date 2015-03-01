@@ -8,8 +8,7 @@ html, body {
 }
 
 main {
-    padding-top: 100px;
-    padding-bottom: 140px;
+    padding: 100px 15px 140px 15px;
     position: relative;
     min-height: 100%;
     background: url("../img/bg-grid.png") repeat scroll 0px 0px #E9E9E9;
@@ -242,79 +241,14 @@ table.treetable tr.expanded span.indenter a {
     padding-right: 20px;
 }
 
-/*
-.dropup .caret {
-    margin-top: 8px;
-}
-
-table .actions {
-    text-align: right;
-}
-
-fieldset .btn {
-    margin-top: 5px;
-}
-
-.form-horizontal .control-group {
-    margin-bottom: 10px;
-}
-
-.icon-custom {
-    background-image: url("../img/glyphicons-halflings-custom.png");
-}
-.icon-custom.icon-star-half {
-    background-position: 0 0;
-}
-
-.sortable li {
-    background-color: #FFF;
-}
-.sortable li.sortable-placeholder {
-    background-color: #EEE;
-}
-.accordion-heading a .fieldtype {
-    color: #ccc;
-}
-
-.modal {
-    width: 650px;
-    margin-left: -325px;
-}
-.modal form {
-    margin-bottom: 0;
-}
-
-fieldset form fieldset {
-    border: 1px solid #E5E5E5;
-    padding: 20px;
-}
-
-fieldset form fieldset legend {
-    margin-bottom: 0;
-    border: 0;
-    width: auto;
-    padding: 0 10px;
-    font-size: 16px;
-}
-fieldset form fieldset legend + .control-group {
-    margin-top: 0;
-}
-
-
-.radio, .checkbox {
-    padding-right: 20px;
-}
-
-.controls.richtext {
-    border:1px solid #ccc;
-    border-radius: 5px;
-    overflow: hidden;
-}
-*/
-
 span.mceEditor {
     display: block;
     border: 1px solid #CCC;
     border-radius: 4px;
     overflow: hidden;
+}
+
+.panel-footer button {
+    margin-top: 2px;
+    margin-bottom: 2px;
 }

@@ -30,31 +30,5 @@ function initForms() {
         }
     });
 
-    autosizeInputWithAddOn();
-
     $(window).bind("resize", autosizeInputWithAddOn);
-}
-
-function autosizeInputWithAddOn() {
-    $('.input-prepend, .input-append').each(function(){
-        var widthTotal = $(this).parent().width();
-        var input = $(this).find('.input-block-level');
-        if (input) {
-            var addonWidth = 0;
-            $(this).find('.add-on').each(function(){
-                addonWidth += getTotalWidth($(this));
-            });
-            input.css('width', widthTotal - addonWidth);
-        }
-    });
-}
-
-function getTotalWidth(elementObj) {
-    return elementObj.width()
-        + parseInt(elementObj.css("padding-left"), 10)
-        + parseInt(elementObj.css("padding-right"), 10)
-        + parseInt(elementObj.css("margin-left"), 10)
-        + parseInt(elementObj.css("margin-right"), 10)
-        + parseInt(elementObj.css("borderLeftWidth"), 10)
-        + parseInt(elementObj.css("borderRightWidth"), 10);
 }

@@ -1,4 +1,10 @@
 <div class="page-header">
+    <div class="btn-group pull-right">
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#create_dir">
+            <span class="glyphicon glyphicon-plus"></span> Criar nova pasta</a>
+        </button>
+    </div>
+    
     <h1>
         <span class="glyphicon glyphicon-image"></span> 
         Arquivos
@@ -16,17 +22,30 @@
     </div>
 
     <div class="col-sm-9">
-        <?php if ($this->files->count() > 0): ?>
         <div class="panel panel-default sidebar-nav" id="files">
             <div class="panel-heading">
                 <div class="panel-title">
-                    <?php echo $this->path; ?>
+                    <a href="<?php echo $this->url(array('action' => 'remove-dir')); ?>" class="pull-right" 
+                       id="remove_dir" title="Excluir pasta" rel="tooltip">
+                        <span class="glyphicon glyphicon-folder-close"></span>
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </a>
+                    <small><span class="glyphicon glyphicon-folder-open"></span></small>
+                    /<?php echo ltrim($this->path, 'images/'); ?>
+                    <?php //echo $this->navigation($this->dirs)->breadcrumbs(); ?>
                 </div>
             </div>
-            <div class="panel-body">
+            <div class="panel-body force-height">
+                <?php if ($this->files->count() > 0): ?>
                 <div class="row thumbnails">
                     <?php foreach($this->files as $image): ?>
-                    <div class="col-xs-6 col-md-3">
+                    <div class="col-xs-4 col-sm-3 col-lg-2" id="file_<?php echo $image->id; ?>">
+                        <?php if ($image->countRelatedContent() == 0): ?>
+                        <a id="remove_<?php echo $image->id; ?>" title="Remover"
+                           class="file-remove" href="#file_<?php echo $image->id; ?>">
+                                <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                        <?php endif; ?>
                         <a href="<?php echo $this->adminBaseUrl('media/image/edit/id/'
                             . $image->id); ?>" class="thumbnail">
                             <img src="<?php echo $this->thumb($image, 150, 150, true); ?>"
@@ -35,8 +54,42 @@
                     </div>
                     <?php endforeach; ?>
                 </div>
+                <?php endif; ?>
+            </div>
+            <div class="panel-footer">
+                <span class="glyphicon glyphicon-picture"></span>
+                <small>
+                    <?php echo $this->files->count() == 0
+                        ? 'Nenhuma imagem'
+                        : ($this->files->count() == 1
+                            ? '1 imagem'
+                            : $this->files->count() . ' imagens'); 
+                ?></small>
             </div>
         </div>
-        <?php endif; ?>
+    </div>
+</div>
+
+
+<div class="modal fade" id="create_dir" tabindex="-1" role="dialog" 
+     aria-labelledby="create_dir_label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" 
+                        aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="create_dir_label">Criar nova pasta</h4>
+            </div>
+            <form method="<?php echo $this->form->getMethod(); ?>" action="<?php echo $this->form->getAction(); ?>">
+            <div class="modal-body">
+                <?php echo $this->form->getDisplayGroup('main_elements'); ?>
+                <div class="clearfix"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+            </form>
+        </div>
     </div>
 </div>

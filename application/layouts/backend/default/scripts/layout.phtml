@@ -46,7 +46,7 @@
 
 <body class="backend">
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
+        <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <?php echo $this->navbarHeader('FrontZend', 'navbar-collapse-1', $this->adminBaseUrl()); ?>
 
@@ -75,7 +75,7 @@
         </div><!-- /.container -->
     </nav>
     <div class="breadcrumbs hidden-xs">
-        <div class="container">
+        <div class="container-fluid">
             <ul class="pull-right">
                 <li><a href="<?php echo $this->baseUrl(); ?>" target="_blank" class="navbar-link">
                         <span class="glyphicon glyphicon-globe" title="Acessar o site"></span>
@@ -89,7 +89,7 @@
     
     <main>
     
-        <div class="container">
+        <div class="container-fluid">
 
             <div class="row">
                 <?php echo $this->layout()->content; ?>
@@ -125,7 +125,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <div class="container">
+                <div class="container-fluid">
                     &copy; 2013-<?php echo Zend_Date::now()->get('YY'); ?> <a href="http://www.jaimeneto.com" target="_blank">JAIMENETO.COM</a>
 
                     <a href="http://frontzend.jaimeneto.com" target="_blank" class="pull-right">

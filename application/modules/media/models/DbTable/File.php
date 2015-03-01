@@ -25,6 +25,11 @@ class Media_Model_DbTable_File extends FrontZend_Module_Model_DbTable_Abstract
             'columns'       => 'id_user',
             'refTableClass' => 'Acl_Model_DbTable_User',
             'refColumns'    => 'id_user'
+        ),
+        'Original' => array(
+            'columns'       => 'id_original',
+            'refTableClass' => 'Media_Model_DbTable_File',
+            'refColumns'    => 'id_file'
         )
     );
 
@@ -46,72 +51,106 @@ class Media_Model_DbTable_File extends FrontZend_Module_Model_DbTable_Abstract
         return $this->findAll($options);
     }
 
+    /**
+     * Retorna imagens relacionadas
+     *
+     * @param integer $idFile
+     * @param integer $ignoreId
+     * @return array
+     */
+    public function fetchRelatedFiles($idFile, $ignoreId=null)
+    {
+        $where = $idFile == $ignoreId
+               ? array('id_original = ?' => $idFile)
+               : array('id_file = ? OR id_original = ?' => $idFile);
+        if ($ignoreId) {
+            $where['id_file != ?'] = $ignoreId;
+        }
+        $options = array('where' => $where);
+        return $this->findAll($options);
+    }
+    
+    public function deleteById($id)
+    {
+        $file = $this->findById($id);
+        
+        if ($file) {
+            $filename = $file->getRealPath();
+            if (is_file($filename)&& !unlink($filename)) {
+                throw new FrontZend_Exception(
+                    'Erro ao tentar excluir o arquivo'
+                );
+            }
+        }
+        
+        return parent::deleteById($id);
+    }
+    
     /*************************** Directory methods ***************************/
 
-//    public function addDir($dir, $path=null)
-//    {
-//        $filterSlug = new FrontZend_Filter_Slug();
-//        $dir = $filterSlug->filter($dir);
-//
-//        if ($path) {
-//            $dir = $path . DIRECTORY_SEPARATOR . $dir;
-//        }
-//
-//        $pathname = PUBLIC_PATH
-//                . DIRECTORY_SEPARATOR . self::BASE_PATH
-//                . DIRECTORY_SEPARATOR . $dir;
-//
-//        if (file_exists($pathname)) {
-//            throw new FrontZend_Exception('Uma pasta com este nome já existe');
-//        }
-//
-//        return mkdir($pathname, 0777, true);
-//    }
-//
-//
-//    /**
-//     * Excluir pasta
-//     *
-//     * @return bool
-//     */
-//    public function removeDir($dir)
-//    {
-//        // critérios para a exclusão dos arquivos localizadas no diretório
-//        $options = array(
-//            'where' => array(
-//                "path LIKE '{$dir}%'"
-//            )
-//        );
-//
-//        $results = $this->findAll($options);
-//        if ($results) {
-//            foreach($results as $file){
-//                $this->deleteById($file->id_file);
-//            }
-//        }
-//
-//        // caminho da pasta selecionada
-//        $pathname = PUBLIC_PATH
-//                . DIRECTORY_SEPARATOR . self::BASE_PATH
-//                . DIRECTORY_SEPARATOR . $dir;
-//
-//        if (is_dir($pathname)) {
-//            $objects = scandir($pathname);
-//            foreach ($objects as $object) {
-//                if ($object != '.' && $object != '..') {
-//                    if (filetype("{$pathname}/{$object}") == 'dir') {
-//                        $this->removeDir("{$pathname}/{$object}");
-//                    } else {
-//                        unlink($pathname . "/" . $object);
-//                    }
-//                }
-//            }
-//            reset($objects);
-//
-//            // excluir a pasta
-//            return rmdir($pathname);
-//        }
-//    }
+    public function addDir($dir, $path=null)
+    {
+        $filterSlug = new FrontZend_Filter_Slug();
+        $dir = $filterSlug->filter($dir);
+
+        if ($path) {
+            $dir = $path . DIRECTORY_SEPARATOR . $dir;
+        }
+
+        $pathname = PUBLIC_PATH
+                . DIRECTORY_SEPARATOR . Media_Model_File::getBasePath()
+                . DIRECTORY_SEPARATOR . $dir;
+
+        if (file_exists($pathname)) {
+            throw new FrontZend_Exception('Uma pasta com este nome já existe');
+        }
+        
+        return mkdir($pathname, 0777, true);
+    }
+
+    /**
+     * Excluir pasta
+     *
+     * @return bool
+     */
+    public function removeDir($dir)
+    {
+        // critérios para a exclusão dos arquivos localizadas no diretório
+        $options = array(
+            'where' => array(
+                "path LIKE '{$dir}%'"
+            )
+        );
+
+        $results = $this->findAll($options);
+        if ($results) {
+            foreach($results as $file){
+                $this->deleteById($file->id_file);
+            }
+        }
+
+        // caminho da pasta selecionada
+        $pathname = PUBLIC_PATH
+                . DIRECTORY_SEPARATOR . Media_Model_File::getBasePath()
+                . DIRECTORY_SEPARATOR . $dir;
+
+        if (is_dir($pathname)) {
+            $objects = scandir($pathname);
+            foreach ($objects as $object) {
+                if ($object != '.' && $object != '..') {
+                    if (filetype("{$pathname}/{$object}") == 'dir') {
+                        $this->removeDir("{$pathname}/{$object}");
+                    } else {
+                        unlink($pathname . "/" . $object);
+                    }
+                }
+            }
+            reset($objects);
+
+            // excluir a pasta
+            return rmdir($pathname);
+        }
+    }
 
     /**
      * Renomear pasta de arquivos

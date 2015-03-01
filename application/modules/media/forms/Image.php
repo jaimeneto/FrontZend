@@ -126,6 +126,20 @@ class Media_Form_Image extends Bootstrap_Form_Horizontal
             'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_SUCCESS
         ));
 
+        $this->addElement('submit', 'save_new', array(
+            'label'      => 'Salvar nova',
+            'ignore'     => true,
+            'size'       => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_WARNING
+        ));
+
+        $this->addElement('submit', 'revert_original', array(
+            'label'      => 'Reverter alterações',
+            'ignore'     => true,
+            'size'       => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_DANGER
+        ));
+        
         $this->addElement('submit', 'cancel', array(
             'label'      => 'Cancelar',
             'ignore'     => true,
@@ -133,7 +147,7 @@ class Media_Form_Image extends Bootstrap_Form_Horizontal
             'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_DEFAULT
         ));
 
-        $this->addDisplayGroup(array('save', 'apply', 'cancel'), 'buttons', array(
+        $this->addDisplayGroup(array('save', 'apply', 'save_as', 'cancel'), 'buttons', array(
             'decorators' => array(
                 'FormElements', 
                 array('HtmlTag', array(
