@@ -35,8 +35,8 @@ class Acl_Form_Login extends Bootstrap_Form_Horizontal
         $this->addElement('submit', 'btn_login', array(
             'label'      => 'Entrar',
             'ignore'     => true,
-            'size'       => Bootstrap_Form_Element_SUBMIT::BUTTON_SIZE_LARGE,
-            'buttonType' => Bootstrap_Form_Element_SUBMIT::BUTTON_PRIMARY,
+            'size'       => Bootstrap_Form_Element_Submit::BUTTON_SIZE_LARGE,
+            'buttonType' => Bootstrap_Form_Element_Submit::BUTTON_PRIMARY,
             'class'      => 'center-block'
         ));
     }
